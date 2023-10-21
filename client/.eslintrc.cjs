@@ -8,7 +8,7 @@ module.exports = {
     es2021: true
   },
   plugins: ['prefer-arrow', '@typescript-eslint/eslint-plugin', 'prettier'],
-  extends: [ 'standard-with-typescript', "standard-jsx",],
+  extends: ["standard-jsx", 'standard-with-typescript'],
   ignorePatterns: ['.eslintrc.cjs', "node_modules/"],
   rules: {
     'arrow-body-style': 'error',
