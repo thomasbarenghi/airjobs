@@ -6,7 +6,9 @@ const Endpoints = {
   ALL_USERS: '/api/users',
   INDIVIDUAL_JOB: (id: string) => `/api/jobs/${id}`,
   USER_BY_EMAIL: (email: string) => `/api/users/${email}`,
-  USER_BY_ID: (id: string) => `/api/users/${id}`
+  USER_BY_ID: (id: string) => `/api/users/${id}`,
+  APPLY_JOB: (id: string) => `/api/jobs/${id}/apply`,
+  UNAPPLY_JOB: (id: string) => `/api/jobs/${id}/unapply`
 }
 
 export default Endpoints

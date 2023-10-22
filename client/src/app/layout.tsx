@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 import './globals.scss'
-import SWRProvider from '@/context/providers/swr.provider'
 import AuthSessionProvider from '@/context/providers/AuthSessionProvider'
 import NextUiProvider from '@/context/providers/nextUi.provider'
 import { Toaster } from 'sonner'
+import dynamic from 'next/dynamic'
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+const SWRProvider = dynamic(() => import('@/context/providers/swr.provider'), {
+  ssr: false
+})
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -20,14 +24,14 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
   <html lang='en'>
     <body className={outfit.className}>
-      <SWRProvider>
-        <AuthSessionProvider>
+      <AuthSessionProvider>
+        <SWRProvider>
           <NextUiProvider>
             <Toaster richColors />
             {children}
           </NextUiProvider>
-        </AuthSessionProvider>
-      </SWRProvider>
+        </SWRProvider>
+      </AuthSessionProvider>
     </body>
   </html>
 )

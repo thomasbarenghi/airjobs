@@ -47,18 +47,25 @@ export class JobsService {
     return job;
   }
 
-  async findAll() {
-    return await this.jobModel.find().populate({
-      path: 'owner',
-      model: 'User',
-    });
+  async findAll(country: string) {
+    return await this.jobModel
+      .find({
+        ...(country && { country }),
+      })
+      .populate({
+        path: 'owner',
+        model: 'User',
+      });
   }
 
   async findOne(id: string) {
-    return await this.jobModel.findById(id).populate({
-      path: 'owner',
-      model: 'User',
-    });
+    return await this.jobModel.findById(id).populate([
+      {
+        path: 'owner',
+        model: 'User',
+      },
+      { path: 'applicants.user', model: 'User' },
+    ]);
   }
 
   async update(id: string, updateJobDto: UpdateJobDto) {

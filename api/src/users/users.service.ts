@@ -3,6 +3,7 @@ import {
   ConflictException,
   Injectable,
   NotAcceptableException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,6 +13,7 @@ import { User } from './entities/user.entity';
 import { encryptPassword } from 'src/utils/bcrypt.utils';
 import { AddCompanyDto } from './dto/add-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { populateUser } from './lib/populate-user.lib';
 
 @Injectable()
 export class UsersService {
@@ -29,10 +31,13 @@ export class UsersService {
   }
 
   private async findUser(id: string) {
-    const user = await this.userModel.findById(id).catch((error) => {
-      console.error(error);
-      throw new BadRequestException();
-    });
+    const user = await this.userModel
+      .findById(id)
+      .populate(populateUser)
+      .catch((error) => {
+        console.error(error);
+        throw new BadRequestException();
+      });
 
     if (!user) throw new BadRequestException('User not found');
 
@@ -65,6 +70,12 @@ export class UsersService {
   }
 
   async findOne(id: string) {
+    const isEmail = id.includes('@');
+    if (isEmail) {
+      const user = await this.userModel.findOne({ email: id }).populate(populateUser)
+      if (!user) throw new NotFoundException('User not found');
+      return user;
+    }
     return await this.findUser(id);
   }
 
@@ -84,7 +95,10 @@ export class UsersService {
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
     delete addCompanyDto.userId;
-    user.company = addCompanyDto || null;
+    user.company = {
+      ...addCompanyDto,
+      logo: 'https://images.unsplash.com/photo-1639628735078-ed2f038a193e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
+    };
     await user.save();
     return user.company;
   }

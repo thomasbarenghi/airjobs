@@ -18,7 +18,7 @@ export interface JobInterface {
   maxApplicants: number
 }
 
-interface ApplicantsEnum {
+export interface ApplicantsEnum {
   user: UserInterface
   status: 'Under review' | 'Interested company' | 'Obtained' | 'Rejected'
 }

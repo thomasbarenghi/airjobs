@@ -2,11 +2,12 @@
 'use client'
 import { SWRConfig } from 'swr'
 import { fetcher } from '@/services/fetcher.service'
+import { localStorageProvider } from './localStorageProvider'
 
 const SWRProvider = ({ children }: React.PropsWithChildren<{}>) => (
   <SWRConfig
     value={{
-      provider: () => new Map(),
+      provider: localStorageProvider,
       fetcher,
       revalidateOnFocus: true,
       errorRetryCount: 1

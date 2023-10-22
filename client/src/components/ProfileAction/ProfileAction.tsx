@@ -15,7 +15,7 @@ const ProfileAction = () => {
   return (
     <>
       {status === 'authenticated' ? (
-        <DynamicPopover image={loggedUser.profileImage} backdrop='transparent'>
+        <DynamicPopover image={loggedUser?.profileImage} backdrop='transparent'>
           <Menu loggedUser={loggedUser} />
         </DynamicPopover>
       ) : (
