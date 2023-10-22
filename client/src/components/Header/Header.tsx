@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 'use client'
 import Image from 'next/image'
-import { Button } from '@/components'
+import { ProfileAction } from '@/components'
 import { itemsNav } from './lib/itemsNav'
 import {
   Navbar,
@@ -94,7 +94,7 @@ const Header = ({ theme = 'transparent', layout = 'full' }: Props) => {
           </NavbarContent>
           <NavbarContent>
             <NavbarItem className='flex items-center gap-2'>
-              <Button title='Sign In' size='md' href={Routes.SINGIN} />
+              <ProfileAction />
             </NavbarItem>
           </NavbarContent>
         </div>

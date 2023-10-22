@@ -1,4 +1,4 @@
-import type { CompanyInterface } from './company.interface'
+import type { UserInterface } from './user.interface'
 
 export interface JobInterface {
   title: string
@@ -9,8 +9,16 @@ export interface JobInterface {
   location: 'Remote' | 'On-site' | 'Hybrid'
   salary: number
   currency: string
-  company: CompanyInterface
-  createdAt: Date
-  updatedAt: Date
+  owner: UserInterface
+  createdAt: string
+  updatedAt: string
   _id: string
+  active: boolean
+  applicants: ApplicantsEnum[]
+  maxApplicants: number
+}
+
+interface ApplicantsEnum {
+  user: UserInterface
+  status: 'Under review' | 'Interested company' | 'Obtained' | 'Rejected'
 }

@@ -4,6 +4,7 @@ import './globals.scss'
 import SWRProvider from '@/context/providers/swr.provider'
 import AuthSessionProvider from '@/context/providers/AuthSessionProvider'
 import NextUiProvider from '@/context/providers/nextUi.provider'
+import { Toaster } from 'sonner'
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -21,7 +22,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
     <body className={outfit.className}>
       <SWRProvider>
         <AuthSessionProvider>
-          <NextUiProvider>{children}</NextUiProvider>
+          <NextUiProvider>
+            <Toaster richColors />
+            {children}
+          </NextUiProvider>
         </AuthSessionProvider>
       </SWRProvider>
     </body>

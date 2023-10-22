@@ -4,7 +4,9 @@ const Routes = {
   FIND_JOBS: '/',
   EMPLOYERS: '/employers',
   SINGIN: '/signin',
-  SINGUP: '/signup'
+  SINGUP: '/signup',
+  INDIVIDUAL_JOB: (id: string) => `/job/${id}`,
+  ACCOUNT: '/account'
 }
 
 export default Routes
