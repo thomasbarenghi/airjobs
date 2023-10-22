@@ -22,6 +22,11 @@ class ApplicantsEnum {
       'status must be Under review, Interested company, Obtained or Rejected',
   })
   status: 'Under review' | 'Interested company' | 'Obtained' | 'Rejected';
+
+  @Prop({ required: true, default: '' })
+  @IsNotEmpty({ message: 'resume is required' })
+  @IsString()
+  resume: string;
 }
 
 @Schema({ timestamps: true })

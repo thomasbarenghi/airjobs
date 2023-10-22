@@ -1,12 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Put,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApplyJobDto } from './dto/apply-job.dto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService, private readonly cloudinaryService: CloudinaryService) {}
 
   @Post()
   create(@Body() createJobDto: CreateJobDto) {
@@ -14,9 +29,7 @@ export class JobsController {
   }
 
   @Get()
-  findAll(
-    @Query('country') country: string,
-  ) {
+  findAll(@Query('country') country: string) {
     return this.jobsService.findAll(country);
   }
 
@@ -36,8 +49,17 @@ export class JobsController {
   }
 
   @Post(':id/apply')
-  apply(@Param('id') id: string, @Body() body: { userId: string }) {
-    return this.jobsService.apply(id, body.userId);
+  @UseInterceptors(FileInterceptor('resume'))
+  async apply(
+    @Param('id') id: string,
+    @Body() applyJobDto: ApplyJobDto,
+    @UploadedFile() resume: Express.Multer.File,
+  ) {
+    if (resume) {
+      applyJobDto.resume = await this.cloudinaryService.uploadFile(resume);
+    }
+    console.log(applyJobDto);
+    return await this.jobsService.apply(id, applyJobDto);
   }
 
   @Post(':id/unapply')

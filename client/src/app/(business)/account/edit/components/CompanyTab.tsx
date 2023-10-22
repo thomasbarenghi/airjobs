@@ -8,9 +8,10 @@ import type { UserInterface } from '@/interfaces/user.interface'
 
 interface UserTabProps {
   loggedUser: UserInterface
+  mutate: any
 }
 
-const CompanyTab = ({ loggedUser }: UserTabProps) => {
+const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -21,15 +22,25 @@ const CompanyTab = ({ loggedUser }: UserTabProps) => {
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     try {
+      const form = {
+        ...data,
+        logo: data.logo[0]
+      }
+      const formData = new FormData()
+      for (const e in form) {
+        formData.append(e, form[e])
+      }
+      console.log(formData)
       const { error } = await putRequest(
         Endpoints.EDIT_COMPANY(loggedUser._id),
-        data
+        formData
       )
       if (error) {
         toast.error("Couldn't update your info")
         throw Error()
       }
       toast.success('Your info has been updated')
+      mutate()
     } catch (error) {
       console.error(error)
     }
@@ -108,6 +119,34 @@ const CompanyTab = ({ loggedUser }: UserTabProps) => {
             }
           }}
           errorMessage={errors?.email?.message?.toString()}
+        />
+        <Input
+          type='file'
+          name='logo'
+          label='Logo'
+          placeholder='Logo'
+          hookForm={{
+            register,
+            validations: {
+              validate: (value: File[]) => {
+                console.log(value)
+                if (!value[0]) return true
+                if (!value[0]?.type?.includes('image')) {
+                  return 'File type should be image'
+                }
+                if (value[0]?.size > 2097152) {
+                  return 'File size should be less than 2MB'
+                }
+
+                return true
+              },
+              required: {
+                value: false,
+                message: 'This field is required'
+              }
+            }
+          }}
+          errorMessage={errors?.logo?.message?.toString()}
         />
         <Button
           title='Save'

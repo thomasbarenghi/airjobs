@@ -11,6 +11,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/users/entities/user.entity';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
+import { ApplyJobDto } from './dto/apply-job.dto';
 
 @Injectable()
 export class JobsService {
@@ -106,8 +107,8 @@ export class JobsService {
     return await this.jobModel.findByIdAndDelete(id);
   }
 
-  async apply(id: string, userId: string) {
-    const user = await this.findUser(userId);
+  async apply(id: string, applyJobDto: ApplyJobDto) {
+    const user = await this.findUser(applyJobDto.userId);
     if (user.role !== 'aspirant')
       throw new ConflictException('User is not an aspirant');
 
@@ -116,14 +117,14 @@ export class JobsService {
     if (!job) throw new NotFoundException('Job not found');
 
     if (
-      job.applicants.find((applicant) => applicant.user.toString() === userId)
+      job.applicants.find((applicant) => applicant.user.toString() === applyJobDto.userId)
     )
       throw new ConflictException('User already applied');
 
     if (job.maxApplicants === job.applicants.length)
       throw new ConflictException('Job is full');
 
-    job.applicants.push({ user: user._id, status: 'Under review' });
+    job.applicants.push({ user: user._id, status: 'Under review', resume: applyJobDto.resume });
 
     await job.save();
 

@@ -10,11 +10,11 @@ interface TabBarItemProps {
 }
 
 export const tabItemsBuilder = (
-  loggedUser: UserInterface
+  loggedUser: UserInterface, mutate: any
 ): TabBarItemProps[] => [
   {
     title: 'Personal Info',
-    content: <UserTab loggedUser={loggedUser} />,
+    content: <UserTab loggedUser={loggedUser} mutate={mutate} />,
     visible: true
   },
   {
@@ -24,7 +24,7 @@ export const tabItemsBuilder = (
   },
   {
     title: 'Company Info',
-    content: <CompanyTab loggedUser={loggedUser} />,
+    content: <CompanyTab loggedUser={loggedUser} mutate={mutate} />,
     visible: loggedUser?.role === 'company'
   }
 ]

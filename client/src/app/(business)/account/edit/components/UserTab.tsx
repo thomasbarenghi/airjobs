@@ -8,9 +8,10 @@ import type { UserInterface } from '@/interfaces/user.interface'
 
 interface UserTabProps {
   loggedUser: UserInterface
+  mutate: any
 }
 
-const UserTab = ({ loggedUser }: UserTabProps) => {
+const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -23,18 +24,25 @@ const UserTab = ({ loggedUser }: UserTabProps) => {
     try {
       const formData = {
         ...data,
-        birthday: new Date(data.birthday).toISOString()
+        birthday: new Date(data.birthday).toISOString(),
+        profileImage: data.profileImage[0]
+      }
+      console.log(formData)
+      const form = new FormData()
+      for (const e in formData) {
+        form.append(e, formData[e])
       }
 
       const { error } = await putRequest(
         Endpoints.EDIT_USER(loggedUser._id),
-        formData
+        form
       )
       if (error) {
         toast.error("Couldn't update your info")
         throw Error()
       }
       toast.success('Your info has been updated')
+      mutate()
     } catch (error) {
       console.error(error)
     }
@@ -78,7 +86,10 @@ const UserTab = ({ loggedUser }: UserTabProps) => {
           <Input
             type='date'
             name='birthday'
-            defaultValue={new Date(loggedUser.birthday).toISOString().substr(0, 10)}
+            defaultValue={
+              loggedUser?.birthday &&
+              new Date(loggedUser.birthday)?.toISOString()?.substr(0, 10)
+            }
             label='Birthday'
             placeholder='Your birthday'
             hookForm={{
@@ -120,6 +131,34 @@ const UserTab = ({ loggedUser }: UserTabProps) => {
               }
             }}
             errorMessage={errors?.email?.message?.toString()}
+          />
+          <Input
+            type='file'
+            name='profileImage'
+            label='Profile iamge'
+            placeholder='Profile iamge'
+            hookForm={{
+              register,
+              validations: {
+                validate: (value: File[]) => {
+                  console.log(value)
+                  if (!value[0]) return true
+                  if (!value[0]?.type?.includes('image')) {
+                    return 'File type should be image'
+                  }
+                  if (value[0]?.size > 2097152) {
+                    return 'File size should be less than 2MB'
+                  }
+
+                  return true
+                },
+                required: {
+                  value: false,
+                  message: 'This field is required'
+                }
+              }
+            }}
+            errorMessage={errors?.profileImage?.message?.toString()}
           />
         </div>
         <Button

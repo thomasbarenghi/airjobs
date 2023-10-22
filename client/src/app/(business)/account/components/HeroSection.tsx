@@ -26,6 +26,9 @@ const HeroSection = ({ jobId }: Props) => {
             height={85}
             src={loggedUser?.profileImage ?? '/image/userPlaceholder.png'}
             alt="Profile's image"
+            onError={(e) => {
+              e.currentTarget.src = '/image/userPlaceholder.png'
+            }}
             className='object-cover rounded-full aspect-square'
           />
           <div className='flex flex-col gap-1 justify-center '>

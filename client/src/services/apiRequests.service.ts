@@ -8,16 +8,15 @@ interface Response {
 
 export const putRequest = async (
   url: string,
-  data: object,
+  data: any,
   headers?: object
 ): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
+    body: data,
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
       ...headers
-    },
-    body: JSON.stringify(data)
+    }
   })
 
   console.log('putRequest', response)
@@ -31,12 +30,13 @@ export const putRequest = async (
 export const postRequest = async (
   url: string,
   data: object = {},
+  contentType: string = 'application/json',
   headers?: object
 ): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
       ...headers
     },
     body: JSON.stringify(data)

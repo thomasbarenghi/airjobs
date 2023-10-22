@@ -4,6 +4,7 @@ import { JobsController } from './jobs.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Job, JobSchema } from './entities/job.entity';
 import { User, UserSchema } from 'src/users/entities/user.entity';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
       { name: Job.name, schema: JobSchema },
       { name: User.name, schema: UserSchema },
     ]),
+    CloudinaryModule,
   ],
   controllers: [JobsController],
   providers: [JobsService],

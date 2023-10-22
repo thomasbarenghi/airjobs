@@ -73,7 +73,7 @@ const HeroSection = ({ jobId }: Props) => {
               {loggedUser?.role === 'aspirant' &&
                 applicantStatus !== 'Obtained' &&
                 applicantStatus !== 'Rejected' &&
-                new Date(data.deadline).getTime() > new Date().getTime() && (
+                new Date(data?.deadline).getTime() > new Date().getTime() && (
                   <Button
                     onPress={hasApplied ? onOpenUnapply : onOpen}
                     title={hasApplied ? 'Unapply' : 'Apply Now'}

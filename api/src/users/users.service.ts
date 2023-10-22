@@ -89,6 +89,12 @@ export class UsersService {
       this.calculateAge(updateUserDto.birthday);
     }
 
+    const linkRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+    if (updateUserDto.profileImage) {
+      if (!linkRegex.test(updateUserDto.profileImage))
+        delete updateUserDto.profileImage;
+    }
+
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       const email = await this.userModel.findOne({
         email: updateUserDto.email,
@@ -121,22 +127,37 @@ export class UsersService {
     const user = await this.findUser(id);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
+
+      const linkRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+      if (addCompanyDto.logo) {
+        if (!linkRegex.test(addCompanyDto.logo))
+          delete addCompanyDto.logo;
+      }
+
     user.company = {
       ...addCompanyDto,
-      logo: 'https://images.unsplash.com/photo-1639628735078-ed2f038a193e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
     };
     await user.save();
     return user.company;
   }
 
   async editCompanyDetails(id: string, updateCompanyDto: UpdateCompanyDto) {
+    console.log('updateCompanyDto', updateCompanyDto);
     const user = await this.findUser(id);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
-    user.company = {
-      ...user.company,
-      ...updateCompanyDto,
-    };
+      const linkRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+      if (updateCompanyDto.logo) {
+        console.log("hay logo")
+        if (!linkRegex.test(updateCompanyDto.logo)){
+          console.log("no es link")
+        console.log('updateCompanyDto.logo', updateCompanyDto.logo);
+          delete updateCompanyDto.logo;}
+      }
+
+    user.set({ company: updateCompanyDto });
+    console.log('user.company', user.company);
+    user.markModified('company');
     await user.save();
     return user.company;
   }

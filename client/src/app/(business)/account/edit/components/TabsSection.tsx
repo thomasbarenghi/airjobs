@@ -7,11 +7,11 @@ import Endpoints from '@/utils/constants/endpoints.const'
 
 const TabsSection = () => {
   const { data: session } = useSession()
-  const { data: loggedUser } = useSWR(
+  const { data: loggedUser, mutate } = useSWR(
     Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
   )
 
-  const items = tabItemsBuilder(loggedUser)
+  const items = tabItemsBuilder(loggedUser, mutate)
   return (
     <div className='flex flex-col gap-2'>
       <TabBar
