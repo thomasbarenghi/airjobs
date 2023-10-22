@@ -15,7 +15,7 @@ interface InputProps {
     register: UseFormRegister<any>
     validations: RegisterOptions
   }
-  defaultValue?: string
+  defaultValue?: string | number
 }
 
 const Input = ({
@@ -37,7 +37,7 @@ const Input = ({
       label={label}
       labelPlacement='outside'
       name={name}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue.toString()}
       autoComplete='off'
       classNames={{
         inputWrapper:

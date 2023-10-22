@@ -29,6 +29,7 @@ interface ButtonProps {
   spinnerPlacement?: 'start' | 'end'
   spinner?: React.ReactNode
   spinnerSize?: 'sm'
+  onPress?: () => void
 }
 
 const Button = ({
@@ -49,7 +50,8 @@ const Button = ({
   onClick = () => {},
   spinnerPlacement = 'end',
   spinnerSize = 'sm',
-  spinner = <Spinner color='current' size={spinnerSize} />
+  spinner = <Spinner color='current' size={spinnerSize} />,
+  onPress = () => {}
 }: ButtonProps) => (
   <ButtonUI
     as={href.length > 0 ? Link : 'button'}
@@ -62,7 +64,8 @@ const Button = ({
     fullWidth={fullWidth}
     isDisabled={isDisabled}
     className={`!text-sm font-semibold ${className} `}
-    onPress={onClick}
+    onPress={onPress}
+    onClick={onClick}
   >
     {startContent}
     {isLoading && spinnerPlacement === 'start' && spinner}

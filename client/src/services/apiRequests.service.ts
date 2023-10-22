@@ -1,12 +1,16 @@
 import { serverUrl } from '@/utils/constants/env.const'
 
 interface Response {
-  data: object
+  data: any
   error: boolean
   success: boolean
 }
 
-export const putRequest = async (url: string, data: object, headers?: object): Promise<Response> => {
+export const putRequest = async (
+  url: string,
+  data: object,
+  headers?: object
+): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'PUT',
     headers: {
@@ -24,7 +28,11 @@ export const putRequest = async (url: string, data: object, headers?: object): P
   }
 }
 
-export const postRequest = async (url: string, data: object = {}, headers?: object) => {
+export const postRequest = async (
+  url: string,
+  data: object = {},
+  headers?: object
+): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'POST',
     headers: {
@@ -41,7 +49,10 @@ export const postRequest = async (url: string, data: object = {}, headers?: obje
   }
 }
 
-export const deleteRequest = async (url: string, headers: object = {}): Promise<Response> => {
+export const deleteRequest = async (
+  url: string,
+  headers: object = {}
+): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'DELETE',
     headers: {
@@ -58,7 +69,10 @@ export const deleteRequest = async (url: string, headers: object = {}): Promise<
 }
 
 // Must be deprecated
-export const getRequest = async (url: string, headers: object = {}): Promise<Response> => {
+export const getRequest = async (
+  url: string,
+  headers: object = {}
+): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'GET',
     headers: {
@@ -74,7 +88,11 @@ export const getRequest = async (url: string, headers: object = {}): Promise<Res
   }
 }
 
-export const patchRequest = async (url: string, data: object, headers: object = {}): Promise<Response> => {
+export const patchRequest = async (
+  url: string,
+  data: object,
+  headers: object = {}
+): Promise<Response> => {
   const response = await fetch(`${serverUrl}${url}`, {
     method: 'PATCH',
     headers: {

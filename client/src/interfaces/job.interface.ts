@@ -1,16 +1,46 @@
-import type { CompanyInterface } from './company.interface'
+import type { UserInterface } from './user.interface'
 
 export interface JobInterface {
   title: string
   description: string
   country: string
-  seniority: 'Junior' | 'Mid' | 'Senior'
-  type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship' | 'Temporary'
-  location: 'Remote' | 'On-site' | 'Hybrid'
+  seniority: SeniorityEnum
+  type: TypeEnum
+  location: LocationEnum
   salary: number
-  currency: string
-  company: CompanyInterface
-  createdAt: Date
-  updatedAt: Date
+  currency: CurrencyEnum
+  owner: UserInterface
+  createdAt: string
+  updatedAt: string
   _id: string
+  active: boolean
+  applicants: ApplicantsEnum[]
+  maxApplicants: number
+  deadline: string
 }
+
+export interface ApplicantsEnum {
+  user: UserInterface
+  status: StatusEnum
+}
+
+export type StatusEnum =
+  | 'Under review'
+  | 'Interested company'
+  | 'Obtained'
+  | 'Rejected'
+
+export type LocationEnum = 'Remote' | 'On-site' | 'Hybrid'
+
+export type TypeEnum =
+  | 'Full-time'
+  | 'Part-time'
+  | 'Contract'
+  | 'Internship'
+  | 'Temporary'
+
+export type SeniorityEnum = 'Junior' | 'Mid' | 'Senior'
+
+export type CurrencyEnum = 'USD' | 'EUR' | 'INR'
+
+export type CountryEnum = 'United States' | 'India' | 'England'

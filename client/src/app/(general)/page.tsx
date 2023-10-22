@@ -1,12 +1,10 @@
-import { JobsFlex } from '@/components'
 import HeroSection from './components/HeroSection'
+import JobsSection from './components/JobsSection'
 
 const Home = () => (
   <>
     <HeroSection />
-    <section>
-      <JobsFlex jobs={[]} />
-    </section>
+    <JobsSection />
   </>
 )
 

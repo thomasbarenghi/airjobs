@@ -47,22 +47,41 @@ export class JobsService {
     return job;
   }
 
-  async findAll() {
-    return await this.jobModel.find().populate({
-      path: 'owner',
-      model: 'User',
-    });
+  async findAll(country: string) {
+    return await this.jobModel
+      .find({
+        ...(country && { country }),
+      })
+      .populate({
+        path: 'owner',
+        model: 'User',
+      });
   }
 
   async findOne(id: string) {
-    return await this.jobModel.findById(id).populate({
-      path: 'owner',
-      model: 'User',
-    });
+    return await this.jobModel.findById(id).populate([
+      {
+        path: 'owner',
+        model: 'User',
+      },
+      { path: 'applicants.user', model: 'User' },
+    ]);
   }
 
   async update(id: string, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
+    const job = await this.jobModel.findById(id);
+    if (!job) throw new NotFoundException('Job not found');
+    const user = await this.findUser(updateJobDto.ownerId);
+
+    if (user.role !== 'company')
+      throw new ConflictException('User is not a company');
+
+    if (user._id.toString() !== job.owner.toString())
+      throw new ConflictException('User is not the owner of the job');
+    delete updateJobDto.ownerId;
+    job.set(updateJobDto);
+    await job.save();
+    return job;
   }
 
   async remove(id: string) {

@@ -81,7 +81,7 @@ export class Job {
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   owner?: ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: true })
   @IsNotEmpty({ message: 'active is required' })
   @IsBoolean()
   active: boolean;

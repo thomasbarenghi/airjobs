@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddCompanyDto } from './dto/add-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { EditPasswordDto } from './dto/edit-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,9 +34,14 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @Put(':id/edit-password')
+  editPassword(@Param('id') id: string, @Body() editPasswordDto: EditPasswordDto) {
+    return this.usersService.editPassword(id, editPasswordDto);
   }
 
   @Delete(':id')
@@ -34,13 +49,19 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post('add-company-details')
-  addCompanyDetails(@Body() addCompanyDto: AddCompanyDto) {
-    return this.usersService.addCompanyDetails(addCompanyDto);
+  @Post(':id/add-company-details')
+  addCompanyDetails(
+    @Param('id') id: string,
+    @Body() addCompanyDto: AddCompanyDto,
+  ) {
+    return this.usersService.addCompanyDetails(id, addCompanyDto);
   }
 
-  @Put('edit-company-details')
-  editCompanyDetails(@Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.usersService.editCompanyDetails(updateCompanyDto);
+  @Put(':id/edit-company-details')
+  editCompanyDetails(
+    @Param('id') id: string,
+    @Body() updateCompanyDto: UpdateCompanyDto,
+  ) {
+    return this.usersService.editCompanyDetails(id, updateCompanyDto);
   }
 }
