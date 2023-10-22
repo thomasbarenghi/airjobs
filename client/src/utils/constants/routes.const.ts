@@ -6,7 +6,11 @@ const Routes = {
   SINGIN: '/signin',
   SINGUP: '/signup',
   INDIVIDUAL_JOB: (id: string) => `/job/${id}`,
-  ACCOUNT: '/account'
+  ACCOUNT: '/account',
+  ADD_JOB: '/job/create-job',
+  EDIT_ACCOUNT: '/account/edit',
+  EDIT_JOB: (id: string) => `/job/edit-job/${id}`,
+  APPLICANTS: (id: string) => `/job/${id}/applicants/`
 }
 
 export default Routes

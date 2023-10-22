@@ -12,7 +12,7 @@ interface JobItemProps {
 const JobItem = ({ job }: JobItemProps) => (
   <Link href={Routes.INDIVIDUAL_JOB(job?._id)}>
     <div className='flex w-full py-5 px-10 justify-between items-center cursor-pointer rounded-[30px] border border-violet-100'>
-      <div className='flex gap-4 lg:w-[40%] xl:w-[50%] 2xl:w-[60%] '>
+      <div className='flex gap-4 lg:w-[40%] xl:w-[45%] 2xl:w-[60%] '>
         <Image
           src={job?.owner?.company?.logo}
           alt={job?.owner?.company?.name}

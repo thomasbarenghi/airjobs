@@ -75,8 +75,8 @@ const LoginForm = () => {
         <Input
           type={visibility ? 'text' : 'password'}
           name='password'
-          label='Contraseña'
-          placeholder='Contraseña'
+          label='Password'
+          placeholder='Password'
           hookForm={{
             register,
             validations: {

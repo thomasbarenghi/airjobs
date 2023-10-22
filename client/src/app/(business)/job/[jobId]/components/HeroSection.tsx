@@ -8,6 +8,8 @@ import Image from 'next/image'
 import useSWR from 'swr'
 import ModalApply from './ModalApply'
 import ModalUnapply from './ModalUnapply'
+import ModalStatus from './ModalStatus'
+import Routes from '@/utils/constants/routes.const'
 
 interface Props {
   jobId: string
@@ -20,15 +22,23 @@ const HeroSection = ({ jobId }: Props) => {
     Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
   )
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen: isOpenStatus, onOpenChange: onOpenChangeStatus } =
+    useDisclosure()
   const {
     isOpen: isOpenUnapply,
     onOpen: onOpenUnapply,
     onOpenChange: onOpenChangeUnapply
   } = useDisclosure()
 
+  const isOwner = data?.owner?._id === loggedUser?._id
+
   const hasApplied = data?.applicants?.some(
     (job: ApplicantsEnum) => job?.user?._id === loggedUser?._id
   )
+
+  const applicantStatus = data?.applicants?.find(
+    (applicant: ApplicantsEnum) => applicant.user._id === loggedUser?._id
+  )?.status
 
   console.log('hasApplied', hasApplied, data?.applicants)
 
@@ -59,13 +69,37 @@ const HeroSection = ({ jobId }: Props) => {
           </div>
           <div className='flex justify-between items-center gap-10'>
             <JobChips job={data} />
-            {loggedUser?.role === 'aspirant' && (
-              <Button
-                onPress={hasApplied ? onOpenUnapply : onOpen}
-                title={hasApplied ? 'Unapply' : 'Apply Now'}
-                color={hasApplied ? 'danger' : 'primary'}
-              />
-            )}
+            <div className='flex gap-2'>
+              {loggedUser?.role === 'aspirant' &&
+                applicantStatus !== 'Obtained' &&
+                applicantStatus !== 'Rejected' &&
+                new Date(data.deadline).getTime() > new Date().getTime() && (
+                  <Button
+                    onPress={hasApplied ? onOpenUnapply : onOpen}
+                    title={hasApplied ? 'Unapply' : 'Apply Now'}
+                    color={hasApplied ? 'danger' : 'primary'}
+                  />
+              )}
+              {hasApplied && (
+                <Button
+                  onPress={onOpenChangeStatus}
+                  title='View status'
+                  color='primary'
+                />
+              )}
+              {loggedUser?.role === 'company' && isOwner && (
+                <div className='flex gap-2'>
+                  <Button title='Edit Job' color='primary' href={Routes.EDIT_JOB(jobId)} />
+                  <Button
+                    onPress={() => {}}
+                    title='View Applicants'
+                    color='primary'
+                    variant='flat'
+                    href={Routes.APPLICANTS(jobId)}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className='flex flex-col gap-5'>
@@ -76,14 +110,45 @@ const HeroSection = ({ jobId }: Props) => {
           >
             {data?.description}
           </TextElement>
-          <TextElement
-            as='p'
-            type='base'
-            className='!font-semibold text-gray-900'
-          >
-            Salary: {data?.currency}
-            {data?.salary}
-          </TextElement>
+          <div className='flex flex-col gap-1'>
+            <TextElement
+              as='p'
+              type='base'
+              className='!font-light text-gray-900'
+            >
+              Salary:{' '}
+              <b className='font-semibold'>
+                {data?.currency}
+                {data?.salary}
+              </b>
+            </TextElement>
+            <TextElement
+              as='p'
+              type='base'
+              className='!font-light text-gray-900'
+            >
+              You can apply until:{' '}
+              <b className='font-semibold'>
+                {new Date(data?.deadline).toLocaleDateString()}
+              </b>
+            </TextElement>
+            <TextElement
+              as='p'
+              type='base'
+              className='!font-light text-gray-900'
+            >
+              The maximum number of applicants is: {data?.maxApplicants}, and
+              has {data?.applicants?.length} applicants
+            </TextElement>
+            <TextElement
+              as='p'
+              type='base'
+              className='!font-light text-gray-900'
+            >
+              The country of the job is:{' '}
+              <b className='font-semibold'>{data?.country}</b>
+            </TextElement>
+          </div>
         </div>
       </section>
       <ModalApply
@@ -99,6 +164,13 @@ const HeroSection = ({ jobId }: Props) => {
         job={data}
         loggedUser={loggedUser ?? {}}
         mutate={mutate}
+      />
+      <ModalStatus
+        applicantStatus={applicantStatus}
+        isOpen={isOpenStatus}
+        onOpenChange={onOpenChangeStatus}
+        job={data}
+        loggedUser={loggedUser ?? {}}
       />
     </>
   )

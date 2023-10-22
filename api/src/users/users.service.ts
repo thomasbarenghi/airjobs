@@ -10,10 +10,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
-import { encryptPassword } from 'src/utils/bcrypt.utils';
+import { comparePasswords, encryptPassword } from 'src/utils/bcrypt.utils';
 import { AddCompanyDto } from './dto/add-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { populateUser } from './lib/populate-user.lib';
+import { EditPasswordDto } from './dto/edit-password.dto';
 
 @Injectable()
 export class UsersService {
@@ -72,7 +73,9 @@ export class UsersService {
   async findOne(id: string) {
     const isEmail = id.includes('@');
     if (isEmail) {
-      const user = await this.userModel.findOne({ email: id }).populate(populateUser)
+      const user = await this.userModel
+        .findOne({ email: id })
+        .populate(populateUser);
       if (!user) throw new NotFoundException('User not found');
       return user;
     }
@@ -80,7 +83,31 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    const user = await this.findUser(id);
+
+    if (updateUserDto.birthday) {
+      this.calculateAge(updateUserDto.birthday);
+    }
+
+    if (updateUserDto.email && updateUserDto.email !== user.email) {
+      const email = await this.userModel.findOne({
+        email: updateUserDto.email,
+      });
+
+      if (email) throw new ConflictException('Email already exists');
+    }
+
+    if (updateUserDto.username && updateUserDto.username !== user.username) {
+      const username = await this.userModel.findOne({
+        username: updateUserDto.username,
+      });
+
+      if (username) throw new ConflictException('Username already exists');
+    }
+
+    user.set(updateUserDto);
+    await user.save();
+    return user;
   }
 
   async remove(id: string) {
@@ -90,11 +117,10 @@ export class UsersService {
     });
   }
 
-  async addCompanyDetails(addCompanyDto: AddCompanyDto) {
-    const user = await this.findUser(addCompanyDto.userId);
+  async addCompanyDetails(id: string, addCompanyDto: AddCompanyDto) {
+    const user = await this.findUser(id);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
-    delete addCompanyDto.userId;
     user.company = {
       ...addCompanyDto,
       logo: 'https://images.unsplash.com/photo-1639628735078-ed2f038a193e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
@@ -103,16 +129,23 @@ export class UsersService {
     return user.company;
   }
 
-  async editCompanyDetails(updateCompanyDto: UpdateCompanyDto) {
-    const user = await this.findUser(updateCompanyDto.userId);
+  async editCompanyDetails(id: string, updateCompanyDto: UpdateCompanyDto) {
+    const user = await this.findUser(id);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
-    delete updateCompanyDto.userId;
     user.company = {
       ...user.company,
       ...updateCompanyDto,
     };
     await user.save();
     return user.company;
+  }
+
+  async editPassword(id: string, editPasswordDto: EditPasswordDto) {
+    const user = await this.findUser(id);
+    comparePasswords(editPasswordDto.oldPassword, user.password);
+    user.password = await encryptPassword(editPasswordDto.newPassword);
+    await user.save();
+    return user;
   }
 }
