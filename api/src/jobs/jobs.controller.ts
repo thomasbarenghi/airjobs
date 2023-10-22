@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { UpdateApplicantDto } from './dto/update-applicant.dto';
 
 @Controller('jobs')
 export class JobsController {
@@ -19,16 +20,34 @@ export class JobsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
+    return this.jobsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
+    return this.jobsService.update(id, updateJobDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
+    return this.jobsService.remove(id);
+  }
+
+  @Post(':id/apply')
+  apply(@Param('id') id: string, @Body() body: { userId: string }) {
+    return this.jobsService.apply(id, body.userId);
+  }
+
+  @Post(':id/unapply')
+  unapply(@Param('id') id: string, @Body() body: { userId: string }) {
+    return this.jobsService.unapply(id, body.userId);
+  }
+
+  @Post(':id/update-applicant')
+  updateApplicant(
+    @Param('id') id: string,
+    @Body() updateApplicantDto: UpdateApplicantDto,
+  ) {
+    return this.jobsService.updateApplicant(id, updateApplicantDto);
   }
 }

@@ -1,42 +1,42 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
-import { IsNotEmpty, IsEmail, Matches } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsEmail,
+  Matches,
+  IsString,
+  IsDateString,
+} from 'class-validator';
 
 export type SessionDocument = HydratedDocument<User>;
 
-class AppliedJob {
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'Job' })
-  job?: ObjectId;
-
-  @Prop({ required: true })
-  status?: "Under review" | "Interested company" | "Obtained" | "Rejected";
-}
-
 class JobsEnum {
-constructor() {
+  constructor() {
     (this.created = []), (this.applied = []);
-}
+  }
 
-@Prop({
+  @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Jobs' }],
     default: [],
-})
-created?: ObjectId[];
+  })
+  created?: ObjectId[];
 
-@Prop({
-    type: [AppliedJob],
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Jobs' }],
     default: [],
-})
-applied: AppliedJob[];
+  })
+  applied: ObjectId[];
 }
 
 export class Company {
   @Prop({ required: true })
   @IsNotEmpty({ message: 'name is empty' })
+  @IsString()
   name: string;
 
   @Prop({ required: true })
   @IsNotEmpty({ message: 'description is empty' })
+  @IsString()
   description: string;
 
   @Prop({ required: true })
@@ -52,6 +52,7 @@ export class Company {
 
   @Prop({ required: true })
   @IsNotEmpty({ message: 'email is empty' })
+  @IsEmail()
   email: string;
 }
 
@@ -61,14 +62,17 @@ export class User {
 
   @Prop({ required: true })
   @IsNotEmpty({ message: 'firstName is required' })
+  @IsString()
   firstName: string;
 
   @Prop({ required: true })
   @IsNotEmpty({ message: 'lastName is required' })
+  @IsString()
   lastName: string;
 
   @Prop({ required: true })
   @IsNotEmpty({ message: 'birthday is required' })
+  @IsDateString()
   birthday: Date;
 
   @Prop({ required: true, unique: true })
@@ -100,7 +104,6 @@ export class User {
 
   @Prop({ required: false, default: null, type: Company })
   company?: Company | null;
-  
 
   @Prop({
     type: JobsEnum,
