@@ -13,7 +13,7 @@ export const loginUser = async (email: string, password: string) => {
   const res = await postRequest(Endpoints.LOGIN, {
     email,
     password
-  })
+  }, false)
 
   return {
     data: res.data,

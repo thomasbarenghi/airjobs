@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -48,15 +47,11 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() profileImage: Express.Multer.File,
   ) {
-
-    if (profileImage) {
-      console.log('hay iamgen');
+    if (profileImage)
       updateUserDto.profileImage = await this.cloudinaryService.uploadImage(
         profileImage,
       );
-    }
- 
-    console.log('updateUserDto', updateUserDto);
+
     return await this.usersService.update(id, updateUserDto);
   }
 
@@ -80,12 +75,9 @@ export class UsersController {
     @Body() addCompanyDto: AddCompanyDto,
     @UploadedFile() logo: Express.Multer.File,
   ) {
-    if (logo) {
-      console.log('hay iamgen');
-      addCompanyDto.logo = await this.cloudinaryService.uploadImage(
-        logo,
-      );
-    }
+    if (logo)
+      addCompanyDto.logo = await this.cloudinaryService.uploadImage(logo);
+
     return this.usersService.addCompanyDetails(id, addCompanyDto);
   }
 
@@ -96,12 +88,10 @@ export class UsersController {
     @Body() updateCompanyDto: UpdateCompanyDto,
     @UploadedFile() logo: Express.Multer.File,
   ) {
-    if (logo) {
-      console.log('hay iamgen');
-      updateCompanyDto.logo = await this.cloudinaryService.uploadImage(
-        logo,
-      );
-    }
+    console.log('updateCompanyDto', updateCompanyDto);
+    if (logo)
+      updateCompanyDto.logo = await this.cloudinaryService.uploadImage(logo);
+
     return this.usersService.editCompanyDetails(id, updateCompanyDto);
   }
 }

@@ -30,9 +30,13 @@ const ModalUnapply = ({
 }: ModalUnapplyProps) => {
   const handleUnapply = async () => {
     try {
-      const { error } = await postRequest(Endpoints.UNAPPLY_JOB(job._id), {
-        userId: loggedUser?._id ?? ''
-      })
+      const { error } = await postRequest(
+        Endpoints.UNAPPLY_JOB(job._id),
+        {
+          userId: loggedUser?._id ?? ''
+        },
+        false
+      )
       if (error) {
         toast.error('Something went wrong, please try again later')
       }

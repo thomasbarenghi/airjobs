@@ -23,7 +23,8 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
     try {
       const { error } = await putRequest(
         Endpoints.EDIT_PASSWORD(loggedUser._id),
-        data
+        data,
+        false
       )
       if (error) {
         toast.error('Verify that your old password is correct')

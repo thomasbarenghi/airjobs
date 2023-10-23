@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
@@ -21,7 +20,10 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService, private readonly cloudinaryService: CloudinaryService) {}
+  constructor(
+    private readonly jobsService: JobsService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post()
   create(@Body() createJobDto: CreateJobDto) {
@@ -39,7 +41,8 @@ export class JobsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
+  update(@Param('id') id: string, @Body() updateJobDto: any) {
+    console.log('update', id, updateJobDto);
     return this.jobsService.update(id, updateJobDto);
   }
 
@@ -55,10 +58,9 @@ export class JobsController {
     @Body() applyJobDto: ApplyJobDto,
     @UploadedFile() resume: Express.Multer.File,
   ) {
-    if (resume) {
+    if (resume)
       applyJobDto.resume = await this.cloudinaryService.uploadFile(resume);
-    }
-    console.log(applyJobDto);
+
     return await this.jobsService.apply(id, applyJobDto);
   }
 

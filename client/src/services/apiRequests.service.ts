@@ -1,4 +1,5 @@
 import { serverUrl } from '@/utils/constants/env.const'
+import axios from 'axios'
 
 interface Response {
   data: any
@@ -9,43 +10,42 @@ interface Response {
 export const putRequest = async (
   url: string,
   data: any,
+  withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    body: data,
-    method: 'PUT',
+  console.log('putRequest', withFiles)
+  const response = await axios.put(`${serverUrl}${url}`, data, {
     headers: {
-      ...headers
+      ...headers,
+      'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
     }
   })
 
   console.log('putRequest', response)
   return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+    data: response.data,
+    error: response.status !== 200,
+    success: response.status === 200
   }
 }
 
 export const postRequest = async (
   url: string,
   data: object = {},
-  contentType: string = 'application/json',
+  withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'POST',
+  const response = await axios.post(`${serverUrl}${url}`, data, {
     headers: {
-      'Content-Type': contentType,
-      ...headers
-    },
-    body: JSON.stringify(data)
+      ...headers,
+      'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
+    }
   })
 
   return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+    data: response.data,
+    error: response.status !== 200,
+    success: response.status === 200
   }
 }
 

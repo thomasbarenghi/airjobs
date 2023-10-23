@@ -33,7 +33,8 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
       console.log(formData)
       const { error } = await putRequest(
         Endpoints.EDIT_COMPANY(loggedUser._id),
-        formData
+        formData,
+        true
       )
       if (error) {
         toast.error("Couldn't update your info")

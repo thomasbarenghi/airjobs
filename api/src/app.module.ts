@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
@@ -19,7 +17,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AuthModule,
     CloudinaryModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, UuidService, CloudinaryService],
+  providers: [UuidService, CloudinaryService],
 })
 export class AppModule {}

@@ -4,7 +4,11 @@ import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
 
 export const editJob = async (formData: any, router: any, jobId: string) => {
-  const { error } = await putRequest(Endpoints.EDIT_JOB(jobId), formData)
+  const { error } = await putRequest(
+    Endpoints.EDIT_JOB(jobId),
+    JSON.stringify(formData),
+    false
+  )
 
   if (error) {
     toast.error("Couldn't edit job")

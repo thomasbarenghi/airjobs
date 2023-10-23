@@ -28,19 +28,19 @@ class JobsEnum {
   applied: ObjectId[];
 }
 
-@Schema({_id: false})
+@Schema({ _id: false })
 export class Company {
-  @Prop({ required: true })
+  @Prop({ required: true, default: '' })
   @IsNotEmpty({ message: 'name is empty' })
   @IsString()
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: '' })
   @IsNotEmpty({ message: 'description is empty' })
   @IsString()
   description: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: '' })
   @IsNotEmpty({ message: 'website is empty' })
   website: string;
 

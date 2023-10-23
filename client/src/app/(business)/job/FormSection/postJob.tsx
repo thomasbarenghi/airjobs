@@ -4,7 +4,7 @@ import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
 
 export const postJob = async (formData: any, router: any) => {
-  const { error } = await postRequest(Endpoints.CREATE_JOB, formData)
+  const { error } = await postRequest(Endpoints.CREATE_JOB, formData, false)
 
   if (error) {
     toast.error("Couldn't create job")

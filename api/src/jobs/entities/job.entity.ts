@@ -11,6 +11,7 @@ import {
 
 export type SessionDocument = HydratedDocument<Job>;
 
+@Schema({ id: false })
 class ApplicantsEnum {
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: ObjectId;

@@ -35,7 +35,8 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
 
       const { error } = await putRequest(
         Endpoints.EDIT_USER(loggedUser._id),
-        form
+        form,
+        true
       )
       if (error) {
         toast.error("Couldn't update your info")
