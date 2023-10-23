@@ -23,7 +23,7 @@ const Header = ({ theme = 'transparent', layout = 'full' }: Props) => {
   const logo = '/icon/logo-blue.svg'
   const bgColor = isScrolled ? 'bg-[#FFFFFFF1]' : 'bg-transparent'
   const blur = isScrolled
-  const stylesNavbar = 'section-padding-1 fixed py-6' + bgColor
+  const stylesNavbar = 'section-padding-x-1 fixed py-6' + bgColor
 
   const textColor = isScrolled
     ? 'text-black'

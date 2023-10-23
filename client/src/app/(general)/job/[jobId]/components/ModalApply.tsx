@@ -48,7 +48,8 @@ const ModalApply = ({
       console.log(formData)
       const { error } = await postRequest(
         Endpoints.APPLY_JOB(job._id),
-        formData
+        formData,
+        false
       )
       if (error) {
         toast.error('Something went wrong, please try again later')
