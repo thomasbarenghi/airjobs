@@ -69,7 +69,7 @@ export class JobsController {
     return this.jobsService.unapply(id, body.userId);
   }
 
-  @Post(':id/update-applicant')
+  @Put(':id/update-applicant')
   updateApplicant(
     @Param('id') id: string,
     @Body() updateApplicantDto: UpdateApplicantDto,

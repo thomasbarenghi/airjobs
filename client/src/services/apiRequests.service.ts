@@ -1,5 +1,5 @@
 import { serverUrl } from '@/utils/constants/env.const'
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 
 interface Response {
   data: any
@@ -13,19 +13,31 @@ export const putRequest = async (
   withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  console.log('putRequest', withFiles)
-  const response = await axios.put(`${serverUrl}${url}`, data, {
-    headers: {
-      ...headers,
-      'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
-    }
-  })
+  try {
+    const response: AxiosResponse = await axios.put(
+      `${serverUrl}${url}`,
+      data,
+      {
+        headers: {
+          ...headers,
+          'Content-Type': !withFiles
+            ? 'application/json'
+            : 'multipart/form-data'
+        }
+      }
+    )
 
-  console.log('putRequest', response)
-  return {
-    data: response.data,
-    error: response.status !== 200 && response.status !== 201,
-    success: response.status === 200
+    return {
+      data: response.data,
+      error: false,
+      success: true
+    }
+  } catch (error) {
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
 
@@ -35,17 +47,31 @@ export const postRequest = async (
   withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  const response = await axios.post(`${serverUrl}${url}`, data, {
-    headers: {
-      ...headers,
-      'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
-    }
-  })
+  try {
+    const response: AxiosResponse = await axios.post(
+      `${serverUrl}${url}`,
+      data,
+      {
+        headers: {
+          ...headers,
+          'Content-Type': !withFiles
+            ? 'application/json'
+            : 'multipart/form-data'
+        }
+      }
+    )
 
-  return {
-    data: response.data,
-    error: response.status !== 200 && response.status !== 201,
-    success: response.status === (200 || 201)
+    return {
+      data: response.data,
+      error: false,
+      success: true
+    }
+  } catch (error) {
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
 

@@ -12,7 +12,7 @@ const Manager = async () => {
   )
 
   const handleVisility = () => {
-    if (loggedUser?.company !== null) {
+    if (loggedUser?.company !== null && loggedUser?.role === 'company') {
       redirect(Routes.ACCOUNT)
     }
   }

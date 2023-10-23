@@ -1,6 +1,6 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { Job } from './entities/job.entity';
+import { Document, Model } from 'mongoose';
+import { Job, JobDocument } from './entities/job.entity';
 import { User } from 'src/users/entities/user.entity';
 
 export const verifyIsCompany = (user) => {
@@ -17,10 +17,13 @@ export const verifyIsAspirant = (user: User) => {
   return isApplicant;
 };
 
-export const verifyHasApplied = (user: User, job: Job, exception: boolean) => {
-  const hasApplied = job.applicants.find(
-    (applicant) => applicant.user.toString() === user._id.toString(),
+export const verifyHasApplied = (user, job, exception: boolean) => {
+  const hasApplied = Boolean(
+    job.applicants.find(
+      (applicant) => applicant.user._id.toString() === user._id.toString(),
+    ),
   );
+
   if (!hasApplied && exception)
     throw new ConflictException('User has not applied');
 
@@ -41,7 +44,10 @@ export const verifyIsOwner = (user, job) => {
   return isOwner;
 };
 
-export const findJob = async (id: string, jobModel: Model<Job>) => {
+export const findJob = async (
+  id: string,
+  jobModel: Model<Job>,
+): Promise<JobDocument> => {
   const job = await jobModel.findById(id).populate([
     {
       path: 'owner',

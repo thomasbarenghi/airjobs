@@ -41,6 +41,7 @@ const ModalUnapply = ({
         toast.error('Something went wrong, please try again later')
       }
       await mutate()
+      toast.success('You have unapplied to this job')
     } catch (error) {
       console.error(error)
     }

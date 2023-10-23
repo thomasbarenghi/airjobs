@@ -32,7 +32,8 @@ const ModalApply = ({
   const {
     register,
     formState: { errors, isSubmitting },
-    handleSubmit
+    handleSubmit,
+    getValues
   } = useForm<any>({
     mode: 'onChange'
   })
@@ -49,11 +50,14 @@ const ModalApply = ({
       const { error } = await postRequest(
         Endpoints.APPLY_JOB(job._id),
         formData,
-        false
+        true
       )
       if (error) {
         toast.error('Something went wrong, please try again later')
+        return
       }
+
+      toast.success('You have applied to this job')
       await mutate()
     } catch (error) {
       console.error(error)
@@ -62,9 +66,9 @@ const ModalApply = ({
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
-      <form onSubmit={handleSubmit(handleApply)}>
-        <ModalContent>
-          {(onClose) => (
+      <ModalContent>
+        {(onClose) => (
+          <form onSubmit={handleSubmit(handleApply)}>
             <>
               <ModalHeader className='flex flex-col gap-1'>
                 Apply to {job?.title}
@@ -111,19 +115,22 @@ const ModalApply = ({
                 </Button>
                 <Button
                   color='primary'
-                  onPress={async () => {
-                    onClose()
-                  }}
                   isLoading={isSubmitting}
                   type='submit'
+                  onPress={
+                    getValues()?.resume?.length <= 0 ||
+                    Object.keys(errors).length > 0
+                      ? undefined
+                      : onClose
+                  }
                 >
                   Apply Now
                 </Button>
               </ModalFooter>
             </>
-          )}
-        </ModalContent>
-      </form>
+          </form>
+        )}
+      </ModalContent>
     </Modal>
   )
 }

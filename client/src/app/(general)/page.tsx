@@ -1,11 +1,5 @@
-import HeroSection from './_components/HeroSection'
-import JobsSection from './_components/JobsSection'
+import Content from './_components/Content'
 
-const Home = () => (
-  <>
-    <HeroSection />
-    <JobsSection />
-  </>
-)
+const Home = () => <Content />
 
 export default Home

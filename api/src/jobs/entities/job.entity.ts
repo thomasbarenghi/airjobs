@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { Document, HydratedDocument, Model, ObjectId, PopulatedDoc, Types } from 'mongoose';
 import {
   IsNotEmpty,
   Matches,
@@ -8,13 +8,14 @@ import {
   IsBoolean,
   IsDateString,
 } from 'class-validator';
+import { User } from 'src/users/entities/user.entity';
 
-export type SessionDocument = HydratedDocument<Job>;
+export type JobDocument = HydratedDocument<Job>;
 
 @Schema({ id: false })
 class ApplicantsEnum {
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: ObjectId;
+  user: PopulatedDoc<User & Document>;
 
   @Prop({ required: true, default: 'Under review' })
   @IsNotEmpty({ message: 'status is required' })
@@ -28,6 +29,9 @@ class ApplicantsEnum {
   @IsNotEmpty({ message: 'resume is required' })
   @IsString()
   resume: string;
+
+  @Prop({ required: true })
+  createdAt: Date;
 }
 
 @Schema({ timestamps: true })
@@ -85,7 +89,7 @@ export class Job {
   currency: string;
 
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  owner?: ObjectId;
+  owner?: PopulatedDoc<User & Document>;;
 
   @Prop({ required: true, default: true })
   @IsNotEmpty({ message: 'active is required' })

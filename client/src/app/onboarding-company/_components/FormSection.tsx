@@ -46,6 +46,7 @@ const FormSection = () => {
       }
       await mutate()
       router.push(Routes.ACCOUNT)
+      toast.success('Company created successfully')
     } catch (error) {
       console.error(error)
     }

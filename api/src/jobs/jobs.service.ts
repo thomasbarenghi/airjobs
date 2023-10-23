@@ -20,6 +20,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
 import { ApplyJobDto } from './dto/apply-job.dto';
 import { findUser, removeJobFromUser } from 'src/users/utils';
+import { validateUrl } from 'src/utils/validate-url.utils';
 
 @Injectable()
 export class JobsService {
@@ -70,16 +71,21 @@ export class JobsService {
 
   async remove(id: string) {
     const job = await findJob(id, this.jobModel);
-    await removeJobFromUser(job.owner.toString(), id, this.userModel);
+    await removeJobFromUser(job.owner._id.toString(), id, this.userModel);
 
     for (const applicant of job.applicants) {
-      await removeJobFromUser(applicant.user.toString(), id, this.userModel);
+      await removeJobFromUser(
+        applicant.user._id.toString(),
+        id,
+        this.userModel,
+      );
     }
 
     return await this.jobModel.findByIdAndDelete(id);
   }
 
   async apply(id: string, applyJobDto: ApplyJobDto) {
+    await validateUrl(applyJobDto.resume);
     const user = await findUser(applyJobDto.userId, this.userModel);
     await verifyIsAspirant(user);
     const job = await findJob(id, this.jobModel);
@@ -94,6 +100,7 @@ export class JobsService {
       user: user._id,
       status: 'Under review',
       resume: applyJobDto.resume,
+      createdAt: new Date(),
     });
 
     await job.save();
@@ -111,25 +118,28 @@ export class JobsService {
     await removeJobFromUser(userId, id, this.userModel);
 
     job.applicants = job.applicants.filter(
-      (applicant) => applicant.user.toString() !== userId,
+      (applicant) => applicant.user._id.toString() !== userId,
     );
-
-    return await job.save();
+    console.log(job.applicants);
+    job.markModified('applicants');
+    await job.save();
+    return job;
   }
 
   async updateApplicant(id: string, updateApplicantDto: UpdateApplicantDto) {
     const { userId, status } = updateApplicantDto;
     const user = await findUser(userId, this.userModel);
-    verifyIsCompany(user);
+    verifyIsAspirant(user);
     const job = await findJob(id, this.jobModel);
     verifyHasApplied(user, job, true);
 
     const applicant = job.applicants.find(
-      (applicant) => applicant.user.toString() === userId,
+      (applicant) => applicant.user._id.toString() === userId,
     );
     if (!applicant) throw new NotFoundException('Applicant not found');
     applicant.status = status;
-
-    return await job.save();
+    job.markModified('applicants');
+    await job.save();
+    return job;
   }
 }

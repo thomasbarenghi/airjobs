@@ -15,7 +15,8 @@ const Endpoints = {
   EDIT_PASSWORD: (id: string) => `/api/users/${id}/edit-password`,
   EDIT_JOB: (id: string) => `/api/jobs/${id}`,
   DELETE_JOB: (id: string) => `/api/jobs/${id}`,
-  ADD_COMPANY: (id: string) => `/api/users/${id}/add-company-details`
+  ADD_COMPANY: (id: string) => `/api/users/${id}/add-company-details`,
+  UPDATE_APPLICANT: (id: string) => `/api/jobs/${id}/update-applicant`
 }
 
 export default Endpoints

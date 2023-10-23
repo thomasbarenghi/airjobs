@@ -10,6 +10,7 @@ import ModalApply from './ModalApply'
 import ModalUnapply from './ModalUnapply'
 import ModalStatus from './ModalStatus'
 import Routes from '@/utils/constants/routes.const'
+import Link from 'next/link'
 
 interface Props {
   jobId: string
@@ -46,27 +47,29 @@ const HeroSection = ({ jobId }: Props) => {
     <>
       <section className='w-[85%] 2xl:container flex flex-col gap-10 section-padding-x-1'>
         <div className='w-full flex justify-between '>
-          <div className='flex items-center gap-5 flex-grow'>
-            <Image
-              width={80}
-              height={80}
-              src={data?.owner?.company?.logo ?? '/image/userPlaceholder.png'}
-              alt="Company's logo"
-              className='object-cover rounded-lg aspect-square'
-            />
-            <div className='flex flex-col justify-center '>
-              <TextElement
-                as='p'
-                type='t3'
-                className='!font-semibold leading-[24px] '
-              >
-                {data?.title}
-              </TextElement>
-              <TextElement as='p' type='base' className='!font-light'>
-                {data?.owner?.company?.name}
-              </TextElement>
+          <Link href={Routes.COMPANY(data?.owner?._id ?? '')}>
+            <div className='flex items-center gap-5 flex-grow'>
+              <Image
+                width={80}
+                height={80}
+                src={data?.owner?.company?.logo ?? '/image/userPlaceholder.png'}
+                alt="Company's logo"
+                className='object-cover rounded-lg aspect-square'
+              />
+              <div className='flex flex-col justify-center '>
+                <TextElement
+                  as='p'
+                  type='t3'
+                  className='!font-semibold leading-[24px] '
+                >
+                  {data?.title}
+                </TextElement>
+                <TextElement as='p' type='base' className='!font-light'>
+                  {data?.owner?.company?.name}
+                </TextElement>
+              </div>
             </div>
-          </div>
+          </Link>
           <div className='flex justify-between items-center gap-10'>
             <JobChips job={data} />
             <div className='flex gap-2'>
@@ -89,7 +92,11 @@ const HeroSection = ({ jobId }: Props) => {
               )}
               {loggedUser?.role === 'company' && isOwner && (
                 <div className='flex gap-2'>
-                  <Button title='Edit Job' color='primary' href={Routes.EDIT_JOB(jobId)} />
+                  <Button
+                    title='Edit Job'
+                    color='primary'
+                    href={Routes.EDIT_JOB(jobId)}
+                  />
                   <Button
                     onPress={() => {}}
                     title='View Applicants'

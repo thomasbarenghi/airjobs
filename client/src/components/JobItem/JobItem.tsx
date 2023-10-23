@@ -2,7 +2,7 @@ import Image from 'next/image'
 import type { JobInterface } from '@/interfaces/job.interface'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
-import { formatTimeAgo } from './formatTimeAgo'
+import { formatTimeAgo } from '@/utils/functions/formatTimeAgo'
 import { JobChips, TextElement } from '@/components'
 
 interface JobItemProps {

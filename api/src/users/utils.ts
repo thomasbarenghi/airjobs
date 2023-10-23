@@ -4,9 +4,10 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Document, Model, PopulatedDoc } from 'mongoose';
 import { User } from './entities/user.entity';
 import { populateUser } from './lib/populate-user.lib';
+import { ObjectId } from 'mongodb';
 
 export const calculateAge = (birthday: Date) => {
   const isAdult =
