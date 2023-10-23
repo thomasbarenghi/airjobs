@@ -41,10 +41,11 @@ export class JobsService {
     return job;
   }
 
-  async findAll(country: string) {
+  async findAll(country: string, title: string) {
     return await this.jobModel
       .find({
         ...(country && { country }),
+        ...(title && { title: { $regex: title, $options: 'i' } }),
       })
       .populate({
         path: 'owner',
@@ -86,7 +87,8 @@ export class JobsService {
     if (job.maxApplicants === job.applicants.length)
       throw new ConflictException('Job is full');
 
-    await verifyHasApplied(user, job);
+    const hasApplied = await verifyHasApplied(user, job, false);
+    if (hasApplied) throw new ConflictException('User has already applied');
 
     job.applicants.push({
       user: user._id,
@@ -105,7 +107,7 @@ export class JobsService {
     const user = await findUser(userId, this.userModel);
     await verifyIsAspirant(user);
     const job = await findJob(id, this.jobModel);
-    await verifyHasApplied(user, job);
+    verifyHasApplied(user, job, true);
     await removeJobFromUser(userId, id, this.userModel);
 
     job.applicants = job.applicants.filter(
@@ -120,7 +122,7 @@ export class JobsService {
     const user = await findUser(userId, this.userModel);
     verifyIsCompany(user);
     const job = await findJob(id, this.jobModel);
-    verifyHasApplied(user, job);
+    verifyHasApplied(user, job, true);
 
     const applicant = job.applicants.find(
       (applicant) => applicant.user.toString() === userId,

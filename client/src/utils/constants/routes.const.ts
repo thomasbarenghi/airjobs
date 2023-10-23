@@ -10,7 +10,8 @@ const Routes = {
   ADD_JOB: '/job/create-job',
   EDIT_ACCOUNT: '/account/edit',
   EDIT_JOB: (id: string) => `/job/edit-job/${id}`,
-  APPLICANTS: (id: string) => `/job/${id}/applicants/`
+  APPLICANTS: (id: string) => `/job/${id}/applicants/`,
+  ONBOARDING_COMPANY: '/onboarding-company'
 }
 
 export default Routes

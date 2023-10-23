@@ -17,9 +17,12 @@ export const verifyIsAspirant = (user: User) => {
   return isApplicant;
 };
 
-export const verifyHasApplied = (user: User, job: Job) => {
-   const hasApplied = job.applicants.find((applicant) => applicant.user.toString() === user._id.toString());
-  if (!hasApplied) throw new ConflictException('User has not applied');
+export const verifyHasApplied = (user: User, job: Job, exception: boolean) => {
+  const hasApplied = job.applicants.find(
+    (applicant) => applicant.user.toString() === user._id.toString(),
+  );
+  if (!hasApplied && exception)
+    throw new ConflictException('User has not applied');
 
   return hasApplied;
 };

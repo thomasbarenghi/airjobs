@@ -9,6 +9,10 @@ import dynamic from 'next/dynamic'
 const SWRProvider = dynamic(() => import('@/context/providers/swr.provider'), {
   ssr: false
 })
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+// const Manager = dynamic(() => import('@/context/providers/manager.provider'), {
+//   ssr: false
+// })
 
 const outfit = Outfit({
   subsets: ['latin'],

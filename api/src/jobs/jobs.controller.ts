@@ -31,8 +31,8 @@ export class JobsController {
   }
 
   @Get()
-  findAll(@Query('country') country: string) {
-    return this.jobsService.findAll(country);
+  findAll(@Query('country') country: string, @Query('title') title: string) {
+    return this.jobsService.findAll(country, title);
   }
 
   @Get(':id')
