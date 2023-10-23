@@ -1,5 +1,5 @@
-import HeroSection from './components/HeroSection'
-import JobsSection from './components/JobsSection'
+import HeroSection from './_components/HeroSection'
+import JobsSection from './_components/JobsSection'
 
 const Home = () => (
   <>

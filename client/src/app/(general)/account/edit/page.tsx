@@ -1,5 +1,5 @@
 import { TextElement } from '@/components'
-import TabsSection from './components/TabsSection'
+import TabsSection from './_components/TabsSection'
 
 const EditAccount = () => (
   <>

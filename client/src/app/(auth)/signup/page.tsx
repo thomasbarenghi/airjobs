@@ -1,8 +1,8 @@
 import { TextElement } from '@/components'
-import Base from '../components/Base'
+import Base from '../_components/Base'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
-import RegisterForm from './components/RegisterForm'
+import RegisterForm from './_components/RegisterForm'
 
 const SignUp = () => (
   <Base>
@@ -31,4 +31,3 @@ const SignUp = () => (
 )
 
 export default SignUp
-  

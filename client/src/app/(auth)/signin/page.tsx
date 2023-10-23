@@ -1,8 +1,8 @@
 import { TextElement } from '@/components'
-import Base from '../components/Base'
+import Base from '../_components/Base'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
-import LoginForm from './components/LoginForm'
+import LoginForm from './_components/LoginForm'
 
 const SignIn = () => (
   <Base>

@@ -2,22 +2,23 @@
 import { Button, Input } from '@/components'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import type { RegisterFormValues } from '../form.interface'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+import type { RegisterForm } from '../form.interface'
 
 const LoginForm = () => {
   const [visibility] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
+
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit
-  } = useForm<LoginFormValues>({
+  } = useForm<RegisterForm>({
     mode: 'onChange'
   })
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     try {
       console.log(data)
       router.push('/')

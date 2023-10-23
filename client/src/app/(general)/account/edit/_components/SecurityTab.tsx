@@ -5,6 +5,7 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
+import type { SecurityForm } from '@/interfaces/accountForm.interface'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -15,21 +16,23 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
     register,
     formState: { errors, isSubmitting },
     handleSubmit
-  } = useForm<any>({
+  } = useForm<SecurityForm>({
     mode: 'onChange'
   })
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<SecurityForm> = async (data) => {
     try {
       const { error } = await putRequest(
         Endpoints.EDIT_PASSWORD(loggedUser._id),
         data,
         false
       )
+
       if (error) {
         toast.error('Verify that your old password is correct')
-        throw Error()
+        throw new Error('Old password verification failed')
       }
+
       toast.success('Your password has been updated')
     } catch (error) {
       console.error(error)

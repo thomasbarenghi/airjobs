@@ -20,7 +20,6 @@ const TabsSection = () => {
         tabClassName='bg-primary-foreground'
         tabContentClassName='group-data-[selected=true]:text-white px-4 text-primary'
         cursorClassName='group-data-[selected=true]:bg-primary '
-        tabListClassName='text-default-500'
       />
     </div>
   )

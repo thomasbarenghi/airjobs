@@ -29,6 +29,7 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { postJob } from './postJob'
 import { editJob } from './editJob'
 import { deleteJob } from './deleteJob'
+import type { JobForm } from './jobForm.interface'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
@@ -51,11 +52,11 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
     handleSubmit,
     control,
     setValue
-  } = useForm<any>({
+  } = useForm<JobForm>({
     mode: 'onChange'
   })
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<JobForm> = async (data) => {
     try {
       console.log('data', data)
       const formData = {
@@ -150,7 +151,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         <Controller
           name='type'
           control={control}
-          defaultValue={mode === 'edit' ? job?.type : ''}
+          defaultValue={mode === 'edit' ? job?.type : undefined}
           rules={{
             required: { value: true, message: 'This field is required' }
           }}
@@ -171,7 +172,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         />
         <Controller
           name='location'
-          defaultValue={mode === 'edit' ? job?.location : ''}
+          defaultValue={mode === 'edit' ? job?.location : undefined}
           control={control}
           rules={{
             required: { value: true, message: 'This field is required' }
@@ -193,7 +194,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         />
         <Controller
           name='seniority'
-          defaultValue={mode === 'edit' ? job?.seniority : ''}
+          defaultValue={mode === 'edit' ? job?.seniority : undefined}
           control={control}
           rules={{
             required: { value: true, message: 'This field is required' }
@@ -215,7 +216,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         />
         <Controller
           name='currency'
-          defaultValue={mode === 'edit' ? job?.currency : ''}
+          defaultValue={mode === 'edit' ? job?.currency : undefined}
           control={control}
           rules={{
             required: { value: true, message: 'This field is required' }

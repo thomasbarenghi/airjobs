@@ -5,10 +5,12 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
+import type { CompanyForm } from '@/interfaces/accountForm.interface'
+import type { KeyedMutator } from 'swr'
 
 interface UserTabProps {
   loggedUser: UserInterface
-  mutate: any
+  mutate: KeyedMutator<string>
 }
 
 const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
@@ -16,21 +18,22 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
     register,
     formState: { errors, isSubmitting },
     handleSubmit
-  } = useForm<any>({
+  } = useForm<CompanyForm>({
     mode: 'onChange'
   })
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
     try {
-      const form = {
+      const form: Record<string, string | File> = {
         ...data,
         logo: data.logo[0]
       }
+
       const formData = new FormData()
       for (const e in form) {
         formData.append(e, form[e])
       }
-      console.log(formData)
+
       const { error } = await putRequest(
         Endpoints.EDIT_COMPANY(loggedUser._id),
         formData,
@@ -40,6 +43,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
         toast.error("Couldn't update your info")
         throw Error()
       }
+
       toast.success('Your info has been updated')
       mutate()
     } catch (error) {

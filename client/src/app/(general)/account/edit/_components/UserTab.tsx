@@ -5,10 +5,12 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
+import type { KeyedMutator } from 'swr'
+import type { UserForm } from '@/interfaces/accountForm.interface'
 
 interface UserTabProps {
   loggedUser: UserInterface
-  mutate: any
+  mutate: KeyedMutator<string>
 }
 
 const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
@@ -16,21 +18,22 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
     register,
     formState: { errors, isSubmitting },
     handleSubmit
-  } = useForm<any>({
+  } = useForm<UserForm>({
     mode: 'onChange'
   })
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<UserForm> = async (data) => {
     try {
-      const formData = {
+      const formData: Record<string, string | File> = {
         ...data,
         birthday: new Date(data.birthday).toISOString(),
         profileImage: data.profileImage[0]
       }
-      console.log(formData)
+
       const form = new FormData()
-      for (const e in formData) {
-        form.append(e, formData[e])
+
+      for (const key in formData) {
+        form.append(key, formData[key])
       }
 
       const { error } = await putRequest(
@@ -38,10 +41,12 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
         form,
         true
       )
+
       if (error) {
         toast.error("Couldn't update your info")
-        throw Error()
+        throw new Error()
       }
+
       toast.success('Your info has been updated')
       mutate()
     } catch (error) {

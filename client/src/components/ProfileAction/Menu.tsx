@@ -1,6 +1,5 @@
 'use client'
 import { itemsNavBuilder, type ItemNavInterface } from './lib/itemsNav'
-import clsx from 'clsx'
 import NextLink from 'next/link'
 import { signOut } from 'next-auth/react'
 import type { UserInterface } from '@/interfaces/user.interface'
@@ -11,11 +10,9 @@ interface Props {
 
 const Menu = ({ loggedUser }: Props) => {
   const items: ItemNavInterface[] = itemsNavBuilder(loggedUser)
-  const dangerStyle = clsx(
-    'text-red-800',
-    'hover:!bg-red-50',
-    'hover:text-red-800'
-  )
+  const dangerStyle =
+    'bg-red-50 text-red-800 hover:bg-red-50 hover:text-red-800'
+
   return (
     <div className='flex w-full flex-col'>
       {items.map((item, index) => (

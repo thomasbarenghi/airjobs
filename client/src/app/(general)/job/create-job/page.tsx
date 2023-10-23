@@ -1,4 +1,4 @@
-import FormSection from '../FormSection/FormSection'
+import FormSection from '../_forms/FormSection'
 
 const CreateJob = () => (
   <>
