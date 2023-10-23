@@ -1,27 +1,49 @@
 'use client'
-import { Button, Input } from '@/components'
+import { Button, Input, SimpleSelect } from '@/components'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useRef } from 'react'
+import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import type { RegisterForm } from '../form.interface'
+import type { RoleEnum } from '@/interfaces/user.interface'
+import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect'
+import { postRequest } from '@/services/apiRequests.service'
+import { toast } from 'sonner'
+import Routes from '@/utils/constants/routes.const'
+import Endpoints from '@/utils/constants/endpoints.const'
+
+const roleData = convertArrayToValueLabelArray(['company', 'aspirant'])
 
 const LoginForm = () => {
-  const [visibility] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
 
   const {
     register,
     formState: { errors, isSubmitting },
-    handleSubmit
+    handleSubmit,
+    setValue,
+    control
   } = useForm<RegisterForm>({
     mode: 'onChange'
   })
 
   const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     try {
+      const formData = {
+        ...data,
+        birthday: new Date(data.birthday).toISOString()
+      }
+
+      const { error } = await postRequest(Endpoints.REGISTER, formData, false)
+      if (error) {
+        toast.error("Couldn't create your account, try again later")
+        console.error(error)
+        throw new Error()
+      }
+
+      toast.success('Your account has been created')
       console.log(data)
-      router.push('/')
+      router.push(Routes.SINGIN)
     } catch (error) {
       console.error(error)
     }
@@ -30,10 +52,62 @@ const LoginForm = () => {
   return (
     <>
       <form
-        className='w-full flex flex-col items-center gap-2'
+        className='w-full flex flex-col h-auto items-center gap-2  '
         onSubmit={handleSubmit(onSubmit)}
         ref={formRef}
       >
+        <Input
+          type='text'
+          name='firstName'
+          label='Firstname'
+          placeholder='Your firstname'
+          hookForm={{
+            register,
+            validations: {
+              required: { value: true, message: 'This field is required' }
+            }
+          }}
+          errorMessage={errors?.firstName?.message?.toString()}
+        />
+        <Input
+          type='text'
+          name='lastName'
+          label='Lastname'
+          placeholder='Your lastname'
+          hookForm={{
+            register,
+            validations: {
+              required: { value: true, message: 'This field is required' }
+            }
+          }}
+          errorMessage={errors?.lastName?.message?.toString()}
+        />
+        <Input
+          type='date'
+          name='birthday'
+          label='Birthday'
+          placeholder='Your birthday'
+          hookForm={{
+            register,
+            validations: {
+              required: { value: true, message: 'This field is required' }
+            }
+          }}
+          errorMessage={errors?.birthday?.message?.toString()}
+        />
+        <Input
+          type='text'
+          name='username'
+          label='Username'
+          placeholder='Your Username'
+          hookForm={{
+            register,
+            validations: {
+              required: { value: true, message: 'This field is required' }
+            }
+          }}
+          errorMessage={errors?.username?.message?.toString()}
+        />
         <Input
           type='email'
           name='email'
@@ -51,12 +125,31 @@ const LoginForm = () => {
           }}
           errorMessage={errors?.email?.message?.toString()}
         />
-
+        <Controller
+          name='role'
+          control={control}
+          rules={{
+            required: { value: true, message: 'This field is required' }
+          }}
+          render={({ field }: any) => (
+            <SimpleSelect
+              name='role'
+              field={field}
+              label='Select your role'
+              setSelected={(selected) => {
+                setValue('role', selected as RoleEnum)
+              }}
+              names={roleData}
+              placeholder='Select an option'
+              errorMessage={errors?.role?.message?.toString()}
+            />
+          )}
+        />
         <Input
-          type={visibility ? 'text' : 'password'}
+          type='password'
           name='password'
-          label='Contraseña'
-          placeholder='Contraseña'
+          label='Password'
+          placeholder='Password'
           hookForm={{
             register,
             validations: {
@@ -72,7 +165,7 @@ const LoginForm = () => {
           spinnerPlacement='start'
           className='mt-2'
         >
-          Iniciar sesion
+          Register
         </Button>
       </form>
     </>

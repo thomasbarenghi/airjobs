@@ -90,7 +90,7 @@ const LoginForm = () => {
         spinnerPlacement='start'
         className='mt-2'
       >
-        Iniciar sesion
+        Login
       </Button>
     </form>
   )

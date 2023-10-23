@@ -61,7 +61,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           type='text'
           name='name'
           label='Name'
-          defaultValue={loggedUser.company.name}
+          defaultValue={loggedUser?.company?.name}
           placeholder='Your company name'
           hookForm={{
             register,
@@ -73,7 +73,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
         />
         <Textarea
           name='description'
-          defaultValue={loggedUser.company.description}
+          defaultValue={loggedUser?.company?.description}
           rows={5}
           label='Company Description'
           placeholder='A brief description of the job'
@@ -97,7 +97,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           type='text'
           name='website'
           label='Website'
-          defaultValue={loggedUser.company.website}
+          defaultValue={loggedUser?.company?.website}
           placeholder='Your website'
           hookForm={{
             register,
@@ -111,7 +111,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           type='email'
           name='email'
           label='Email'
-          defaultValue={loggedUser.company.email}
+          defaultValue={loggedUser?.company?.email}
           placeholder='Your company email'
           hookForm={{
             register,

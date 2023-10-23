@@ -24,7 +24,7 @@ export const putRequest = async (
   console.log('putRequest', response)
   return {
     data: response.data,
-    error: response.status !== 200,
+    error: response.status !== 200 && response.status !== 201,
     success: response.status === 200
   }
 }
@@ -44,8 +44,8 @@ export const postRequest = async (
 
   return {
     data: response.data,
-    error: response.status !== 200,
-    success: response.status === 200
+    error: response.status !== 200 && response.status !== 201,
+    success: response.status === (200 || 201)
   }
 }
 
@@ -68,7 +68,6 @@ export const deleteRequest = async (
   }
 }
 
-// Must be deprecated
 export const getRequest = async (
   url: string,
   headers: object = {}

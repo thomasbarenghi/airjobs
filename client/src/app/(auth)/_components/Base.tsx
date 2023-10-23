@@ -13,11 +13,11 @@ const Base = ({ children }: AuthBaseProps) => (
           search it now in <b className='font-semibold'>airjobs.</b>
         </TextElement>
       </div>
-      <div className=' mb-[80px] mt-[80px] flex w-full flex-col items-center justify-center bg-white px-[40px] py-10 lg:mb-0  lg:mt-0 lg:w-auto  '>
-        <div className='h-full w-full'>{children}</div>
+      <div className='max-h-[100vh] overflow-hidden mb-[80px] mt-[80px] flex w-full flex-col items-center justify-center bg-white px-[40px] py-10 lg:mb-0  lg:mt-0 lg:w-auto  '>
+        <div className='h-full w-full '>{children}</div>
       </div>
     </div>
-    <div className=' absolute left-0 top-0 z-[0] h-screen w-screen overflow-hidden'>
+    <div id='container' className=' absolute left-0 top-0 z-[0] h-screen w-screen overflow-hidden'>
       <div className='absolute left-0 top-0  h-screen w-screen bg-violet-100' />
     </div>
   </section>
