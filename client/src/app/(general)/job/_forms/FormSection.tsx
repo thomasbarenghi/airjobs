@@ -58,7 +58,6 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
 
   const onSubmit: SubmitHandler<JobForm> = async (data) => {
     try {
-      console.log('data', data)
       const formData = {
         ...data,
         ownerId: loggedUser?._id,

@@ -43,7 +43,6 @@ const LoginForm = () => {
       }
 
       toast.success('Your account has been created')
-      console.log(data)
       router.push(Routes.SINGIN)
     } catch (error) {
       console.error(error)

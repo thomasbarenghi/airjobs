@@ -157,7 +157,6 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
               register,
               validations: {
                 validate: (value: File[]) => {
-                  console.log(value)
                   if (!value[0]) return true
                   if (!value[0]?.type?.includes('image')) {
                     return 'File type should be image'

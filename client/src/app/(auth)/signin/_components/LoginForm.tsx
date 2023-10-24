@@ -2,22 +2,17 @@
 'use client'
 import { Button, Input } from '@/components'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import type { LoginFormValues } from '../form.interface'
 import Routes from '@/utils/constants/routes.const'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
 
 const LoginForm = () => {
   const [visibility] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
-  const { data: session, status } = useSession()
-
-  useEffect(() => {
-    console.log('session:', session, 'status:', status)
-  }, [session, status])
 
   const {
     register,

@@ -94,7 +94,7 @@ export const deleteRequest = async (
       success: response.ok
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return {
       data: error,
       error: true,
@@ -122,7 +122,7 @@ export const getRequest = async (
       success: response.ok
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return {
       data: error,
       error: true,

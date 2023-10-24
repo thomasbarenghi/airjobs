@@ -25,7 +25,6 @@ const FormSection = () => {
 
   const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
     try {
-      console.log('data', data)
       const formData = {
         ...data,
         logo: data.logo[0]
@@ -131,7 +130,6 @@ const FormSection = () => {
             register,
             validations: {
               validate: (value: File[]) => {
-                console.log(value)
                 if (!value[0]) return true
                 if (!value[0]?.type?.includes('image')) {
                   return 'File type should be image'

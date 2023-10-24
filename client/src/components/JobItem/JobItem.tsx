@@ -18,7 +18,7 @@ const JobItem = ({ job }: JobItemProps) => (
           alt={job?.owner?.company?.name}
           width={50}
           height={50}
-          className='object-cover rounded-lg aspect-square'
+          className='object-cover rounded-lg aspect-square h-[50px] w-[50px] '
         />
         <div className='flex flex-col justify-center '>
           <TextElement

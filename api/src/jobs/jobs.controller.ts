@@ -42,7 +42,6 @@ export class JobsController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateJobDto: any) {
-    console.log('update', id, updateJobDto);
     return this.jobsService.update(id, updateJobDto);
   }
 
