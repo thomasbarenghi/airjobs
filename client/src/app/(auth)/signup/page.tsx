@@ -19,7 +19,7 @@ const SignUp = () => (
         <div className='overflow-y-auto'>
           <RegisterForm />
         </div>
-        <p className='pt-6 w-full text-center font-light flex-grow'>
+        <p className='pt-6 w-full text-center font-light '>
           Already have an account?{' '}
           <Link href={Routes.SINGIN} className='font-medium text-primary'>
             Sign in

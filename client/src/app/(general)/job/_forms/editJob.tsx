@@ -17,6 +17,6 @@ export const editJob = async (formData: JobForm, router: AppRouterInstance, jobI
     throw Error()
   }
 
-  toast.success('Job edited successfully')
   router.push(Routes.INDIVIDUAL_JOB(jobId))
+  toast.success('Job edited successfully')
 }

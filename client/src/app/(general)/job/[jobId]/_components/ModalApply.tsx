@@ -20,6 +20,7 @@ interface ModalApplyProps {
   job: JobInterface
   loggedUser: UserInterface | any
   mutate: any
+  hasApplied: boolean
 }
 
 const ModalApply = ({
@@ -27,13 +28,15 @@ const ModalApply = ({
   onOpenChange,
   job,
   loggedUser,
-  mutate
+  mutate,
+  hasApplied
 }: ModalApplyProps) => {
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    getValues
+    getValues,
+    reset
   } = useForm<any>({
     mode: 'onChange'
   })
@@ -59,13 +62,14 @@ const ModalApply = ({
 
       toast.success('You have applied to this job')
       await mutate()
+      reset()
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center'>
       <ModalContent>
         {(onClose) => (
           <form onSubmit={handleSubmit(handleApply)}>
@@ -123,6 +127,7 @@ const ModalApply = ({
                       ? undefined
                       : onClose
                   }
+                  isDisabled={hasApplied}
                 >
                   Apply Now
                 </Button>

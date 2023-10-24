@@ -6,39 +6,34 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 interface Props {
-  isOpen: boolean
   toggle: () => void
 }
 
-const MobileMenuNav = ({ isOpen, toggle }: Props) => {
+const MobileMenuNav = ({ toggle }: Props) => {
   const pathname = usePathname()
   const activeClass = (href: string) =>
     pathname === href ? '!font-semibold' : '!font-light'
 
   return (
-    <>
-      {isOpen && (
-        <div className='flex  w-full flex-col gap-6'>
-          {itemsNav.map((item, index) => (
-            <div
-              key={index}
-              className='flex h-full flex-col items-start justify-center'
-              onClick={toggle}
+    <div className='flex flex-col gap-5'>
+      {itemsNav.map((item, index) => (
+        <div
+          key={index}
+          className='flex h-full flex-col items-start justify-center'
+          onClick={toggle}
+        >
+          <Link href={item.href}>
+            <TextElement
+              as='p'
+              type='t1'
+              className={`text-black ${activeClass(item.href)}`}
             >
-              <Link href={item.href}>
-                <TextElement
-                  as='p'
-                  type='t1'
-                  className={`text-black ${activeClass(item.href)}`}
-                >
-                  {item.name}
-                </TextElement>
-              </Link>
-            </div>
-          ))}
+              {item.name}
+            </TextElement>
+          </Link>
         </div>
-      )}
-    </>
+      ))}
+    </div>
   )
 }
 

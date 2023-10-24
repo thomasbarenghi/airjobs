@@ -7,12 +7,12 @@ import useSWR from 'swr'
 
 const JobsSection = () => {
   const { data: session } = useSession()
-  const { data: loggedUser } = useSWR<UserInterface>(
+  const { data: loggedUser, isLoading } = useSWR<UserInterface>(
     Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
   )
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-10 section-padding-x-1'>
+    <section className='flex flex-col gap-10 section-reduced'>
       <div className='flex flex-col gap-5 w-full'>
         <div>
           <TextElement as='h2' type='t3' className='!font-semibold'>
@@ -32,6 +32,7 @@ const JobsSection = () => {
               ? loggedUser?.jobs?.applied ?? []
               : loggedUser?.jobs?.created ?? []
           }
+          isLoading={isLoading}
         />
       </div>
     </section>

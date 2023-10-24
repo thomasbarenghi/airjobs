@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
 import type { UserForm } from '@/interfaces/accountForm.interface'
+import { validateAdult } from '@/utils/functions/validateAdult'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -66,7 +67,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             name='firstName'
             label='Firstname'
             placeholder='Your firstname'
-            defaultValue={loggedUser.firstName}
+            defaultValue={loggedUser?.firstName ? loggedUser?.firstName : ''}
             hookForm={{
               register,
               validations: {
@@ -79,7 +80,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             type='text'
             name='lastName'
             label='Lastname'
-            defaultValue={loggedUser.lastName}
+            defaultValue={loggedUser?.lastName ? loggedUser?.lastName : ''}
             placeholder='Your lastname'
             hookForm={{
               register,
@@ -94,13 +95,18 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             name='birthday'
             defaultValue={
               loggedUser?.birthday &&
-              new Date(loggedUser.birthday)?.toISOString()?.substr(0, 10)
+              new Date(loggedUser?.birthday)?.toISOString()?.substr(0, 10)
             }
             label='Birthday'
             placeholder='Your birthday'
             hookForm={{
               register,
               validations: {
+                validate: (value: string) => {
+                  const adult = validateAdult(new Date(value))
+                  if (!adult) return 'You must be an adult'
+                  return true
+                },
                 required: { value: true, message: 'This field is required' }
               }
             }}
@@ -109,12 +115,16 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
           <Input
             type='text'
             name='username'
-            defaultValue={loggedUser.username}
+            defaultValue={loggedUser?.username ? loggedUser?.username : ''}
             label='Username'
             placeholder='Your Username'
             hookForm={{
               register,
               validations: {
+                pattern: {
+                  value: /^[a-zA-Z0-9]+$/,
+                  message: 'Must contain only letters and numbers'
+                },
                 required: { value: true, message: 'This field is required' }
               }
             }}
@@ -124,16 +134,16 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             type='email'
             name='email'
             label='Email'
-            defaultValue={loggedUser.email}
+            defaultValue={loggedUser?.email}
             placeholder='Email'
             hookForm={{
               register,
               validations: {
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: 'Debe ser un email valido'
+                  message: 'Muat be a valid email'
                 },
-                required: { value: true, message: 'Este campo es requerido' }
+                required: { value: true, message: 'This field is required' }
               }
             }}
             errorMessage={errors?.email?.message?.toString()}

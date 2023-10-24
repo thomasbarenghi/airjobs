@@ -1,4 +1,4 @@
-import MobileMenuNav from './Nav'
+import Menu from './Menu'
 import ToggleBtn from './ToggleBtn'
 
 export interface Props {
@@ -18,7 +18,7 @@ const MobileMenu = ({ isOpen, toggle, theme, isScrolled }: Props) => (
         isScrolled={isScrolled}
       />
     )}
-    <MobileMenuNav isOpen={isOpen} toggle={toggle} />
+    <Menu isOpen={isOpen} toggle={toggle} />
   </>
 )
 

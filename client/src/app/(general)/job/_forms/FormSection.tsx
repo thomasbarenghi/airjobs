@@ -77,7 +77,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
   }
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-5 section-padding-x-1'>
+    <section className='flex flex-col gap-5 section-reduced'>
       <TextElement as='h1' type='t2' className='!font-light'>
         {mode === 'create' ? 'Create' : 'Edit your'}{' '}
         <b className='!font-semibold'>job</b>
@@ -239,7 +239,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         <Input
           type='number'
           name='salary'
-          defaultValue={mode === 'edit' && job?.salary ? job.salary : 0}
+          defaultValue={mode === 'edit' && job?.salary ? job.salary : undefined}
           label='Salary'
           placeholder='1000'
           hookForm={{
@@ -257,7 +257,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         <Input
           type='number'
           defaultValue={
-            mode === 'edit' && job?.maxApplicants ? job.maxApplicants : 0
+            mode === 'edit' && job?.maxApplicants ? job.maxApplicants : undefined
           }
           name='maxApplicants'
           label='Max Applicants'

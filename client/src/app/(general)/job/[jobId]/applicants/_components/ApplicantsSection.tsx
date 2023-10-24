@@ -9,16 +9,17 @@ interface JobsSectionProps {
 }
 
 const ApplicantsSection = ({ jobId }: JobsSectionProps) => {
-  const { data: currentJob, mutate } = useSWR<JobInterface>(
+  const { data: currentJob, mutate, isLoading } = useSWR<JobInterface>(
     Endpoints.INDIVIDUAL_JOB(jobId)
   )
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-10 section-padding-x-1'>
+    <section className='flex flex-col gap-10 section-reduced'>
       <ApplicantsFlex
         applicants={currentJob?.applicants ?? []}
         mutate={mutate}
         job={currentJob}
+        isLoading={isLoading}
       />
     </section>
   )

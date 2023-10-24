@@ -15,16 +15,16 @@ const HeroSection = ({ userId }: Props) => {
   )
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-8 section-padding-x-1'>
+    <section className='flex flex-col gap-8 section-reduced'>
       <div className='w-full flex justify-between '>
         <div className='flex items-center gap-5 flex-grow'>
           <Image
             width={80}
             height={80}
-            src={currentCompany?.company?.logo ?? '/image/userPlaceholder.png'}
+            src={currentCompany?.company?.logo ?? '/image/placeholder.png'}
             alt="Logo's image"
             onError={(e) => {
-              e.currentTarget.src = '/image/userPlaceholder.png'
+              e.currentTarget.src = '/image/placeholder.png'
             }}
             className='object-cover rounded-lg aspect-square'
           />

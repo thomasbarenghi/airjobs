@@ -10,6 +10,7 @@ import { postRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import Routes from '@/utils/constants/routes.const'
 import Endpoints from '@/utils/constants/endpoints.const'
+import { validateAdult } from '@/utils/functions/validateAdult'
 
 const roleData = convertArrayToValueLabelArray(['company', 'aspirant'])
 
@@ -90,6 +91,11 @@ const LoginForm = () => {
           hookForm={{
             register,
             validations: {
+              validate: (value: string) => {
+                const adult = validateAdult(new Date(value))
+                if (!adult) return 'You must be an adult'
+                return true
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -103,6 +109,10 @@ const LoginForm = () => {
           hookForm={{
             register,
             validations: {
+              pattern: {
+                value: /^[a-zA-Z0-9]+$/,
+                message: 'Must contain only letters and numbers'
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -118,9 +128,9 @@ const LoginForm = () => {
             validations: {
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Debe ser un email valido'
+                message: 'Muat be a valid email'
               },
-              required: { value: true, message: 'Este campo es requerido' }
+              required: { value: true, message: 'This field is required' }
             }
           }}
           errorMessage={errors?.email?.message?.toString()}
@@ -153,7 +163,12 @@ const LoginForm = () => {
           hookForm={{
             register,
             validations: {
-              required: { value: true, message: 'Este campo es requerido' }
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+                message:
+                  'Must contain at least 8 characters, one uppercase, one lowercase and one number'
+              },
+              required: { value: true, message: 'This field is required' }
             }
           }}
           errorMessage={errors?.password?.message?.toString()}

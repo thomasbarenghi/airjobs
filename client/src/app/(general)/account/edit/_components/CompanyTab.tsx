@@ -118,9 +118,9 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
             validations: {
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Debe ser un email valido'
+                message: 'Muat be a valid email'
               },
-              required: { value: true, message: 'Este campo es requerido' }
+              required: { value: true, message: 'This field is required' }
             }
           }}
           errorMessage={errors?.email?.message?.toString()}

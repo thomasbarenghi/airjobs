@@ -3,12 +3,15 @@ import { itemsNavBuilder, type ItemNavInterface } from './lib/itemsNav'
 import NextLink from 'next/link'
 import { signOut } from 'next-auth/react'
 import type { UserInterface } from '@/interfaces/user.interface'
+import { useRouter } from 'next/navigation'
+import Routes from '@/utils/constants/routes.const'
 
 interface Props {
   loggedUser: UserInterface
 }
 
 const Menu = ({ loggedUser }: Props) => {
+  const router = useRouter()
   const items: ItemNavInterface[] = itemsNavBuilder(loggedUser)
   const dangerStyle =
     'bg-red-50 text-red-800 hover:bg-red-50 hover:text-red-800'
@@ -29,6 +32,7 @@ const Menu = ({ loggedUser }: Props) => {
       <button
         onClick={async () => {
           void signOut({ redirect: false })
+          router.push(Routes.HOME)
         }}
         className={`w-full font-semibold rounded-xl bg-white p-2 text-start hover:bg-slate-100 ${dangerStyle}`}
       >

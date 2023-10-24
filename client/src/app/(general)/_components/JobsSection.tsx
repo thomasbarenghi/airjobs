@@ -9,11 +9,11 @@ interface JobsSectionProps {
 }
 
 const JobsSection = ({ query }: JobsSectionProps) => {
-  const { data } = useSWR(Endpoints.ALL_JOBS + buildQueryString(query) ?? '')
+  const { data, isLoading } = useSWR(Endpoints.ALL_JOBS + buildQueryString(query) ?? '')
   return (
-    <section className='flex justify-center'>
-      <div className='2xl:container w-full py-10 section-padding-x-1'>
-        <JobsFlex jobs={data ?? []} />
+    <section className='flex justify-center section-padding-x-1'>
+      <div className='2xl:container w-full py-10'>
+        <JobsFlex jobs={data ?? []} isLoading={isLoading} />
       </div>
     </section>
   )

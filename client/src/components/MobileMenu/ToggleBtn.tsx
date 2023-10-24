@@ -2,11 +2,7 @@ import Image from 'next/image'
 import type { Props } from './MobileMenu'
 
 const ToggleBtn = ({ isOpen, toggle, theme, isScrolled }: Props) => {
-  const logo = isScrolled
-    ? '/icon/menu-black.svg'
-    : theme === 'transparent'
-      ? '/icon/menu-white.svg'
-      : '/icon/menu-black.svg'
+  const logo = '/icon/menu-blue.svg'
   return (
     <Image
       src={isOpen ? '/icon/cross.svg' : logo}

@@ -9,18 +9,23 @@ interface Props {
 }
 
 const RelatedJobsSection = ({ jobId }: Props) => {
-  const { data } = useSWR(Endpoints.INDIVIDUAL_JOB(jobId))
+  const { data, isLoading } = useSWR(Endpoints.INDIVIDUAL_JOB(jobId))
   const { data: relatedJobs } = useSWR(
     Endpoints.ALL_JOBS + `?country=${data?.country}`
   )
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-5 section-padding-x-1'>
+    <section className='section-reduced flex flex-col gap-5'>
       <TextElement as='h2' type='t3' className='!font-light'>
         Another <b className='!font-semibold'>jobs in {data?.country}</b>
       </TextElement>
       <div className='w-full'>
-        <JobsFlex jobs={relatedJobs?.filter((job: JobInterface) => job._id !== jobId) ?? []} />
+        <JobsFlex
+          jobs={
+            relatedJobs?.filter((job: JobInterface) => job._id !== jobId) ?? []
+          }
+          isLoading={isLoading}
+        />
       </div>
     </section>
   )

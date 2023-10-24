@@ -2,7 +2,6 @@
 import { Button, Input, Textarea } from '@/components'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import type { CompanyForm } from '@/interfaces/accountForm.interface'
@@ -11,7 +10,6 @@ import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
 
 const FormSection = () => {
-  const router = useRouter()
   const { data: session } = useSession()
   const { data: loggedUser, mutate } = useSWR(
     Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
@@ -45,15 +43,17 @@ const FormSection = () => {
         return
       }
       await mutate()
-      router.push(Routes.ACCOUNT)
       toast.success('Company created successfully')
+      setTimeout(() => {
+        window.location.href = Routes.HOME
+      }, 500)
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-5 section-padding-x-1'>
+    <section className='flex flex-col gap-5 section-reduced'>
       <form
         className='w-full flex flex-col items-center gap-2'
         onSubmit={handleSubmit(onSubmit)}
@@ -115,9 +115,9 @@ const FormSection = () => {
             validations: {
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Debe ser un email valido'
+                message: 'Muat be a valid email'
               },
-              required: { value: true, message: 'Este campo es requerido' }
+              required: { value: true, message: 'This field is required' }
             }
           }}
           errorMessage={errors?.email?.message?.toString()}

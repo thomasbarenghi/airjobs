@@ -48,7 +48,7 @@ const ModalUnapply = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center'>
       <ModalContent>
         {(onClose) => (
           <>

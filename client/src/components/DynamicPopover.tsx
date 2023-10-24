@@ -24,7 +24,7 @@ const DynamicPopover = ({ image, children, backdrop }: DynamicPopoverProps) => (
         className='aspect-square h-[50px] min-w-[50px] cursor-pointer  rounded-full border-[2px] border-blue-700 object-cover p-1'
         src={image}
         onError={(e) => {
-          e.currentTarget.src = '/image/userPlaceholder.png'
+          e.currentTarget.src = '/image/placeholder.png'
         }}
       />
     </PopoverTrigger>

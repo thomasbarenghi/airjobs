@@ -9,12 +9,12 @@ interface JobsSectionProps {
 }
 
 const JobsSection = ({ userId }: JobsSectionProps) => {
-  const { data: currentCompany } = useSWR<UserInterface>(
+  const { data: currentCompany, isLoading } = useSWR<UserInterface>(
     Endpoints.USER_BY_ID(userId)
   )
 
   return (
-    <section className='w-[85%] 2xl:container flex flex-col gap-10 section-padding-x-1'>
+    <section className='flex flex-col gap-10 section-reduced'>
       <div className='flex flex-col gap-5 w-full'>
         <div>
           <TextElement as='h2' type='t3' className='!font-semibold'>
@@ -24,7 +24,10 @@ const JobsSection = ({ userId }: JobsSectionProps) => {
             You can apply to any of the jobs listed below.
           </TextElement>
         </div>
-        <JobsFlex jobs={currentCompany?.jobs?.created ?? []} />
+        <JobsFlex
+          jobs={currentCompany?.jobs?.created ?? []}
+          isLoading={isLoading}
+        />
       </div>
     </section>
   )

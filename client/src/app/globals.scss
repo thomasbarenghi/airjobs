@@ -15,4 +15,8 @@
     @extend .section-padding-x-1;
     @apply py-20;
   }
+
+  .section-reduced {
+    @apply xl:w-[85%] 2xl:container w-full section-padding-x-1
+  }
 }

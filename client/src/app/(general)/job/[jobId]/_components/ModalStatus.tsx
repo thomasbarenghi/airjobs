@@ -24,7 +24,7 @@ const ModalStatus = ({
   onOpenChange,
   applicantStatus
 }: ModalApplyProps) => (
-  <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
+  <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='center'>
     <ModalContent>
       {(onClose) => (
         <>
