@@ -1,4 +1,6 @@
 import {
+  companyDescriptionRegex,
+  companyNameRegex,
   descriptionRegex,
   emailRegex,
   firstNameRegex,
@@ -69,15 +71,15 @@ export const maxApplicantsPattern: Pattern = {
 // ------------------------------ //
 
 export const companyNamePattern: Pattern = {
-  value: usernameRegex,
+  value: companyNameRegex,
   message:
     'Company name must be at least 2 characters long, and only letters and numbers'
 }
 
 export const companyDescriptionPattern: Pattern = {
-  value: descriptionRegex,
+  value: companyDescriptionRegex,
   message:
-    'Company description must be at least 2 characters long, 500 characters max, and only letters and numbers'
+    'Company description must be at least 2 characters long, 1000 characters max, and only letters and numbers'
 }
 
 export const websitePattern: Pattern = {

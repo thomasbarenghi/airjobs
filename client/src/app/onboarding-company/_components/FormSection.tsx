@@ -39,7 +39,7 @@ const FormSection = () => {
       const { error } = await postRequest(
         Endpoints.ADD_COMPANY(loggedUser._id),
         formData,
-        false
+        true
       )
 
       if (error) {
