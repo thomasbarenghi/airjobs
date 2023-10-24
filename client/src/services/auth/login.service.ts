@@ -23,13 +23,13 @@ export const loginUser = async (email: string, password: string) => {
     })
 
     const data = await res.json()
-    console.log(data, email, password)
+    console.error(data, email, password)
     return {
       data,
       error: data.error
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return {
       data: undefined,
       error: { status: 500, message: 'internal server error' }

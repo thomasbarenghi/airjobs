@@ -57,6 +57,7 @@ export class UsersService {
   }
 
   async remove(id: string) {
+    await findUser(id, this.userModel);
     return await this.userModel.findByIdAndDelete(id).catch((error) => {
       console.error(error);
       throw new BadRequestException();

@@ -43,13 +43,11 @@ const ModalApply = ({
 
   const handleApply: SubmitHandler<any> = async (data) => {
     try {
-      console.log(data)
       const formData = {
         resume: data.resume[0],
         userId: loggedUser._id
       }
 
-      console.log(formData)
       const { error } = await postRequest(
         Endpoints.APPLY_JOB(job._id),
         formData,
@@ -94,7 +92,6 @@ const ModalApply = ({
                     register,
                     validations: {
                       validate: (value: File[]) => {
-                        console.log(value)
                         if (!value[0].type.includes('pdf')) {
                           return 'File type should be pdf'
                         }

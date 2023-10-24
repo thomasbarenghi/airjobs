@@ -1,7 +1,7 @@
 import { Skeleton } from '@nextui-org/react'
 
 const HeroSkeleton = () => (
-  <section className='xl:w-[85%] w-full 2xl:container flex flex-col gap-10 section-padding-x-1'>
+  <section className=' flex flex-col gap-10 section-reduced'>
     <div className='w-full flex justify-between '>
       <div className='flex items-center gap-5 flex-grow'>
         <Skeleton className='rounded-lg w-[80px] h-[80px] aspect-square ' />

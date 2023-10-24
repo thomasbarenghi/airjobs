@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApplyJobDto } from './dto/apply-job.dto';
@@ -42,7 +41,6 @@ export class JobsController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateJobDto: any) {
-    console.log('update', id, updateJobDto);
     return this.jobsService.update(id, updateJobDto);
   }
 

@@ -120,7 +120,6 @@ export class JobsService {
     job.applicants = job.applicants.filter(
       (applicant) => applicant.user._id.toString() !== userId,
     );
-    console.log(job.applicants);
     job.markModified('applicants');
     await job.save();
     return job;
