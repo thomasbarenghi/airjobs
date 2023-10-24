@@ -35,7 +35,7 @@ const HeroSection = ({ jobId }: Props) => {
             <TextElement
               as='p'
               type='t3'
-              className='!font-semibold text-center leading-[24px] '
+              className='!font-semibold text-center md:text-start leading-[24px] '
             >
               {loggedUser?.firstName} {loggedUser?.lastName}{' '}
               <span className='text-primary'>
