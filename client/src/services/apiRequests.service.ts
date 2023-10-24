@@ -98,38 +98,26 @@ export const getRequest = async (
   url: string,
   headers: object = {}
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
+  try {
+    const response = await fetch(`${serverUrl}${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers
+      }
+    })
+
+    return {
+      data: await response.json(),
+      error: !response.ok,
+      success: response.ok
     }
-  })
-
-  return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
-  }
-}
-
-export const patchRequest = async (
-  url: string,
-  data: object,
-  headers: object = {}
-): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    },
-    body: JSON.stringify(data)
-  })
-
-  return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+  } catch (error) {
+    console.log(error)
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
