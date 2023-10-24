@@ -9,26 +9,27 @@ interface DynamicPopoverProps {
 }
 
 const DynamicPopover = ({ image, children, backdrop }: DynamicPopoverProps) => (
-  <div className='lg:flex'>
-    <Popover
-      key='backdrop'
-      offset={10}
-      placement='bottom-end'
-      backdrop={backdrop}
-      classNames={{ base: 'p-2 min-w-[150px] ' }}
-    >
-      <PopoverTrigger>
-        <Image
-          alt='Profile image'
-          width={50}
-          height={50}
-          className='aspect-square h-[50px] min-w-[50px] cursor-pointer  rounded-full border-[2px] border-blue-700 object-cover p-1'
-          src={image}
-        />
-      </PopoverTrigger>
-      <PopoverContent>{children}</PopoverContent>
-    </Popover>
-  </div>
+  <Popover
+    key='backdrop'
+    offset={10}
+    placement='bottom-end'
+    backdrop={backdrop}
+    classNames={{ base: 'p-2 min-w-[150px] ' }}
+  >
+    <PopoverTrigger>
+      <Image
+        alt='Profile image'
+        width={50}
+        height={50}
+        className='aspect-square h-[50px] min-w-[50px] cursor-pointer  rounded-full border-[2px] border-blue-700 object-cover p-1'
+        src={image}
+        onError={(e) => {
+          e.currentTarget.src = '/image/placeholder.png'
+        }}
+      />
+    </PopoverTrigger>
+    <PopoverContent>{children}</PopoverContent>
+  </Popover>
 )
 
 export default DynamicPopover

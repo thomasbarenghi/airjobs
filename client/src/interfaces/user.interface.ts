@@ -7,14 +7,17 @@ export interface UserInterface {
   lastName: string
   birthday: Date
   email: string
-  role: 'company' | 'aspirant'
+  role: RoleEnum
   password: string
   username: string
   profileImage: string
   company: CompanyInterface
   jobs: JobsEnum
 }
+
 interface JobsEnum {
   created: JobInterface[]
   applied: JobInterface[]
 }
+
+export type RoleEnum = 'company' | 'aspirant'

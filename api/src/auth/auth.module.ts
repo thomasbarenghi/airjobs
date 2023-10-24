@@ -11,15 +11,13 @@ import { UuidService } from 'src/uuid/uuid.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Session.name, schema: AuthSchema }]),
-    PassportModule
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Session.name, schema: AuthSchema },
+    ]),
+    PassportModule,
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService,
-    LocalStrategy,
-    LocalSerializer,
-    UuidService,
-  ],
+  providers: [AuthService, LocalStrategy, LocalSerializer, UuidService],
 })
 export class AuthModule {}

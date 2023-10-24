@@ -22,6 +22,8 @@ export interface JobInterface {
 export interface ApplicantsEnum {
   user: UserInterface
   status: StatusEnum
+  createdAt: string
+  resume: string
 }
 
 export type StatusEnum =

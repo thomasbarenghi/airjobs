@@ -1,9 +1,16 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import {
+  findJob,
+  verifyHasApplied,
+  verifyHasCompany,
+  verifyIsAspirant,
+  verifyIsCompany,
+  verifyIsOwner,
+} from './utils';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { Job } from './entities/job.entity';
@@ -11,6 +18,9 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/users/entities/user.entity';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
+import { ApplyJobDto } from './dto/apply-job.dto';
+import { findUser, removeJobFromUser } from 'src/users/utils';
+import { validateUrl } from 'src/utils/validate-url.utils';
 
 @Injectable()
 export class JobsService {
@@ -19,25 +29,10 @@ export class JobsService {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  private async findUser(id: string) {
-    const user = await this.userModel.findById(id).catch((error) => {
-      console.error(error);
-      throw new BadRequestException();
-    });
-
-    if (!user) throw new NotFoundException('User not found');
-
-    return user;
-  }
-
   async create(createJobDto: CreateJobDto) {
-    const user = await this.findUser(createJobDto.ownerId);
-    if (user.role !== 'company')
-      throw new ConflictException('User is not a company');
-
-    if (user.company === null)
-      throw new ConflictException('User has no company');
-
+    const user = await findUser(createJobDto.ownerId, this.userModel);
+    verifyIsCompany(user);
+    verifyHasCompany(user);
     const job = await new this.jobModel(createJobDto);
     job.owner = user._id;
     await job.save();
@@ -47,10 +42,11 @@ export class JobsService {
     return job;
   }
 
-  async findAll(country: string) {
+  async findAll(country: string, title: string) {
     return await this.jobModel
       .find({
         ...(country && { country }),
+        ...(title && { title: { $regex: title, $options: 'i' } }),
       })
       .populate({
         path: 'owner',
@@ -59,25 +55,14 @@ export class JobsService {
   }
 
   async findOne(id: string) {
-    return await this.jobModel.findById(id).populate([
-      {
-        path: 'owner',
-        model: 'User',
-      },
-      { path: 'applicants.user', model: 'User' },
-    ]);
+    return await findJob(id, this.jobModel);
   }
 
   async update(id: string, updateJobDto: UpdateJobDto) {
-    const job = await this.jobModel.findById(id);
-    if (!job) throw new NotFoundException('Job not found');
-    const user = await this.findUser(updateJobDto.ownerId);
-
-    if (user.role !== 'company')
-      throw new ConflictException('User is not a company');
-
-    if (user._id.toString() !== job.owner.toString())
-      throw new ConflictException('User is not the owner of the job');
+    const job = await findJob(id, this.jobModel);
+    const user = await findUser(updateJobDto.ownerId, this.userModel);
+    verifyIsCompany(user);
+    verifyIsOwner(user, job);
     delete updateJobDto.ownerId;
     job.set(updateJobDto);
     await job.save();
@@ -85,106 +70,76 @@ export class JobsService {
   }
 
   async remove(id: string) {
-    const job = await this.jobModel.findById(id);
-    if (!job) throw new NotFoundException('Job not found');
-    const user = await this.findUser(job.owner.toString());
-    user.jobs.created = user.jobs.created.filter(
-      (job) => job.toString() !== id,
-    );
-    user.markModified('jobs');
-    await user.save();
+    const job = await findJob(id, this.jobModel);
+    await removeJobFromUser(job.owner._id.toString(), id, this.userModel);
 
     for (const applicant of job.applicants) {
-      const user = await this.findUser(applicant.user.toString());
-      user.jobs.applied = user.jobs.applied.filter(
-        (job) => job.toString() !== id,
+      await removeJobFromUser(
+        applicant.user._id.toString(),
+        id,
+        this.userModel,
       );
-      user.markModified('jobs');
-      await user.save();
     }
 
     return await this.jobModel.findByIdAndDelete(id);
   }
 
-  async apply(id: string, userId: string) {
-    const user = await this.findUser(userId);
-    if (user.role !== 'aspirant')
-      throw new ConflictException('User is not an aspirant');
-
-    const job = await this.jobModel.findById(id);
-
-    if (!job) throw new NotFoundException('Job not found');
-
-    if (
-      job.applicants.find((applicant) => applicant.user.toString() === userId)
-    )
-      throw new ConflictException('User already applied');
+  async apply(id: string, applyJobDto: ApplyJobDto) {
+    await validateUrl(applyJobDto.resume);
+    const user = await findUser(applyJobDto.userId, this.userModel);
+    await verifyIsAspirant(user);
+    const job = await findJob(id, this.jobModel);
 
     if (job.maxApplicants === job.applicants.length)
       throw new ConflictException('Job is full');
 
-    job.applicants.push({ user: user._id, status: 'Under review' });
+    const hasApplied = await verifyHasApplied(user, job, false);
+    if (hasApplied) throw new ConflictException('User has already applied');
+
+    job.applicants.push({
+      user: user._id,
+      status: 'Under review',
+      resume: applyJobDto.resume,
+      createdAt: new Date(),
+    });
 
     await job.save();
-
     user.jobs.applied.push(job._id);
     user.markModified('jobs');
-
     await user.save();
-
     return job;
   }
 
   async unapply(id: string, userId: string) {
-    const user = await this.findUser(userId);
-    if (user.role !== 'aspirant')
-      throw new ConflictException('User is not an aspirant');
-
-    const job = await this.jobModel.findById(id);
-
-    if (!job) throw new NotFoundException('Job not found');
-
-    if (
-      !job.applicants.find((applicant) => applicant.user.toString() === userId)
-    )
-      throw new ConflictException('User did not apply');
+    const user = await findUser(userId, this.userModel);
+    await verifyIsAspirant(user);
+    const job = await findJob(id, this.jobModel);
+    verifyHasApplied(user, job, true);
+    await removeJobFromUser(userId, id, this.userModel);
 
     job.applicants = job.applicants.filter(
-      (applicant) => applicant.user.toString() !== userId,
+      (applicant) => applicant.user._id.toString() !== userId,
     );
-
+    console.log(job.applicants);
+    job.markModified('applicants');
     await job.save();
-
-    user.jobs.applied = user.jobs.applied.filter(
-      (job) => job.toString() !== id,
-    );
-    user.markModified('jobs');
-
-    await user.save();
-
     return job;
   }
 
   async updateApplicant(id: string, updateApplicantDto: UpdateApplicantDto) {
     const { userId, status } = updateApplicantDto;
-    const user = await this.findUser(userId);
-    if (user.role !== 'company')
-      throw new ConflictException('User is not a company');
-
-    const job = await this.jobModel.findById(id);
-
-    if (!job) throw new NotFoundException('Job not found');
+    const user = await findUser(userId, this.userModel);
+    verifyIsAspirant(user);
+    const job = await findJob(id, this.jobModel);
+    verifyHasApplied(user, job, true);
 
     const applicant = job.applicants.find(
-      (applicant) => applicant.user.toString() === userId,
+      (applicant) => applicant.user._id.toString() === userId,
     );
-
     if (!applicant) throw new NotFoundException('Applicant not found');
-
     applicant.status = status;
-
+    job.markModified('applicants');
     await job.save();
-
     return job;
   }
 }

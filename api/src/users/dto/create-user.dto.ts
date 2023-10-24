@@ -5,4 +5,5 @@ export class CreateUserDto extends OmitType(User, [
   '_id',
   'jobs',
   'company',
+  'profileImage',
 ] as const) {}

@@ -12,8 +12,6 @@ interface TabBarProps {
   items: TabBarItemProps[]
   variant: 'underlined' | 'solid' | 'light' | 'bordered'
   onSelectionChange?: (index: Key) => void
-  withHr?: boolean
-  tabListClassName?: string
   tabClassName?: string
   tabContentClassName?: string
   cursorClassName?: string
@@ -24,8 +22,6 @@ const TabBar = ({
   items,
   variant,
   onSelectionChange = (index: Key) => {},
-  withHr = false,
-  tabListClassName = 'p-0 gap-6 ',
   tabClassName,
   tabContentClassName = 'p-4',
   cursorClassName,

@@ -1,4 +1,5 @@
 import { serverUrl } from '@/utils/constants/env.const'
+import axios, { type AxiosResponse } from 'axios'
 
 interface Response {
   data: any
@@ -8,44 +9,69 @@ interface Response {
 
 export const putRequest = async (
   url: string,
-  data: object,
+  data: any,
+  withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    },
-    body: JSON.stringify(data)
-  })
+  try {
+    const response: AxiosResponse = await axios.put(
+      `${serverUrl}${url}`,
+      data,
+      {
+        headers: {
+          ...headers,
+          'Content-Type': !withFiles
+            ? 'application/json'
+            : 'multipart/form-data'
+        }
+      }
+    )
 
-  console.log('putRequest', response)
-  return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+    return {
+      data: response.data,
+      error: false,
+      success: true
+    }
+  } catch (error) {
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
 
 export const postRequest = async (
   url: string,
   data: object = {},
+  withFiles: boolean,
   headers?: object
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    },
-    body: JSON.stringify(data)
-  })
+  try {
+    const response: AxiosResponse = await axios.post(
+      `${serverUrl}${url}`,
+      data,
+      {
+        headers: {
+          ...headers,
+          'Content-Type': !withFiles
+            ? 'application/json'
+            : 'multipart/form-data'
+        }
+      }
+    )
 
-  return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+    return {
+      data: response.data,
+      error: false,
+      success: true
+    }
+  } catch (error) {
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
 
@@ -68,7 +94,6 @@ export const deleteRequest = async (
   }
 }
 
-// Must be deprecated
 export const getRequest = async (
   url: string,
   headers: object = {}

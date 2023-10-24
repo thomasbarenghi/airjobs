@@ -1,11 +1,11 @@
-import HeroSection from './components/HeroSection'
-import JobsSection from './components/JobsSection'
+import Content from './_components/Content'
+import type { Metadata } from 'next'
 
-const Home = () => (
-  <>
-    <HeroSection />
-    <JobsSection />
-  </>
-)
+export const metadata: Metadata = {
+  title: 'Find Jobs | Airjobs',
+  themeColor: '#0F03C1'
+}
+
+const Home = () => <Content />
 
 export default Home

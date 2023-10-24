@@ -1,13 +1,19 @@
 import { TextElement } from '@/components'
-import Base from '../components/Base'
+import Base from '../_components/Base'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
-import RegisterForm from './components/RegisterForm'
+import RegisterForm from './_components/RegisterForm'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign Up | Airjobs',
+  themeColor: '#0F03C1'
+}
 
 const SignUp = () => (
   <Base>
-    <div className='flex h-full  flex-col justify-between'>
-      <div className='flex h-full flex-col justify-center gap-5'>
+    <div className='w-full flex  flex-col justify-between h-full'>
+      <div className='flex flex-col justify-center gap-5 h-full'>
         <div>
           <TextElement type='t2' as='h1' className='text-center !font-light'>
             Welcome to <b className='font-semibold'>airjobs</b>
@@ -16,19 +22,18 @@ const SignUp = () => (
             Complete the form to create your account
           </TextElement>
         </div>
-        <div>
+        <div className='overflow-y-auto'>
           <RegisterForm />
         </div>
+        <p className='pt-6 w-full text-center font-light '>
+          Already have an account?{' '}
+          <Link href={Routes.SINGIN} className='font-medium text-primary'>
+            Sign in
+          </Link>
+        </p>
       </div>
-      <p className='mt-6 w-full text-center font-light'>
-        Don&apos;t have an account?{' '}
-        <Link href={Routes.SINGUP} className='font-medium text-primary'>
-          Sign up
-        </Link>
-      </p>
     </div>
   </Base>
 )
 
 export default SignUp
-  
