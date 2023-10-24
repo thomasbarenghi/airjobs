@@ -2,6 +2,7 @@
 import { JobsFlex, TextElement } from '@/components'
 import type { JobInterface } from '@/interfaces/job.interface'
 import Endpoints from '@/utils/constants/endpoints.const'
+import { Skeleton } from '@nextui-org/react'
 import useSWR from 'swr'
 
 interface Props {
@@ -16,9 +17,14 @@ const RelatedJobsSection = ({ jobId }: Props) => {
 
   return (
     <section className='section-reduced flex flex-col gap-5'>
-      <TextElement as='h2' type='t3' className='!font-light'>
-        Another <b className='!font-semibold'>jobs in {data?.country}</b>
-      </TextElement>
+      {isLoading && (
+        <Skeleton className='rounded-full max-w-[250px] h-[20px] ' />
+      )}
+      {!isLoading && (
+        <TextElement as='h2' type='t3' className='!font-light'>
+          Another <b className='!font-semibold'>jobs in {data?.country}</b>
+        </TextElement>
+      )}
       <div className='w-full'>
         <JobsFlex
           jobs={

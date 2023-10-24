@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
           credentials?.password ?? ''
         )
         if (error) {
-          console.log('Error: ', error)
+          console.error('Error: ', error)
           return null
         }
         const userDb = await getUserByEmail(data.userId)

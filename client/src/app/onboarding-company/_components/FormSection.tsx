@@ -8,6 +8,12 @@ import type { CompanyForm } from '@/interfaces/accountForm.interface'
 import { postRequest } from '@/services/apiRequests.service'
 import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
+import {
+  companyDescriptionPattern,
+  companyNamePattern,
+  emailPattern,
+  websitePattern
+} from '@/utils/constants/pattern'
 
 const FormSection = () => {
   const { data: session } = useSession()
@@ -25,7 +31,6 @@ const FormSection = () => {
 
   const onSubmit: SubmitHandler<CompanyForm> = async (data) => {
     try {
-      console.log('data', data)
       const formData = {
         ...data,
         logo: data.logo[0]
@@ -34,7 +39,7 @@ const FormSection = () => {
       const { error } = await postRequest(
         Endpoints.ADD_COMPANY(loggedUser._id),
         formData,
-        false
+        true
       )
 
       if (error) {
@@ -66,6 +71,10 @@ const FormSection = () => {
           hookForm={{
             register,
             validations: {
+              pattern: {
+                value: companyNamePattern.value,
+                message: companyNamePattern.message
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -79,13 +88,9 @@ const FormSection = () => {
           hookForm={{
             register,
             validations: {
-              maxLength: {
-                value: 500,
-                message: 'This field cannot exceed 500 characters'
-              },
-              minLength: {
-                value: 50,
-                message: 'This field must be at least 50 characters'
+              pattern: {
+                value: companyDescriptionPattern.value,
+                message: companyDescriptionPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -100,6 +105,10 @@ const FormSection = () => {
           hookForm={{
             register,
             validations: {
+              pattern: {
+                value: websitePattern.value,
+                message: websitePattern.message
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -114,8 +123,8 @@ const FormSection = () => {
             register,
             validations: {
               pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Muat be a valid email'
+                value: emailPattern.value,
+                message: emailPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -131,7 +140,6 @@ const FormSection = () => {
             register,
             validations: {
               validate: (value: File[]) => {
-                console.log(value)
                 if (!value[0]) return true
                 if (!value[0]?.type?.includes('image')) {
                   return 'File type should be image'
