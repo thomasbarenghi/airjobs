@@ -3,6 +3,12 @@ import Base from '../_components/Base'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
 import RegisterForm from './_components/RegisterForm'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Sign Up | Airjobs',
+  themeColor: '#0F03C1'
+}
 
 const SignUp = () => (
   <Base>

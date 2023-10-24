@@ -1,5 +1,11 @@
 import { TextElement, Button } from '@/components'
 import Routes from '@/utils/constants/routes.const'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Employers | Airjobs',
+  themeColor: '#0F03C1'
+}
 
 const Employers = () => (
   <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-20 '>

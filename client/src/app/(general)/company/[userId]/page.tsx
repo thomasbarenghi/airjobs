@@ -1,5 +1,11 @@
 import JobsSection from './_components/JobsSection'
 import HeroSection from './_components/HeroSection'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Company | Airjobs',
+  themeColor: '#0F03C1'
+}
 
 const Company = ({ params }: { params: { userId: string } }) => (
   <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-10 '>
