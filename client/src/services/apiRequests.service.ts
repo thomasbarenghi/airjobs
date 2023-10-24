@@ -79,18 +79,27 @@ export const deleteRequest = async (
   url: string,
   headers: object = {}
 ): Promise<Response> => {
-  const response = await fetch(`${serverUrl}${url}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    }
-  })
+  try {
+    const response = await fetch(`${serverUrl}${url}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers
+      }
+    })
 
-  return {
-    data: await response.json(),
-    error: !response.ok,
-    success: response.ok
+    return {
+      data: await response.json(),
+      error: !response.ok,
+      success: response.ok
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      data: error,
+      error: true,
+      success: false
+    }
   }
 }
 
