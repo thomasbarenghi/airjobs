@@ -30,6 +30,12 @@ import { postJob } from './postJob'
 import { editJob } from './editJob'
 import { deleteJob } from './deleteJob'
 import type { JobForm } from './jobForm.interface'
+import {
+  descriptionPattern,
+  maxApplicantsPattern,
+  salaryPattern,
+  titlePattern
+} from '@/utils/constants/pattern'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
@@ -94,9 +100,9 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           hookForm={{
             register,
             validations: {
-              maxLength: {
-                value: 50,
-                message: 'This field cannot exceed 50 characters'
+              pattern: {
+                value: titlePattern.value,
+                message: titlePattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -112,13 +118,9 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           hookForm={{
             register,
             validations: {
-              maxLength: {
-                value: 500,
-                message: 'This field cannot exceed 500 characters'
-              },
-              minLength: {
-                value: 50,
-                message: 'This field must be at least 50 characters'
+              pattern: {
+                value: descriptionPattern.value,
+                message: descriptionPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -245,8 +247,8 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
             register,
             validations: {
               pattern: {
-                value: /^[0-9]*$/,
-                message: 'This field must be a number'
+                value: salaryPattern.value,
+                message: salaryPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -256,7 +258,9 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         <Input
           type='number'
           defaultValue={
-            mode === 'edit' && job?.maxApplicants ? job.maxApplicants : undefined
+            mode === 'edit' && job?.maxApplicants
+              ? job.maxApplicants
+              : undefined
           }
           name='maxApplicants'
           label='Max Applicants'
@@ -265,8 +269,8 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
             register,
             validations: {
               pattern: {
-                value: /^[0-9]*$/,
-                message: 'This field must be a number'
+                value: maxApplicantsPattern.value,
+                message: maxApplicantsPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }

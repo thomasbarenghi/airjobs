@@ -8,6 +8,7 @@ import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
 import type { UserForm } from '@/interfaces/accountForm.interface'
 import { validateAdult } from '@/utils/functions/validateAdult'
+import { emailPattern, firstNamePattern, lastNamePattern, usernamePattern } from '@/utils/constants/pattern'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -71,6 +72,10 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             hookForm={{
               register,
               validations: {
+                pattern: {
+                  value: firstNamePattern.value,
+                  message: firstNamePattern.message
+                },
                 required: { value: true, message: 'This field is required' }
               }
             }}
@@ -85,6 +90,10 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             hookForm={{
               register,
               validations: {
+                pattern: {
+                  value: lastNamePattern.value,
+                  message: lastNamePattern.message
+                },
                 required: { value: true, message: 'This field is required' }
               }
             }}
@@ -122,8 +131,8 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
               register,
               validations: {
                 pattern: {
-                  value: /^[a-zA-Z0-9]+$/,
-                  message: 'Must contain only letters and numbers'
+                  value: usernamePattern.value,
+                  message: usernamePattern.message
                 },
                 required: { value: true, message: 'This field is required' }
               }
@@ -140,8 +149,8 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
               register,
               validations: {
                 pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: 'Muat be a valid email'
+                  value: emailPattern.value,
+                  message: emailPattern.message
                 },
                 required: { value: true, message: 'This field is required' }
               }

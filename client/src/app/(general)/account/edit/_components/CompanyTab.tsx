@@ -7,6 +7,12 @@ import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
 import type { CompanyForm } from '@/interfaces/accountForm.interface'
 import type { KeyedMutator } from 'swr'
+import {
+  companyDescriptionPattern,
+  companyNamePattern,
+  emailPattern,
+  websitePattern
+} from '@/utils/constants/pattern'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -66,6 +72,10 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           hookForm={{
             register,
             validations: {
+              pattern: {
+                value: companyNamePattern.value,
+                message: companyNamePattern.message
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -80,13 +90,9 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           hookForm={{
             register,
             validations: {
-              maxLength: {
-                value: 500,
-                message: 'This field cannot exceed 500 characters'
-              },
-              minLength: {
-                value: 50,
-                message: 'This field must be at least 50 characters'
+              pattern: {
+                value: companyDescriptionPattern.value,
+                message: companyDescriptionPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }
@@ -102,6 +108,10 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           hookForm={{
             register,
             validations: {
+              pattern: {
+                value: websitePattern.value,
+                message: websitePattern.message
+              },
               required: { value: true, message: 'This field is required' }
             }
           }}
@@ -117,8 +127,8 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
             register,
             validations: {
               pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: 'Muat be a valid email'
+                value: emailPattern.value,
+                message: emailPattern.message
               },
               required: { value: true, message: 'This field is required' }
             }

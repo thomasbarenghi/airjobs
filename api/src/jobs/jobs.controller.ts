@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
 import { UpdateApplicantDto } from './dto/update-applicant.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApplyJobDto } from './dto/apply-job.dto';

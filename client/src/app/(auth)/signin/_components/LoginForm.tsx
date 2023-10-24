@@ -8,6 +8,7 @@ import type { LoginFormValues } from '../form.interface'
 import Routes from '@/utils/constants/routes.const'
 import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
+import { emailPattern, passwordPattern } from '@/utils/constants/pattern'
 
 const LoginForm = () => {
   const [visibility] = useState(false)
@@ -56,8 +57,8 @@ const LoginForm = () => {
           register,
           validations: {
             pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message: 'Muat be a valid email'
+              value: emailPattern.value,
+              message: emailPattern.message
             },
             required: { value: true, message: 'This field is required' }
           }
@@ -74,9 +75,8 @@ const LoginForm = () => {
           register,
           validations: {
             pattern: {
-              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-              message:
-                'Must contain at least 8 characters, one uppercase, one lowercase and one number'
+              value: passwordPattern.value,
+              message: passwordPattern.message
             },
             required: { value: true, message: 'This field is required' }
           }
