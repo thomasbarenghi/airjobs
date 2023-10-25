@@ -109,7 +109,7 @@ export const getRequest = async (
   url: string,
   headers: object = {},
   next?: {
-    revalidate?: false | 0 | number
+    revalidate?: false | 0 | number | null
     tags?: string[]
     cache?: 'force-cache' | 'no-store'
   }
@@ -118,7 +118,7 @@ export const getRequest = async (
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       next: {
-        revalidate: next?.revalidate ?? 0,
+        revalidate: next?.revalidate === null ? undefined : next?.revalidate ?? 0,
         tags: next?.tags
       },
       cache: next?.cache,

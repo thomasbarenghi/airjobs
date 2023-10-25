@@ -26,7 +26,7 @@ const RelatedJobsSection = async ({ job, error }: Props) => {
       <div className='w-full'>
         <JobsFlex
           jobs={
-            data?.filter((item: JobInterface) => item._id !== job._id) ?? []
+           Array.isArray(data) ? data?.filter((item: JobInterface) => item._id !== job._id) : []
           }
           isLoading={false}
           isError={error}
