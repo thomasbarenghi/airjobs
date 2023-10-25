@@ -3,6 +3,7 @@ import type { UserInterface } from '@/interfaces/user.interface'
 import Routes from '@/utils/constants/routes.const'
 import Image from 'next/image'
 import HeroPlaceholder from './HeroPlaceholder'
+import { revalidatePath } from 'next/cache'
 
 interface Props {
   loggedUser: UserInterface
@@ -13,7 +14,7 @@ const HeroSection = ({ loggedUser, isError }: Props) => {
   if (isError) {
     return <HeroPlaceholder isCompany={loggedUser?.role === 'company'} />
   }
-
+  revalidatePath('/account')
   return (
     <section className='flex flex-col gap-8 section-reduced'>
       <div className='w-full flex flex-col md:flex-row gap-5 justify-between '>

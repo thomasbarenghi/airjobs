@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier-eslint \"**/*.{ts,tsx}\" --write"
+    "format": "prettier-eslint \"**/*.{ts,tsx}\" --write",
+    "prod": "next build && next start"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",

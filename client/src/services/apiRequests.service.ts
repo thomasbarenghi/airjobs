@@ -109,16 +109,16 @@ export const getRequest = async (
   url: string,
   headers: object = {},
   next?: {
-    revalidate?: false | 0 | number | null
+    revalidate?: false | 0 | number
     tags?: string[]
-    cache?: 'force-cache' | 'no-store'
+    cache?: 'force-cache' | 'no-store' | 'no-cache'
   }
 ): Promise<Response> => {
   console.log('getRequest', next)
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       next: {
-        revalidate: next?.revalidate === null ? undefined : next?.revalidate ?? 0,
+        revalidate: next?.revalidate,
         tags: next?.tags
       },
       cache: next?.cache,
@@ -128,9 +128,10 @@ export const getRequest = async (
         ...headers
       }
     })
-
+    const responsejson = await response.json()
+    console.log('response', responsejson, next)
     return {
-      data: await response.json(),
+      data: responsejson,
       error: !response.ok,
       success: response.ok
     }

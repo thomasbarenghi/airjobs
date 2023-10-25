@@ -5,7 +5,7 @@ export const getJob = async (jobId: string) => {
   const { data, error } = await getRequest(
     Endpoints.INDIVIDUAL_JOB(jobId),
     {},
-    { cache: 'force-cache', revalidate: null }
+    { cache: 'force-cache' }
   )
 
   return { data, error }
