@@ -62,7 +62,7 @@ const ModalApply = ({
       await mutate()
       reset()
     } catch (error) {
-      console.error(error)
+      console.error('Error ModalApply catch:', error)
     }
   }
 

@@ -46,13 +46,14 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
 
       if (error) {
         toast.error("Couldn't update your info")
-        throw new Error()
+        console.error('Error UserTab:', error)
+        return
       }
 
       toast.success('Your info has been updated')
       mutate()
     } catch (error) {
-      console.error(error)
+      console.error('Error UserTab catch:', error)
     }
   }
 

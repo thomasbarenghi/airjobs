@@ -24,7 +24,7 @@ const ProfileAction = () => {
             <Menu loggedUser={loggedUser} />
           </DynamicPopover>
         ) : (
-          <Button size='md' title='Iniciar sesión' href={Routes.SINGIN} />
+          <Button size='md' title='Sign In' href={Routes.SINGIN} />
         )}
       </NavbarItem>
     </NavbarContent>

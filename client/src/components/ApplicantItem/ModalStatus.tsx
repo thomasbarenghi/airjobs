@@ -66,13 +66,14 @@ const ModalStatus = ({
 
       if (error) {
         toast.error('Something went wrong, please try again later')
+        console.error('Error ModalStatus:', error)
         return
       }
 
       await mutate()
       toast.success('Applicant status updated successfully')
     } catch (error) {
-      console.error(error)
+      console.error('Error ModalStatus catch:', error)
     }
   }
 

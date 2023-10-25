@@ -47,13 +47,14 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
       )
       if (error) {
         toast.error("Couldn't update your info")
-        throw Error()
+        console.error('Error CompanyTab:', error)
+        return
       }
 
       toast.success('Your info has been updated')
       mutate()
     } catch (error) {
-      console.error(error)
+      console.error('Error CompanyTab catch:', error)
     }
   }
 

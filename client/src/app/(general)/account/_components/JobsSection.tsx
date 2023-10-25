@@ -32,6 +32,7 @@ const JobsSection = () => {
               ? loggedUser?.jobs?.applied ?? []
               : loggedUser?.jobs?.created ?? []
           }
+          isError={false}
           isLoading={isLoading}
         />
       </div>

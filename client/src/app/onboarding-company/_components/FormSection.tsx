@@ -43,7 +43,7 @@ const FormSection = () => {
       )
 
       if (error) {
-        console.error(error)
+        console.error('Error FormSection:', error)
         toast.error('Could not create company')
         return
       }
@@ -53,7 +53,7 @@ const FormSection = () => {
         window.location.href = Routes.HOME
       }, 500)
     } catch (error) {
-      console.error(error)
+      console.error('Error FormSection catch:', error)
     }
   }
 

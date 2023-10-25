@@ -77,7 +77,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         await editJob(formData, router, jobId ?? '')
       }
     } catch (error) {
-      console.error(error)
+      console.error('Error FormSection catch:', error)
     }
   }
 

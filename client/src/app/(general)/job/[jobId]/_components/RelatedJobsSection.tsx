@@ -31,6 +31,7 @@ const RelatedJobsSection = ({ jobId }: Props) => {
             relatedJobs?.filter((job: JobInterface) => job._id !== jobId) ?? []
           }
           isLoading={isLoading}
+          isError={false}
         />
       </div>
     </section>

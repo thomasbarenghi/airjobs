@@ -31,12 +31,13 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
 
       if (error) {
         toast.error('Verify that your old password is correct')
-        throw new Error('Old password verification failed')
+        console.error('Error SecurityTab:', error)
+        return
       }
 
       toast.success('Your password has been updated')
     } catch (error) {
-      console.error(error)
+      console.error('Error SecurityTab catch:', error)
     }
   }
 

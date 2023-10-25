@@ -27,6 +27,7 @@ const JobsSection = ({ userId }: JobsSectionProps) => {
         <JobsFlex
           jobs={currentCompany?.jobs?.created ?? []}
           isLoading={isLoading}
+          isError={false}
         />
       </div>
     </section>
