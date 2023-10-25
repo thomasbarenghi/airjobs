@@ -22,14 +22,7 @@ const HeroSection = ({ job, loggedUser, isError }: Props) => {
     fallbackData: job,
     revalidateIfStale: false
   })
-  console.log(
-    'data:',
-    data.applicants,
-    loggedUser._id,
-    data?.applicants?.some(
-      (data: ApplicantsEnum) => data?.user?._id === loggedUser?._id
-    )
-  )
+
   const isOwner = data?.owner?._id === loggedUser?._id
   const hasApplied = data?.applicants?.some(
     (data: ApplicantsEnum) => data?.user?._id === loggedUser?._id

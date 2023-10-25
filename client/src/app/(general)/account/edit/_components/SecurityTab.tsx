@@ -1,4 +1,3 @@
-'use client'
 import { Input, Button } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'

@@ -1,21 +1,18 @@
-'use client'
 import { Button, TextElement } from '@/components'
 import type { UserInterface } from '@/interfaces/user.interface'
-import Endpoints from '@/utils/constants/endpoints.const'
 import Routes from '@/utils/constants/routes.const'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import useSWR from 'swr'
+import HeroPlaceholder from './HeroPlaceholder'
 
 interface Props {
-  jobId: string
+  loggedUser: UserInterface
+  isError: boolean
 }
 
-const HeroSection = ({ jobId }: Props) => {
-  const { data: session } = useSession()
-  const { data: loggedUser } = useSWR<UserInterface>(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
+const HeroSection = ({ loggedUser, isError }: Props) => {
+  if (isError) {
+    return <HeroPlaceholder isCompany={loggedUser?.role === 'company'} />
+  }
 
   return (
     <section className='flex flex-col gap-8 section-reduced'>
@@ -26,9 +23,6 @@ const HeroSection = ({ jobId }: Props) => {
             height={85}
             src={loggedUser?.profileImage ?? '/image/placeholder.png'}
             alt="Profile's image"
-            onError={(e) => {
-              e.currentTarget.src = '/image/placeholder.png'
-            }}
             className='object-cover rounded-full aspect-square'
           />
           <div className='flex flex-col gap-1 justify-center '>

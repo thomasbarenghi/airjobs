@@ -118,10 +118,10 @@ export const getRequest = async (
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       next: {
-        revalidate: next?.revalidate,
+        revalidate: next?.revalidate ?? 0,
         tags: next?.tags
       },
-      cache: next?.cache ?? 'force-cache',
+      cache: next?.cache,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
