@@ -107,6 +107,13 @@ export class JobsService {
     user.jobs.applied.push(job._id);
     user.markModified('jobs');
     await user.save();
+
+    const index = job.applicants.findIndex(
+      (applicant) => applicant.user.toString() === user._id.toString(),
+    );
+
+    job.applicants[index].user = user;
+    
     return job;
   }
 

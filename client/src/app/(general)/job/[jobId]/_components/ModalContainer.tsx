@@ -1,7 +1,4 @@
-'use client'
-
-import type { StatusEnum } from '@/interfaces/job.interface'
-
+import type { JobInterface, StatusEnum } from '@/interfaces/job.interface'
 import ModalApply from './ModalApply'
 import ModalUnapply from './ModalUnapply'
 import ModalStatus from './ModalStatus'
@@ -16,10 +13,10 @@ interface ModalContainerProps {
   isOpenStatus: boolean
   onOpenChangeStatus: () => void
   applicantStatus: StatusEnum
-  data: any
+  data: JobInterface
   loggedUser: UserInterface
-  mutate: KeyedMutator<any>
   hasApplied: boolean
+  mutate: KeyedMutator<any>
 }
 
 const ModalContainer = ({
@@ -32,8 +29,8 @@ const ModalContainer = ({
   applicantStatus,
   data,
   loggedUser,
-  mutate,
-  hasApplied
+  hasApplied,
+  mutate
 }: ModalContainerProps) => (
   <>
     <ModalApply
@@ -41,8 +38,8 @@ const ModalContainer = ({
       onOpenChange={onOpenChange}
       job={data}
       loggedUser={loggedUser ?? {}}
-      mutate={mutate}
       hasApplied={hasApplied}
+      mutate={mutate}
     />
     <ModalUnapply
       isOpen={isOpenUnapply}

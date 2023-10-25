@@ -1,4 +1,3 @@
-'use client'
 import {
   Input,
   Textarea,
@@ -6,7 +5,6 @@ import {
   TextElement,
   Button
 } from '@/components'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import type {
@@ -24,8 +22,6 @@ import {
   seniorityData,
   typeData
 } from '../create-job/selectsData'
-import useSWR from 'swr'
-import Endpoints from '@/utils/constants/endpoints.const'
 import { postJob } from './postJob'
 import { editJob } from './editJob'
 import { deleteJob } from './deleteJob'
@@ -36,21 +32,16 @@ import {
   salaryPattern,
   titlePattern
 } from '@/utils/constants/pattern'
+import type { UserInterface } from '@/interfaces/user.interface'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
-  jobId?: string
+  job?: JobInterface
+  loggedUser: UserInterface
 }
 
-const FormSection = ({ mode, jobId }: FormSectionProps) => {
+const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
   const router = useRouter()
-  const { data: job } = useSWR<JobInterface>(
-    Endpoints.INDIVIDUAL_JOB(jobId ?? '')
-  )
-  const { data: session } = useSession()
-  const { data: loggedUser } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
 
   const {
     register,
@@ -74,7 +65,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
       if (mode === 'create') {
         await postJob(formData, router)
       } else {
-        await editJob(formData, router, jobId ?? '')
+        await editJob(formData, router, job?._id ?? '')
       }
     } catch (error) {
       console.error('Error FormSection catch:', error)
@@ -311,7 +302,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
               className='mt-4'
               color='danger'
               onPress={() => {
-                deleteJob(jobId ?? '', router)
+                deleteJob(job?._id ?? '', router)
               }}
             />
           )}

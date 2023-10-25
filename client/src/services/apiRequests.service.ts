@@ -121,7 +121,7 @@ export const getRequest = async (
         revalidate: next?.revalidate,
         tags: next?.tags
       },
-      cache: next?.cache,
+      cache: next?.cache ?? 'force-cache',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

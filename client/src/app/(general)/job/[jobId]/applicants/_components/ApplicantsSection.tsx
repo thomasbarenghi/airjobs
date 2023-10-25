@@ -5,21 +5,21 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import useSWR from 'swr'
 
 interface JobsSectionProps {
-  jobId: string
+  job: JobInterface
 }
 
-const ApplicantsSection = ({ jobId }: JobsSectionProps) => {
-  const { data: currentJob, mutate, isLoading } = useSWR<JobInterface>(
-    Endpoints.INDIVIDUAL_JOB(jobId)
-  )
+const ApplicantsSection = ({ job }: JobsSectionProps) => {
+  const { data, mutate } = useSWR(Endpoints.INDIVIDUAL_JOB(job._id), {
+    fallbackData: job, revalidateIfStale: false
+  })
 
   return (
     <section className='flex flex-col gap-10 section-reduced'>
       <ApplicantsFlex
-        applicants={currentJob?.applicants ?? []}
+        applicants={data?.applicants}
+        job={data}
+        isLoading={false}
         mutate={mutate}
-        job={currentJob}
-        isLoading={isLoading}
       />
     </section>
   )
