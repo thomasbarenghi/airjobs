@@ -33,6 +33,7 @@ export const putRequest = async (
       success: true
     }
   } catch (error) {
+    console.error('Error putRequest:', error)
     return {
       data: error,
       error: true,
@@ -67,6 +68,7 @@ export const postRequest = async (
       success: true
     }
   } catch (error) {
+    console.error('Error postRequest:', error)
     return {
       data: error,
       error: true,
@@ -94,7 +96,7 @@ export const deleteRequest = async (
       success: response.ok
     }
   } catch (error) {
-    console.error(error)
+    console.error('Error deleteRequest:', error)
     return {
       data: error,
       error: true,
@@ -105,24 +107,36 @@ export const deleteRequest = async (
 
 export const getRequest = async (
   url: string,
-  headers: object = {}
+  headers: object = {},
+  next?: {
+    revalidate?: false | 0 | number
+    tags?: string[]
+    cache?: 'force-cache' | 'no-store' | 'no-cache'
+  }
 ): Promise<Response> => {
+  console.log('getRequest', next)
   try {
     const response = await fetch(`${serverUrl}${url}`, {
+      next: {
+        revalidate: next?.revalidate,
+        tags: next?.tags
+      },
+      cache: next?.cache,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         ...headers
       }
     })
-
+    const responsejson = await response.json()
+    console.log('response', responsejson, next)
     return {
-      data: await response.json(),
+      data: responsejson,
       error: !response.ok,
       success: response.ok
     }
   } catch (error) {
-    console.error(error)
+    console.error('Error getRequest:', error)
     return {
       data: error,
       error: true,

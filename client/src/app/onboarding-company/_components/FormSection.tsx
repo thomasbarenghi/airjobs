@@ -1,7 +1,6 @@
 'use client'
 import { Button, Input, Textarea } from '@/components'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { useSession } from 'next-auth/react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import type { CompanyForm } from '@/interfaces/accountForm.interface'
@@ -14,11 +13,19 @@ import {
   emailPattern,
   websitePattern
 } from '@/utils/constants/pattern'
+import type { UserInterface } from '@/interfaces/user.interface'
 
-const FormSection = () => {
-  const { data: session } = useSession()
+interface Props {
+  user: UserInterface
+}
+
+const FormSection = ({ user }: Props) => {
   const { data: loggedUser, mutate } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
+    Endpoints.USER_BY_EMAIL(user?.email ?? ''),
+    {
+      fallbackData: user,
+      revalidateIfStale: false
+    }
   )
 
   const {
@@ -43,7 +50,7 @@ const FormSection = () => {
       )
 
       if (error) {
-        console.error(error)
+        console.error('Error FormSection:', error)
         toast.error('Could not create company')
         return
       }
@@ -53,7 +60,7 @@ const FormSection = () => {
         window.location.href = Routes.HOME
       }, 500)
     } catch (error) {
-      console.error(error)
+      console.error('Error FormSection catch:', error)
     }
   }
 

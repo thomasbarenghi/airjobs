@@ -47,7 +47,7 @@ const Button = ({
   className = '',
   startContent,
   endContent,
-  href = '',
+  href,
   onClick = () => {},
   spinnerPlacement = 'end',
   spinnerSize = 'sm',
@@ -56,7 +56,7 @@ const Button = ({
   target = '_self'
 }: ButtonProps) => (
   <ButtonUI
-    as={href.length > 0 ? Link : 'button'}
+    as={href && href.length > 0 ? Link : 'button'}
     href={href}
     color={color}
     variant={variant}

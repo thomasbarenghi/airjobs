@@ -32,13 +32,13 @@ const LoginForm = () => {
       })
 
       if (res?.error) {
-        console.error(res.error)
+        console.error('Error signin:', res.error)
         return toast.error('Check your credentials, something went wrong')
       }
 
       router.push(Routes.HOME)
     } catch (error) {
-      console.error(error)
+      console.error('Error signin catch:', error)
     }
   }
 

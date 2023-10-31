@@ -1,18 +1,17 @@
-'use client'
 import { TextElement } from '@/components'
 import type { UserInterface } from '@/interfaces/user.interface'
-import Endpoints from '@/utils/constants/endpoints.const'
 import Image from 'next/image'
-import useSWR from 'swr'
+import HeroPlaceholder from './HeroPlaceholder'
 
 interface Props {
-  userId: string
+  user: UserInterface
+  isError: boolean
 }
 
-const HeroSection = ({ userId }: Props) => {
-  const { data: currentCompany } = useSWR<UserInterface>(
-    Endpoints.USER_BY_ID(userId ?? '')
-  )
+const HeroSection = ({ user, isError }: Props) => {
+  if (isError) {
+    return <HeroPlaceholder />
+  }
 
   return (
     <section className='flex flex-col gap-8 section-reduced'>
@@ -21,11 +20,8 @@ const HeroSection = ({ userId }: Props) => {
           <Image
             width={80}
             height={80}
-            src={currentCompany?.company?.logo ?? '/image/placeholder.png'}
+            src={user?.company?.logo ?? '/image/placeholder.png'}
             alt="Logo's image"
-            onError={(e) => {
-              e.currentTarget.src = '/image/placeholder.png'
-            }}
             className='object-cover rounded-lg aspect-square'
           />
           <div className='flex flex-col gap-1 justify-center '>
@@ -34,22 +30,22 @@ const HeroSection = ({ userId }: Props) => {
               type='t3'
               className='!font-semibold leading-[24px] '
             >
-              {currentCompany?.company?.name}
+              {user?.company?.name}
             </TextElement>
             <TextElement as='p' type='base' className='!font-light'>
-              {currentCompany?.company?.email}
+              {user?.company?.email}
             </TextElement>
           </div>
         </div>
       </div>
-      {currentCompany?.role === 'company' && (
+      {user?.role === 'company' && (
         <div className='flex flex-col gap-5'>
           <TextElement
             as='p'
             type='base'
             className='!font-light leading-[165%] text-gray-900'
           >
-            {currentCompany?.company?.description}
+            {user?.company?.description}
           </TextElement>
           <div className='flex flex-col gap-1'>
             <TextElement
@@ -58,7 +54,7 @@ const HeroSection = ({ userId }: Props) => {
               className='!font-light text-gray-900'
             >
               Company website:{' '}
-              <b className='font-semibold'>{currentCompany?.company?.website}</b>
+              <b className='font-semibold'>{user?.company?.website}</b>
             </TextElement>
             <TextElement
               as='p'
@@ -66,7 +62,7 @@ const HeroSection = ({ userId }: Props) => {
               className='!font-light text-gray-900'
             >
               Company email:{' '}
-              <b className='font-semibold'>{currentCompany?.company?.email}</b>
+              <b className='font-semibold'>{user?.company?.email}</b>
             </TextElement>
           </div>
         </div>

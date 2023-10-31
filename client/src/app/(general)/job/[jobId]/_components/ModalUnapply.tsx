@@ -12,13 +12,14 @@ import {
   ModalHeader
 } from '@nextui-org/react'
 import { toast } from 'sonner'
+import type { KeyedMutator } from 'swr'
 
 interface ModalUnapplyProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   job: JobInterface
-  loggedUser: UserInterface | any
-  mutate: any
+  loggedUser: UserInterface
+  mutate: KeyedMutator<any>
 }
 
 const ModalUnapply = ({
@@ -30,7 +31,7 @@ const ModalUnapply = ({
 }: ModalUnapplyProps) => {
   const handleUnapply = async () => {
     try {
-      const { error } = await postRequest(
+      const { error, data: updatedData } = await postRequest(
         Endpoints.UNAPPLY_JOB(job._id),
         {
           userId: loggedUser?._id ?? ''
@@ -38,12 +39,15 @@ const ModalUnapply = ({
         false
       )
       if (error) {
+        console.error('Error ModalUnapply:', error)
         toast.error('Something went wrong, please try again later')
       }
-      await mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
       toast.success('You have unapplied to this job')
     } catch (error) {
-      console.error(error)
+      console.error('Error ModalUnapply catch:', error)
     }
   }
 

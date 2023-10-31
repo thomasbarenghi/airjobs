@@ -29,7 +29,7 @@ export const loginUser = async (email: string, password: string) => {
       error: data.error
     }
   } catch (error) {
-    console.error(error)
+    console.error('Error loginUser catch:', error)
     return {
       data: undefined,
       error: { status: 500, message: 'internal server error' }

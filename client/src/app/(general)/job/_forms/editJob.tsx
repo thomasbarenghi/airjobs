@@ -14,7 +14,8 @@ export const editJob = async (formData: JobForm, router: AppRouterInstance, jobI
 
   if (error) {
     toast.error("Couldn't edit job")
-    throw Error()
+    console.error('Error editJob:', error)
+    return
   }
 
   router.push(Routes.INDIVIDUAL_JOB(jobId))

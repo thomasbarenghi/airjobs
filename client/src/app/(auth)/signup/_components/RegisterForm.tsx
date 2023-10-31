@@ -45,14 +45,14 @@ const LoginForm = () => {
       const { error } = await postRequest(Endpoints.REGISTER, formData, false)
       if (error) {
         toast.error("Couldn't create your account, try again later")
-        console.error(error)
-        throw new Error()
+        console.error('Error signup:', error)
+        return
       }
 
       toast.success('Your account has been created')
       router.push(Routes.SINGIN)
     } catch (error) {
-      console.error(error)
+      console.error('Error signup catch:', error)
     }
   }
 

@@ -1,4 +1,3 @@
-'use client'
 import { Input, Button } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
@@ -8,7 +7,12 @@ import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
 import type { UserForm } from '@/interfaces/accountForm.interface'
 import { validateAdult } from '@/utils/functions/validateAdult'
-import { emailPattern, firstNamePattern, lastNamePattern, usernamePattern } from '@/utils/constants/pattern'
+import {
+  emailPattern,
+  firstNamePattern,
+  lastNamePattern,
+  usernamePattern
+} from '@/utils/constants/pattern'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -38,7 +42,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
         form.append(key, formData[key])
       }
 
-      const { error } = await putRequest(
+      const { error, data: updatedData } = await putRequest(
         Endpoints.EDIT_USER(loggedUser._id),
         form,
         true
@@ -46,13 +50,16 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
 
       if (error) {
         toast.error("Couldn't update your info")
-        throw new Error()
+        console.error('Error UserTab:', error)
+        return
       }
 
       toast.success('Your info has been updated')
-      mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
     } catch (error) {
-      console.error(error)
+      console.error('Error UserTab catch:', error)
     }
   }
 

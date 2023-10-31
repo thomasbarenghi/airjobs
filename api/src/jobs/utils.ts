@@ -48,13 +48,19 @@ export const findJob = async (
   id: string,
   jobModel: Model<Job>,
 ): Promise<JobDocument> => {
-  const job = await jobModel.findById(id).populate([
-    {
-      path: 'owner',
-      model: 'User',
-    },
-    { path: 'applicants.user', model: 'User' },
-  ]);
+  const job = await jobModel
+    .findById(id)
+    .populate([
+      {
+        path: 'owner',
+        model: 'User',
+      },
+      { path: 'applicants.user', model: 'User' },
+    ])
+    .catch((err) => {
+      console.log(err);
+      throw new NotFoundException('Job not found');
+    });
 
   if (!job) throw new NotFoundException('Job not found');
 

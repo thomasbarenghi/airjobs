@@ -1,4 +1,3 @@
-'use client'
 import { Input, Button, Textarea } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
@@ -40,20 +39,23 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
         formData.append(e, form[e])
       }
 
-      const { error } = await putRequest(
+      const { error, data: updatedData } = await putRequest(
         Endpoints.EDIT_COMPANY(loggedUser._id),
         formData,
         true
       )
       if (error) {
         toast.error("Couldn't update your info")
-        throw Error()
+        console.error('Error CompanyTab:', error)
+        return
       }
 
       toast.success('Your info has been updated')
-      mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
     } catch (error) {
-      console.error(error)
+      console.error('Error CompanyTab catch:', error)
     }
   }
 

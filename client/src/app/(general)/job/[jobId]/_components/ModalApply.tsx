@@ -13,14 +13,15 @@ import {
 } from '@nextui-org/react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import type { KeyedMutator } from 'swr'
 
 interface ModalApplyProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   job: JobInterface
-  loggedUser: UserInterface | any
-  mutate: any
+  loggedUser: UserInterface
   hasApplied: boolean
+  mutate: KeyedMutator<any>
 }
 
 const ModalApply = ({
@@ -28,8 +29,8 @@ const ModalApply = ({
   onOpenChange,
   job,
   loggedUser,
-  mutate,
-  hasApplied
+  hasApplied,
+  mutate
 }: ModalApplyProps) => {
   const {
     register,
@@ -47,8 +48,8 @@ const ModalApply = ({
         resume: data.resume[0],
         userId: loggedUser._id
       }
-
-      const { error } = await postRequest(
+      console.log('previo:', job)
+      const { error, data: updatedData } = await postRequest(
         Endpoints.APPLY_JOB(job._id),
         formData,
         true
@@ -57,12 +58,15 @@ const ModalApply = ({
         toast.error('Something went wrong, please try again later')
         return
       }
+      console.log('posterior:', updatedData)
 
       toast.success('You have applied to this job')
-      await mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
       reset()
     } catch (error) {
-      console.error(error)
+      console.error('Error ModalApply catch:', error)
     }
   }
 

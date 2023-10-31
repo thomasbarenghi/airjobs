@@ -1,36 +1,35 @@
-'use client'
 import { JobsFlex, TextElement } from '@/components'
 import type { JobInterface } from '@/interfaces/job.interface'
+import { getRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { Skeleton } from '@nextui-org/react'
-import useSWR from 'swr'
 
 interface Props {
-  jobId: string
+  job: JobInterface
+  error: boolean
 }
 
-const RelatedJobsSection = ({ jobId }: Props) => {
-  const { data, isLoading } = useSWR(Endpoints.INDIVIDUAL_JOB(jobId))
-  const { data: relatedJobs } = useSWR(
-    Endpoints.ALL_JOBS + `?country=${data?.country}`
+const RelatedJobsSection = async ({ job, error }: Props) => {
+  const { data } = await getRequest(
+    Endpoints.ALL_JOBS + `?country=${job?.country}`,
+    {}
   )
 
   return (
     <section className='section-reduced flex flex-col gap-5'>
-      {isLoading && (
-        <Skeleton className='rounded-full max-w-[250px] h-[20px] ' />
-      )}
-      {!isLoading && (
+      {error ? (
+        <div className='h-[20px] w-[150px] rounded-full bg-gray-100' />
+      ) : (
         <TextElement as='h2' type='t3' className='!font-light'>
-          Another <b className='!font-semibold'>jobs in {data?.country}</b>
+          Another <b className='!font-semibold'>jobs in {job?.country}</b>
         </TextElement>
       )}
       <div className='w-full'>
         <JobsFlex
           jobs={
-            relatedJobs?.filter((job: JobInterface) => job._id !== jobId) ?? []
+           Array.isArray(data) ? data?.filter((item: JobInterface) => item._id !== job._id) : []
           }
-          isLoading={isLoading}
+          isLoading={false}
+          isError={error}
         />
       </div>
     </section>

@@ -10,7 +10,8 @@ export const postJob = async (formData: JobForm, router: AppRouterInstance) => {
 
   if (error) {
     toast.error("Couldn't create job")
-    throw Error()
+    console.error('Error postJob:', error)
+    return
   }
 
   router.push(Routes.ACCOUNT)
