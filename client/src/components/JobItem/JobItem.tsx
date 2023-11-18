@@ -2,7 +2,7 @@ import Image from 'next/image'
 import type { JobInterface } from '@/interfaces/job.interface'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
-import { formatTimeAgo } from '@/utils/functions/formatTimeAgo'
+import { formatTimeAgo } from '@/utils/functions/formatTimeAgo.utils'
 import { JobChips, TextElement } from '@/components'
 
 interface JobItemProps {
@@ -11,43 +11,31 @@ interface JobItemProps {
 
 const JobItem = ({ job }: JobItemProps) => (
   <Link href={Routes.INDIVIDUAL_JOB(job?._id)}>
-    <div className='flex flex-col lg:flex-row w-full py-5 gap-5 px-5 lg:px-10 justify-between items-center cursor-pointer rounded-[30px] border border-violet-100'>
-      <div className='flex gap-4 w-full lg:w-[40%] xl:w-[50%] 2xl:w-[60%] '>
+    <div className='flex w-full cursor-pointer flex-col items-center justify-between gap-5 rounded-[30px] border border-violet-100 px-5 py-5 lg:flex-row lg:px-10'>
+      <div className='flex w-full gap-4 lg:w-[40%] xl:w-[50%] 2xl:w-[60%] '>
         <Image
           src={job?.owner?.company?.logo}
           alt={job?.owner?.company?.name}
           width={50}
           height={50}
-          className='object-cover rounded-lg aspect-square h-[50px] w-[50px] '
+          className='aspect-square h-[50px] w-[50px] rounded-lg object-cover '
         />
         <div className='flex flex-col justify-center '>
-          <TextElement
-            as='p'
-            type='base'
-            className='!font-semibold leading-[20px] '
-          >
+          <TextElement as='p' type='base' className='!font-semibold leading-[20px] '>
             {job.title}
           </TextElement>
-          <TextElement
-            as='p'
-            type='small'
-            className='!font-light !text-neutral-600'
-          >
+          <TextElement as='p' type='small' className='!font-light !text-neutral-600'>
             {job?.owner?.company?.name}
           </TextElement>
         </div>
       </div>
-      <div className='flex flex-grow lg:w-auto flex-col gap-4 md:flex-row w-full  justify-between'>
+      <div className='flex w-full flex-grow flex-col justify-between gap-4 md:flex-row  lg:w-auto'>
         <JobChips job={job} />
-        <div className='flex gap-10 md:justify-end justify-between items-center'>
+        <div className='flex items-center justify-between gap-10 md:justify-end'>
           <TextElement as='p' type='small' className='!font-semibold'>
             {job.country}
           </TextElement>
-          <TextElement
-            as='p'
-            type='small'
-            className='!font-light text-neutral-600'
-          >
+          <TextElement as='p' type='small' className='!font-light text-neutral-600'>
             {formatTimeAgo(job.createdAt)}
           </TextElement>
         </div>

@@ -11,10 +11,7 @@ const HeaderNav = () => {
         (item, index) =>
           item.visible && (
             <Link href={item.href} key={index}>
-              <NavbarItem
-                isActive={pathname === item.href}
-                className='text-black'
-              >
+              <NavbarItem isActive={pathname === item.href} className='text-black'>
                 {item.name}
               </NavbarItem>
             </Link>

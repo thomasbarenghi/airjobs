@@ -16,7 +16,7 @@ const EditJob = async ({ params }: { params: { jobId: string } }) => {
   const { data: loggedUser } = await getUser(session?.user?.email as string)
 
   return (
-    <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-10 '>
+    <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-10 pt-4 '>
       <FormSection mode='edit' job={job} loggedUser={loggedUser} />
     </article>
   )

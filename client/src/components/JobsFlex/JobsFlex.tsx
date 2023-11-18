@@ -10,15 +10,12 @@ interface JobsFlexProps {
 }
 
 const JobsFlex = ({ jobs, isLoading, isError }: JobsFlexProps) => (
-  <div className='flex flex-col w-full  gap-5'>
+  <div className='flex w-full flex-col  gap-5'>
     {isLoading && <Skeleton />}
     {(!isLoading && (jobs?.length < 1 || jobs === undefined)) || isError ? (
       <Placeholder isError={isError} />
     ) : (
-      Array.isArray(jobs) &&
-      jobs?.map((job: JobInterface, index: number) => (
-        <JobItem key={job._id} job={job} />
-      ))
+      Array.isArray(jobs) && jobs?.map((job: JobInterface, index: number) => <JobItem key={job._id} job={job} />)
     )}
   </div>
 )

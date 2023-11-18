@@ -1,7 +1,7 @@
 import { JobItemSkeleton } from '@/components'
 
 const Skeleton = () => (
-  <div className='flex flex-col w-full  gap-5'>
+  <div className='flex w-full flex-col  gap-5'>
     <JobItemSkeleton />
     <JobItemSkeleton />
     <JobItemSkeleton />

@@ -6,9 +6,7 @@ interface TabBarItemProps {
   visible?: boolean
 }
 
-export const itemsTabBuilder = (
-  loggedUser: UserInterface
-): TabBarItemProps[] => [
+export const itemsTabBuilder = (loggedUser: UserInterface): TabBarItemProps[] => [
   {
     title: 'Applied Jobs',
     content: <></>,

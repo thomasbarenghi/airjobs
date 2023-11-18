@@ -5,19 +5,19 @@ import { useRef } from 'react'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import type { RegisterForm } from '../form.interface'
 import type { RoleEnum } from '@/interfaces/user.interface'
-import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect'
+import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect.utils'
 import { postRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import Routes from '@/utils/constants/routes.const'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { validateAdult } from '@/utils/functions/validateAdult'
+import { validateAdult } from '@/utils/functions/validateAdult.utils'
 import {
   emailPattern,
   firstNamePattern,
   lastNamePattern,
   passwordPattern,
   usernamePattern
-} from '@/utils/constants/pattern'
+} from '@/utils/constants/pattern.const'
 
 const roleData = convertArrayToValueLabelArray(['company', 'aspirant'])
 
@@ -59,7 +59,7 @@ const LoginForm = () => {
   return (
     <>
       <form
-        className='w-full flex flex-col h-auto items-center gap-2  '
+        className='flex h-auto w-full flex-col items-center gap-2  '
         onSubmit={handleSubmit(onSubmit)}
         ref={formRef}
       >
@@ -186,13 +186,7 @@ const LoginForm = () => {
           }}
           errorMessage={errors?.password?.message?.toString()}
         />
-        <Button
-          type='submit'
-          fullWidth
-          isLoading={isSubmitting}
-          spinnerPlacement='start'
-          className='mt-2'
-        >
+        <Button type='submit' fullWidth isLoading={isSubmitting} spinnerPlacement='start' className='mt-2'>
           Register
         </Button>
       </form>

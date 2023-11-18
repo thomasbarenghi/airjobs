@@ -14,7 +14,7 @@ const CreateJob = async () => {
   const { data: loggedUser } = await getUser(session?.user?.email as string)
 
   return (
-    <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-20 '>
+    <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-20 pt-4 '>
       <FormSection mode='create' loggedUser={loggedUser} />
     </article>
   )

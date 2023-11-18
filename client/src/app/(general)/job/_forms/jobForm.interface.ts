@@ -1,9 +1,4 @@
-import type {
-  CurrencyEnum,
-  LocationEnum,
-  SeniorityEnum,
-  TypeEnum
-} from '@/interfaces/job.interface'
+import type { CurrencyEnum, LocationEnum, SeniorityEnum, TypeEnum } from '@/interfaces/job.interface'
 
 export interface JobForm {
   title: string

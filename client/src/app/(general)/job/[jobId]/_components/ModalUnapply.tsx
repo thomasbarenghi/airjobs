@@ -4,13 +4,7 @@ import type { JobInterface } from '@/interfaces/job.interface'
 import type { UserInterface } from '@/interfaces/user.interface'
 import { postRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader
-} from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
 import { toast } from 'sonner'
 import type { KeyedMutator } from 'swr'
 
@@ -22,13 +16,7 @@ interface ModalUnapplyProps {
   mutate: KeyedMutator<any>
 }
 
-const ModalUnapply = ({
-  isOpen,
-  onOpenChange,
-  job,
-  loggedUser,
-  mutate
-}: ModalUnapplyProps) => {
+const ModalUnapply = ({ isOpen, onOpenChange, job, loggedUser, mutate }: ModalUnapplyProps) => {
   const handleUnapply = async () => {
     try {
       const { error, data: updatedData } = await postRequest(
@@ -56,16 +44,13 @@ const ModalUnapply = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='flex flex-col gap-1'>
-              Unapplay to {job?.title}
-            </ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>Unapplay to {job?.title}</ModalHeader>
             <ModalBody>
               <TextElement as='p' type='base' className='!font-light '>
                 You are about to unapply to this job. Are you sure?
                 <br />
                 <br />
-                If you regret your decision, you can always apply again, but you
-                will be placed at the end of the queue.
+                If you regret your decision, you can always apply again, but you will be placed at the end of the queue.
                 <br />
               </TextElement>
             </ModalBody>

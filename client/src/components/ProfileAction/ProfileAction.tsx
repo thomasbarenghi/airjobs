@@ -9,18 +9,13 @@ import { NavbarContent, NavbarItem } from '@nextui-org/react'
 
 const ProfileAction = () => {
   const { data: session, status } = useSession()
-  const { data: loggedUser } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
+  const { data: loggedUser } = useSWR(Endpoints.USER_BY_EMAIL(session?.user?.email ?? ''))
 
   return (
     <NavbarContent>
       <NavbarItem className='flex items-center gap-2'>
         {status === 'authenticated' ? (
-          <DynamicPopover
-            image={loggedUser?.profileImage}
-            backdrop='transparent'
-          >
+          <DynamicPopover image={loggedUser?.profileImage} backdrop='transparent'>
             <Menu loggedUser={loggedUser} />
           </DynamicPopover>
         ) : (

@@ -46,8 +46,7 @@ export class Company {
 
   @Prop({
     required: true,
-    default:
-      'https://beekin-challenge.vercel.app/image/placeholder.png',
+    default: 'https://airjobs.vercel.app/image/placeholder.png',
   })
   logo: string;
 
@@ -98,8 +97,7 @@ export class User {
 
   @Prop({
     required: true,
-    default:
-      'https://beekin-challenge.vercel.app/image/placeholder.png',
+    default: 'https://airjobs.vercel.app/image/placeholder.png',
   })
   profileImage: string;
 

@@ -8,11 +8,11 @@ interface JobsSectionProps {
 }
 
 const JobsSection = ({ user, isError }: JobsSectionProps) => (
-  <section className='flex flex-col gap-10 section-reduced'>
-    <div className='flex flex-col gap-5 w-full'>
+  <section className='section-reduced flex flex-col gap-10'>
+    <div className='flex w-full flex-col gap-5'>
       <div>
         {isError ? (
-          <div className='gap-1 flex flex-col'>
+          <div className='flex flex-col gap-1'>
             <div className='h-[20px] w-[150px] rounded-full bg-gray-100' />
             <div className='h-[15px] w-[200px] rounded-full bg-gray-100' />
           </div>
@@ -27,11 +27,7 @@ const JobsSection = ({ user, isError }: JobsSectionProps) => (
           </>
         )}
       </div>
-      <JobsFlex
-        jobs={user?.jobs?.created ?? []}
-        isLoading={false}
-        isError={isError}
-      />
+      <JobsFlex jobs={user?.jobs?.created ?? []} isLoading={false} isError={isError} />
     </div>
   </section>
 )

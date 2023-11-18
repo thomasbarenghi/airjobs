@@ -15,8 +15,8 @@ const JobsSection = async ({ searchParams: query }: JobsSectionProps) => {
   )
 
   return (
-    <section className='flex justify-center section-padding-x-1'>
-      <div className='2xl:container w-full py-10'>
+    <section className='section-padding-x-1 flex justify-center'>
+      <div className='w-full py-10 2xl:container'>
         <JobsFlex jobs={data ?? []} isLoading={false} isError={error} />
       </div>
     </section>

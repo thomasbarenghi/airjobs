@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
-import HeroSection from './_components/HeroSection'
-import JobsSection from './_components/JobsSection'
+import HeroSection from './_components/Hero'
+import JobsSection from './_components/Jobs'
 import type { Metadata } from 'next'
 import { authOptions } from '@/utils/authOptions'
 import { getUser } from '@/services/user/getUser.service'
@@ -12,14 +12,12 @@ export const metadata: Metadata = {
 
 const Account = async () => {
   const session = await getServerSession(authOptions)
-  const { data: loggedUser, error } = await getUser(
-    session?.user?.email as string
-  )
+  const { data: loggedUser, error } = await getUser(session?.user?.email as string)
 
   return (
-    <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-20 '>
+    <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-20 pt-4 '>
       <HeroSection loggedUser={loggedUser} isError={error} />
-      <section className='flex flex-col gap-10 section-reduced'>
+      <section className='section-reduced flex flex-col gap-10'>
         <hr />
       </section>
       <JobsSection loggedUser={loggedUser} isError={error} />

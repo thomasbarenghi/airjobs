@@ -11,7 +11,7 @@ import {
   titleRegex,
   usernameRegex,
   websiteRegex
-} from './regex'
+} from './regex.const'
 
 interface Pattern {
   value: RegExp
@@ -48,14 +48,12 @@ export const usernamePattern: Pattern = {
 
 export const titlePattern: Pattern = {
   value: titleRegex,
-  message:
-    'Title must be only letters and numbers, and at least 2 characters long'
+  message: 'Title must be only letters and numbers, and at least 2 characters long'
 }
 
 export const descriptionPattern: Pattern = {
   value: descriptionRegex,
-  message:
-    'Description must be only letters and numbers, and at least 2 characters long'
+  message: 'Description must be only letters and numbers, and at least 2 characters long'
 }
 
 export const salaryPattern: Pattern = {
@@ -72,14 +70,12 @@ export const maxApplicantsPattern: Pattern = {
 
 export const companyNamePattern: Pattern = {
   value: companyNameRegex,
-  message:
-    'Company name must be at least 2 characters long, and only letters and numbers'
+  message: 'Company name must be at least 2 characters long, and only letters and numbers'
 }
 
 export const companyDescriptionPattern: Pattern = {
   value: companyDescriptionRegex,
-  message:
-    'Company description must be at least 2 characters long, 1000 characters max, and only letters and numbers'
+  message: 'Company description must be at least 2 characters long, 1000 characters max, and only letters and numbers'
 }
 
 export const websitePattern: Pattern = {

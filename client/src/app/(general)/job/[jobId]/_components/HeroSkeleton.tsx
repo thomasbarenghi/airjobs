@@ -1,28 +1,28 @@
 import { Skeleton } from '@nextui-org/react'
 
 const HeroSkeleton = () => (
-  <section className=' flex flex-col gap-10 section-reduced'>
-    <div className='w-full flex justify-between '>
-      <div className='flex items-center gap-5 flex-grow'>
-        <Skeleton className='rounded-lg w-[80px] h-[80px] aspect-square ' />
+  <section className=' section-reduced flex flex-col gap-10'>
+    <div className='flex w-full justify-between '>
+      <div className='flex flex-grow items-center gap-5'>
+        <Skeleton className='aspect-square h-[80px] w-[80px] rounded-lg ' />
         <div className='flex flex-col justify-center gap-1'>
-          <Skeleton className='rounded-full h-[20px] w-[150px]' />
-          <Skeleton className='rounded-full h-[15px] w-[80px]' />
+          <Skeleton className='h-[20px] w-[150px] rounded-full' />
+          <Skeleton className='h-[15px] w-[80px] rounded-full' />
         </div>
       </div>
     </div>
     <div className='flex flex-col gap-5'>
       <div className='flex flex-col gap-1'>
-        <Skeleton className='rounded-full h-[15px] w-[100%]' />
-        <Skeleton className='rounded-full h-[15px] w-[80%]' />
-        <Skeleton className='rounded-full h-[15px] w-[90%]' />
-        <Skeleton className='rounded-full h-[15px] w-[60%]' />
+        <Skeleton className='h-[15px] w-[100%] rounded-full' />
+        <Skeleton className='h-[15px] w-[80%] rounded-full' />
+        <Skeleton className='h-[15px] w-[90%] rounded-full' />
+        <Skeleton className='h-[15px] w-[60%] rounded-full' />
       </div>
       <div className='flex flex-col gap-1'>
-        <Skeleton className='rounded-full h-[15px] w-[150px]' />
-        <Skeleton className='rounded-full h-[15px] w-[100px]' />
-        <Skeleton className='rounded-full h-[15px] w-[250px]' />
-        <Skeleton className='rounded-full h-[15px] w-[120px]' />
+        <Skeleton className='h-[15px] w-[150px] rounded-full' />
+        <Skeleton className='h-[15px] w-[100px] rounded-full' />
+        <Skeleton className='h-[15px] w-[250px] rounded-full' />
+        <Skeleton className='h-[15px] w-[120px] rounded-full' />
       </div>
     </div>
   </section>

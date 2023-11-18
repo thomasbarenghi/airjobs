@@ -8,15 +8,13 @@ export const metadata: Metadata = {
 }
 
 const Employers = () => (
-  <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-20 '>
-    <section className='flex flex-col items-start gap-2 section-reduced'>
+  <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-20 pt-4 '>
+    <section className='section-reduced flex flex-col items-start gap-2'>
       <TextElement as='h1' type='t2' className='!font-light'>
-        This page is under construction and{' '}
-        <b className='font-semibold'>will be available soon.</b>
+        This page is under construction and <b className='font-semibold'>will be available soon.</b>
       </TextElement>
       <TextElement as='p' type='base'>
-        The objective of this page is provide a list of employers that are
-        hiring.
+        The objective of this page is provide a list of employers that are hiring.
       </TextElement>
       <Button title='Go home' href={Routes.HOME} className='!mt-2' />
     </section>

@@ -3,9 +3,7 @@ interface ValueLabelObject {
   label: string
 }
 
-export const convertArrayToValueLabelArray = (
-  inputArray: string[]
-): ValueLabelObject[] => {
+export const convertArrayToValueLabelArray = (inputArray: string[]): ValueLabelObject[] => {
   const valueLabelArray: ValueLabelObject[] = inputArray.map((item) => ({
     value: item,
     label: item
