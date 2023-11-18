@@ -15,7 +15,7 @@ const Chips = ({ job, isLoading = false, isPlaceholder = false }: Props) => (
     {isLoading && <JobChipsSkeleton />}
     {isPlaceholder && <JobChipsPlaceholder />}
     {!isLoading && !isPlaceholder && (
-      <div className='flex gap-2 flex-wrap lg:flex-nowrap'>
+      <div className='flex flex-wrap gap-2 lg:flex-nowrap'>
         <Chip className='bg-violet-200 text-secondary'>{job?.type}</Chip>
         <Chip className='bg-violet-200 text-secondary'>{job?.location}</Chip>
         <Chip className='bg-violet-200 text-secondary'> {job?.seniority}</Chip>

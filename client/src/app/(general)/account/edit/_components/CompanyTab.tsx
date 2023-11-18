@@ -1,18 +1,17 @@
-'use client'
 import { Input, Button, Textarea } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
-import type { CompanyForm } from '@/interfaces/accountForm.interface'
+import type { CompanyForm } from '@/interfaces/forms.interface'
 import type { KeyedMutator } from 'swr'
 import {
   companyDescriptionPattern,
   companyNamePattern,
   emailPattern,
   websitePattern
-} from '@/utils/constants/pattern'
+} from '@/utils/constants/pattern.const'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -32,7 +31,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
     try {
       const form: Record<string, string | File> = {
         ...data,
-        logo: data.logo[0]
+        logo: data?.logo[0]
       }
 
       const formData = new FormData()
@@ -40,29 +39,25 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
         formData.append(e, form[e])
       }
 
-      const { error } = await putRequest(
-        Endpoints.EDIT_COMPANY(loggedUser._id),
-        formData,
-        true
-      )
+      const { error, data: updatedData } = await putRequest(Endpoints.EDIT_COMPANY(loggedUser._id), formData, true)
       if (error) {
         toast.error("Couldn't update your info")
-        throw Error()
+        console.error('Error CompanyTab:', error)
+        return
       }
 
       toast.success('Your info has been updated')
-      mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
     } catch (error) {
-      console.error(error)
+      console.error('Error CompanyTab catch:', error)
     }
   }
 
   return (
     <div className='flex flex-col gap-5'>
-      <form
-        className='w-full flex flex-col items-center gap-2'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='name'
@@ -162,13 +157,7 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
           }}
           errorMessage={errors?.logo?.message?.toString()}
         />
-        <Button
-          title='Save'
-          type='submit'
-          isLoading={isSubmitting}
-          fullWidth
-          className='mt-4'
-        />
+        <Button title='Save' type='submit' isLoading={isSubmitting} fullWidth className='mt-4' />
       </form>
     </div>
   )

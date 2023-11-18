@@ -1,10 +1,9 @@
 'use client'
 import { Button, Input, Textarea } from '@/components'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { useSession } from 'next-auth/react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
-import type { CompanyForm } from '@/interfaces/accountForm.interface'
+import type { CompanyForm } from '@/interfaces/forms.interface'
 import { postRequest } from '@/services/apiRequests.service'
 import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
@@ -13,13 +12,18 @@ import {
   companyNamePattern,
   emailPattern,
   websitePattern
-} from '@/utils/constants/pattern'
+} from '@/utils/constants/pattern.const'
+import type { UserInterface } from '@/interfaces/user.interface'
 
-const FormSection = () => {
-  const { data: session } = useSession()
-  const { data: loggedUser, mutate } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
+interface Props {
+  user: UserInterface
+}
+
+const FormSection = ({ user }: Props) => {
+  const { data: loggedUser, mutate } = useSWR(Endpoints.USER_BY_EMAIL(user?.email ?? ''), {
+    fallbackData: user,
+    revalidateIfStale: false
+  })
 
   const {
     register,
@@ -36,14 +40,10 @@ const FormSection = () => {
         logo: data.logo[0]
       }
 
-      const { error } = await postRequest(
-        Endpoints.ADD_COMPANY(loggedUser._id),
-        formData,
-        true
-      )
+      const { error } = await postRequest(Endpoints.ADD_COMPANY(loggedUser._id), formData, true)
 
       if (error) {
-        console.error(error)
+        console.error('Error FormSection:', error)
         toast.error('Could not create company')
         return
       }
@@ -53,16 +53,13 @@ const FormSection = () => {
         window.location.href = Routes.HOME
       }, 500)
     } catch (error) {
-      console.error(error)
+      console.error('Error FormSection catch:', error)
     }
   }
 
   return (
-    <section className='flex flex-col gap-5 section-reduced'>
-      <form
-        className='w-full flex flex-col items-center gap-2'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+    <section className='section-reduced flex flex-col gap-5'>
+      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='name'
@@ -158,13 +155,7 @@ const FormSection = () => {
           }}
           errorMessage={errors?.logo?.message?.toString()}
         />
-        <Button
-          title='Save'
-          type='submit'
-          isLoading={isSubmitting}
-          fullWidth
-          className='mt-4'
-        />
+        <Button title='Save' type='submit' isLoading={isSubmitting} fullWidth className='mt-4' />
       </form>
     </section>
   )

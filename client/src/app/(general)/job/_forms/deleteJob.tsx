@@ -9,7 +9,8 @@ export const deleteJob = async (jobId: string, router: AppRouterInstance) => {
 
   if (error) {
     toast.error("Couldn't delete job")
-    throw Error()
+    console.error('Error deleteJob:', error)
+    return
   }
 
   toast.success('Job deleted successfully')

@@ -25,11 +25,7 @@ const Header = ({ theme = 'transparent', layout = 'full' }: Props) => {
   const blur = isScrolled
   const stylesNavbar = 'section-padding-x-1 fixed py-6' + bgColor
 
-  const textColor = isScrolled
-    ? 'text-black'
-    : theme === 'transparent'
-      ? 'text-white'
-      : 'text-black'
+  const textColor = isScrolled ? 'text-black' : theme === 'transparent' ? 'text-white' : 'text-black'
 
   return (
     <Navbar
@@ -37,8 +33,7 @@ const Header = ({ theme = 'transparent', layout = 'full' }: Props) => {
       onMenuOpenChange={setIsMenuOpen}
       className={stylesNavbar}
       classNames={{
-        wrapper:
-          'p-0 h-auto w-full max-w-full flex justify-between  2xl:container',
+        wrapper: 'p-0 h-auto w-full max-w-full flex justify-between  2xl:container',
         base: 'bg-transparent min-h-[95px]',
         content: 'w-auto !grow-0',
         brand: 'max-w-[185px] ',

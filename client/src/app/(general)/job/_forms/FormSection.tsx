@@ -1,12 +1,5 @@
 'use client'
-import {
-  Input,
-  Textarea,
-  SimpleSelect,
-  TextElement,
-  Button
-} from '@/components'
-import { useSession } from 'next-auth/react'
+import { Input, Textarea, SimpleSelect, TextElement, Button } from '@/components'
 import { useRouter } from 'next/navigation'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import type {
@@ -17,40 +10,22 @@ import type {
   SeniorityEnum,
   TypeEnum
 } from '@/interfaces/job.interface'
-import {
-  countryData,
-  currencyData,
-  locationData,
-  seniorityData,
-  typeData
-} from '../create-job/selectsData'
-import useSWR from 'swr'
-import Endpoints from '@/utils/constants/endpoints.const'
+import { countryData, currencyData, locationData, seniorityData, typeData } from '../create-job/selectsData'
 import { postJob } from './postJob'
-import { editJob } from './editJob'
 import { deleteJob } from './deleteJob'
 import type { JobForm } from './jobForm.interface'
-import {
-  descriptionPattern,
-  maxApplicantsPattern,
-  salaryPattern,
-  titlePattern
-} from '@/utils/constants/pattern'
+import { descriptionPattern, maxApplicantsPattern, salaryPattern, titlePattern } from '@/utils/constants/pattern.const'
+import type { UserInterface } from '@/interfaces/user.interface'
+import editAction from './editAction'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
-  jobId?: string
+  job?: JobInterface
+  loggedUser: UserInterface
 }
 
-const FormSection = ({ mode, jobId }: FormSectionProps) => {
+const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
   const router = useRouter()
-  const { data: job } = useSWR<JobInterface>(
-    Endpoints.INDIVIDUAL_JOB(jobId ?? '')
-  )
-  const { data: session } = useSession()
-  const { data: loggedUser } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
 
   const {
     register,
@@ -74,23 +49,21 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
       if (mode === 'create') {
         await postJob(formData, router)
       } else {
-        await editJob(formData, router, jobId ?? '')
+        await editAction({ id: job?._id ?? '', formData })
+        // await editJob(formData, router, job?._id ?? '')
+        router.push(`/job/${job?._id}`)
       }
     } catch (error) {
-      console.error(error)
+      console.error('Error FormSection catch:', error)
     }
   }
 
   return (
-    <section className='flex flex-col gap-5 section-reduced'>
+    <section className='section-reduced flex flex-col gap-5'>
       <TextElement as='h1' type='t2' className='!font-light'>
-        {mode === 'create' ? 'Create' : 'Edit your'}{' '}
-        <b className='!font-semibold'>job</b>
+        {mode === 'create' ? 'Create' : 'Edit your'} <b className='!font-semibold'>job</b>
       </TextElement>
-      <form
-        className='w-full flex flex-col items-center gap-2'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='title'
@@ -137,7 +110,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='country'
-              selectedValue={mode === 'edit' ? job?.country : ''}
+              defaultSelectedKeys={[...(job?.country ? [job.country] : [])] ?? undefined}
               field={field}
               label='Select a country'
               setSelected={(selected) => {
@@ -159,7 +132,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='type'
-              selectedValue={mode === 'edit' ? job?.type : ''}
+              defaultSelectedKeys={[...(job?.type ? [job.type] : [])] ?? undefined}
               field={field}
               label='Select the type of job'
               setSelected={(selected) => {
@@ -181,7 +154,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='location'
-              selectedValue={mode === 'edit' ? job?.location : ''}
+              defaultSelectedKeys={[...(job?.location ? [job.location] : [])] ?? undefined}
               field={field}
               label='Select the location mode'
               setSelected={(selected) => {
@@ -203,7 +176,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='seniority'
-              selectedValue={mode === 'edit' ? job?.seniority : ''}
+              defaultSelectedKeys={[...(job?.seniority ? [job.seniority] : [])] ?? undefined}
               field={field}
               label='Select the seniority level'
               setSelected={(selected) => {
@@ -226,7 +199,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
             <SimpleSelect
               name='currency'
               field={field}
-              selectedValue={mode === 'edit' ? job?.currency : ''}
+              defaultSelectedKeys={[...(job?.currency ? [job.currency] : [])] ?? undefined}
               label='Select the currency'
               setSelected={(selected) => {
                 setValue('currency', selected as CurrencyEnum)
@@ -240,7 +213,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         <Input
           type='number'
           name='salary'
-          defaultValue={mode === 'edit' && job?.salary ? job.salary : undefined}
+          defaultValue={job?.salary?.toString()}
           label='Salary'
           placeholder='1000'
           hookForm={{
@@ -257,11 +230,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         />
         <Input
           type='number'
-          defaultValue={
-            mode === 'edit' && job?.maxApplicants
-              ? job.maxApplicants
-              : undefined
-          }
+          defaultValue={mode === 'edit' && job?.maxApplicants ? job.maxApplicants.toString() : undefined}
           name='maxApplicants'
           label='Max Applicants'
           placeholder='50'
@@ -279,11 +248,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
         />
         <Input
           type='date'
-          defaultValue={
-            mode === 'edit' && job?.deadline
-              ? new Date(job.deadline).toISOString().split('T')[0]
-              : ''
-          }
+          defaultValue={mode === 'edit' && job?.deadline ? new Date(job.deadline).toISOString().split('T')[0] : ''}
           name='deadline'
           label='Deadline Date to Apply'
           placeholder='Deadline Date to Apply'
@@ -303,7 +268,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
           }}
           errorMessage={errors?.deadline?.message?.toString()}
         />
-        <div className='w-full flex gap-2'>
+        <div className='flex w-full gap-2'>
           {mode === 'edit' && (
             <Button
               title='Delete'
@@ -311,7 +276,7 @@ const FormSection = ({ mode, jobId }: FormSectionProps) => {
               className='mt-4'
               color='danger'
               onPress={() => {
-                deleteJob(jobId ?? '', router)
+                deleteJob(job?._id ?? '', router)
               }}
             />
           )}

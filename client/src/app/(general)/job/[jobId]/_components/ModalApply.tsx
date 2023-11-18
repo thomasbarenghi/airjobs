@@ -4,33 +4,21 @@ import type { JobInterface } from '@/interfaces/job.interface'
 import type { UserInterface } from '@/interfaces/user.interface'
 import { postRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader
-} from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import type { KeyedMutator } from 'swr'
 
 interface ModalApplyProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   job: JobInterface
-  loggedUser: UserInterface | any
-  mutate: any
+  loggedUser: UserInterface
   hasApplied: boolean
+  mutate: KeyedMutator<any>
 }
 
-const ModalApply = ({
-  isOpen,
-  onOpenChange,
-  job,
-  loggedUser,
-  mutate,
-  hasApplied
-}: ModalApplyProps) => {
+const ModalApply = ({ isOpen, onOpenChange, job, loggedUser, hasApplied, mutate }: ModalApplyProps) => {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -47,22 +35,18 @@ const ModalApply = ({
         resume: data.resume[0],
         userId: loggedUser._id
       }
-
-      const { error } = await postRequest(
-        Endpoints.APPLY_JOB(job._id),
-        formData,
-        true
-      )
+      const { error, data: updatedData } = await postRequest(Endpoints.APPLY_JOB(job._id), formData, true)
       if (error) {
         toast.error('Something went wrong, please try again later')
         return
       }
-
       toast.success('You have applied to this job')
-      await mutate()
+      mutate(updatedData, {
+        revalidate: false
+      })
       reset()
     } catch (error) {
-      console.error(error)
+      console.error('Error ModalApply catch:', error)
     }
   }
 
@@ -72,16 +56,12 @@ const ModalApply = ({
         {(onClose) => (
           <form onSubmit={handleSubmit(handleApply)}>
             <>
-              <ModalHeader className='flex flex-col gap-1'>
-                Apply to {job?.title}
-              </ModalHeader>
+              <ModalHeader className='flex flex-col gap-1'>Apply to {job?.title}</ModalHeader>
               <ModalBody>
                 <TextElement as='p' type='base' className='!font-light '>
-                  When you apply to this job, you agree to the terms and
-                  conditions of our website. You should never be required to
-                  provide bank account details or any other financial
-                  information, or make any form of payment, when applying for a
-                  job.
+                  When you apply to this job, you agree to the terms and conditions of our website. You should never be
+                  required to provide bank account details or any other financial information, or make any form of
+                  payment, when applying for a job.
                 </TextElement>
                 <Input
                   type='file'
@@ -118,12 +98,7 @@ const ModalApply = ({
                   color='primary'
                   isLoading={isSubmitting}
                   type='submit'
-                  onPress={
-                    getValues()?.resume?.length <= 0 ||
-                    Object.keys(errors).length > 0
-                      ? undefined
-                      : onClose
-                  }
+                  onPress={getValues()?.resume?.length <= 0 || Object.keys(errors).length > 0 ? undefined : onClose}
                   isDisabled={hasApplied}
                 >
                   Apply Now

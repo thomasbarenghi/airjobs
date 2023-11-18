@@ -26,20 +26,11 @@ export interface ApplicantsEnum {
   resume: string
 }
 
-export type StatusEnum =
-  | 'Under review'
-  | 'Interested company'
-  | 'Obtained'
-  | 'Rejected'
+export type StatusEnum = 'Under review' | 'Interested company' | 'Obtained' | 'Rejected'
 
 export type LocationEnum = 'Remote' | 'On-site' | 'Hybrid'
 
-export type TypeEnum =
-  | 'Full-time'
-  | 'Part-time'
-  | 'Contract'
-  | 'Internship'
-  | 'Temporary'
+export type TypeEnum = 'Full-time' | 'Part-time' | 'Contract' | 'Internship' | 'Temporary'
 
 export type SeniorityEnum = 'Junior' | 'Mid' | 'Senior'
 

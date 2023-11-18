@@ -19,12 +19,9 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password', required: true }
       },
       authorize: async (credentials): Promise<any> => {
-        const { data, error } = await loginUser(
-          credentials?.email ?? '',
-          credentials?.password ?? ''
-        )
+        const { data, error } = await loginUser(credentials?.email ?? '', credentials?.password ?? '')
         if (error) {
-          console.error('Error: ', error)
+          console.error('Error authOptions: ', error)
           return null
         }
         const userDb = await getUserByEmail(data.userId)

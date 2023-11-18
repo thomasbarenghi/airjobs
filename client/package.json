@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier-eslint \"**/*.{ts,tsx}\" --write"
+    "format": "prettier-eslint \"**/*.{ts,tsx}\" --write",
+    "prod": "next build && next start"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
@@ -44,6 +45,7 @@
     "postcss": "^8",
     "prettier": "^3.0.3",
     "prettier-eslint-cli": "^8.0.1",
+    "prettier-plugin-tailwindcss": "^0.5.7",
     "tailwindcss": "^3",
     "typescript": "^5"
   }

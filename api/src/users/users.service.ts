@@ -78,12 +78,13 @@ export class UsersService {
   }
 
   async editCompanyDetails(id: string, updateCompanyDto: UpdateCompanyDto) {
+    console.log(updateCompanyDto);
     const user = await findUser(id, this.userModel);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
 
     const imageValid = validateUrl(updateCompanyDto.logo);
-    if (!imageValid) delete updateCompanyDto.logo;
+    if (!imageValid) updateCompanyDto.logo = user.company.logo;
     user.set({ company: updateCompanyDto });
     user.markModified('company');
     await user.save();

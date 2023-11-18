@@ -1,62 +1,51 @@
 'use client'
 import { Input as InputUI } from '@nextui-org/react'
+import { type ComponentProps } from 'react'
 import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
 
-interface InputProps {
+interface CustomProps {
+  handleChange?: (e: string) => void
   type: string
   name: string
-  label?: string
-  wrapperIntupClassName?: string
-  placeholder: string
-  className?: string
-  handleChange?: (e: string) => void
   errorMessage?: string
+  className?: string
   hookForm?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>
     validations: RegisterOptions
   }
-  defaultValue?: string | number
+  max?: number
+  min?: number
 }
 
-const Input = ({
-  type,
-  name,
-  label,
-  handleChange = () => {},
-  errorMessage = '',
-  placeholder = '',
-  className = '',
-  hookForm,
-  defaultValue = ''
-}: InputProps) => {
-  const HookForm = hookForm?.register(name, hookForm?.validations)
+type DefaultProps = ComponentProps<typeof InputUI>
+type ExtendedProps = DefaultProps & CustomProps
+
+const Input = (props: ExtendedProps) => {
+  const HookForm = props.hookForm?.register(props.name, props.hookForm?.validations)
   return (
     <InputUI
       {...HookForm}
-      type={type}
-      label={label}
+      type={props.type}
+      label={props.label}
       labelPlacement='outside'
-      name={name}
-      defaultValue={defaultValue.toString()}
+      name={props.name}
+      defaultValue={props.defaultValue}
       autoComplete='off'
       classNames={{
         inputWrapper:
           '!bg-white !text-black border border-solid border-gray-300 px-3 py-2 text-start rounded-2xl hover:!bg-gray-100 focus:!bg-white',
-        label:
-          'text-sm font-light leading-[155%]  gap-1 font-normal !text-black',
+        label: 'text-sm font-light leading-[155%]  gap-1 font-normal !text-black',
         errorMessage: 'text-sm font-light leading-[155%] text-red-800',
         input: '!text-black placeholder:!text-gray-400 placeholder:font-light'
       }}
-      className={className}
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
-        await HookForm?.onChange(e)}
+      className={props.className}
+      onChange={async (e: React.ChangeEvent<HTMLInputElement>) => await HookForm?.onChange(e)}
       onValueChange={(value: string) => {
-        handleChange(value)
+        props.handleChange && props?.handleChange(value)
       }}
-      placeholder={placeholder}
-      isInvalid={errorMessage.length > 0}
-      errorMessage={errorMessage}
+      placeholder={props.placeholder}
+      errorMessage={props.errorMessage}
     />
   )
 }

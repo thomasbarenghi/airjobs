@@ -8,7 +8,7 @@ import type { LoginFormValues } from '../form.interface'
 import Routes from '@/utils/constants/routes.const'
 import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
-import { emailPattern, passwordPattern } from '@/utils/constants/pattern'
+import { emailPattern, passwordPattern } from '@/utils/constants/pattern.const'
 
 const LoginForm = () => {
   const [visibility] = useState(false)
@@ -32,22 +32,18 @@ const LoginForm = () => {
       })
 
       if (res?.error) {
-        console.error(res.error)
+        console.error('Error signin:', res.error)
         return toast.error('Check your credentials, something went wrong')
       }
 
       router.push(Routes.HOME)
     } catch (error) {
-      console.error(error)
+      console.error('Error signin catch:', error)
     }
   }
 
   return (
-    <form
-      className='w-full flex flex-col items-center gap-2'
-      onSubmit={handleSubmit(onSubmit)}
-      ref={formRef}
-    >
+    <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)} ref={formRef}>
       <Input
         type='email'
         name='email'
@@ -83,13 +79,7 @@ const LoginForm = () => {
         }}
         errorMessage={errors?.password?.message?.toString()}
       />
-      <Button
-        type='submit'
-        fullWidth
-        isLoading={isSubmitting}
-        spinnerPlacement='start'
-        className='mt-2'
-      >
+      <Button type='submit' fullWidth isLoading={isSubmitting} spinnerPlacement='start' className='mt-2'>
         Login
       </Button>
     </form>

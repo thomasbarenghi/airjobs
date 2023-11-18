@@ -1,12 +1,11 @@
-'use client'
 import { Input, Button } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
-import type { SecurityForm } from '@/interfaces/accountForm.interface'
-import { passwordPattern } from '@/utils/constants/pattern'
+import type { SecurityForm } from '@/interfaces/forms.interface'
+import { passwordPattern } from '@/utils/constants/pattern.const'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -23,29 +22,23 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
 
   const onSubmit: SubmitHandler<SecurityForm> = async (data) => {
     try {
-      const { error } = await putRequest(
-        Endpoints.EDIT_PASSWORD(loggedUser._id),
-        data,
-        false
-      )
+      const { error } = await putRequest(Endpoints.EDIT_PASSWORD(loggedUser._id), data, false)
 
       if (error) {
         toast.error('Verify that your old password is correct')
-        throw new Error('Old password verification failed')
+        console.error('Error SecurityTab:', error)
+        return
       }
 
       toast.success('Your password has been updated')
     } catch (error) {
-      console.error(error)
+      console.error('Error SecurityTab catch:', error)
     }
   }
 
   return (
     <div className='flex flex-col gap-5'>
-      <form
-        className='w-full flex flex-col items-center gap-2'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='password'
           name='oldPassword'
@@ -80,13 +73,7 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
           }}
           errorMessage={errors?.newPassword?.message?.toString()}
         />
-        <Button
-          title='Save'
-          type='submit'
-          isLoading={isSubmitting}
-          fullWidth
-          className='mt-4'
-        />
+        <Button title='Save' type='submit' isLoading={isSubmitting} fullWidth className='mt-4' />
       </form>
     </div>
   )

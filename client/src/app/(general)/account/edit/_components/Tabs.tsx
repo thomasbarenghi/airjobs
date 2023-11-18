@@ -1,15 +1,20 @@
 'use client'
 import { TabBar } from '@/components'
 import { tabItemsBuilder } from '../tabItemsBuilder'
-import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 import Endpoints from '@/utils/constants/endpoints.const'
+import type { UserInterface } from '@/interfaces/user.interface'
 
-const TabsSection = () => {
-  const { data: session } = useSession()
-  const { data: loggedUser, mutate } = useSWR(
-    Endpoints.USER_BY_EMAIL(session?.user?.email ?? '')
-  )
+interface TabBarItemProps {
+  user: UserInterface
+}
+
+const TabsSection = ({ user }: TabBarItemProps) => {
+  console.log('user', user)
+  const { data: loggedUser, mutate } = useSWR(Endpoints.USER_BY_EMAIL(user?.email ?? ''), {
+    fallbackData: user,
+    revalidateIfStale: false
+  })
 
   const items = tabItemsBuilder(loggedUser, mutate)
   return (

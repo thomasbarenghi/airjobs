@@ -1,9 +1,9 @@
 import { TextElement } from '.'
 
 const Footer = () => (
-  <footer className='w-full bg-primary min-h-[250px] flex justify-center items-center'>
+  <footer className='flex min-h-[250px] w-full items-center justify-center bg-primary'>
     <TextElement type='base' as='p' className='text-white'>
-      ©2023 a Thomas Barenghi challenge for Beekin.
+      ©2023 Thomas Barenghi | thomasbarenghi@gmail.com | thomasbarenghi.com
     </TextElement>
   </footer>
 )

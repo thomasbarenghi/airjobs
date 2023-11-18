@@ -1,7 +1,7 @@
 import { TextElement } from '@/components'
 
 const HeroSection = () => (
-  <section className='flex flex-col gap-5 section-reduced'>
+  <section className='section-reduced flex flex-col gap-5'>
     <div className='flex flex-col gap-1'>
       <TextElement as='h1' type='t2' className='!font-light'>
         Hey, welcome to <b className='!font-semibold text-primary'>airjobs</b>, we're glad to have you here!

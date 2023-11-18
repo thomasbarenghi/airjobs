@@ -76,10 +76,10 @@ export const removeJobFromUser = async (
   const user = await findUser(userId, userModel);
 
   user.jobs.created = user.jobs.created.filter(
-    (job) => job.toString() !== jobId,
+    (job) => job._id.toString() !== jobId,
   );
   user.jobs.applied = user.jobs.applied.filter(
-    (job) => job.toString() !== jobId,
+    (job) => job._id.toString() !== jobId,
   );
 
   user.markModified('jobs');
