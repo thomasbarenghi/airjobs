@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import JobsSection from './_components/JobsSection'
-import HeroSection from './_components/HeroSection'
+import JobsSection from './_components/Jobs'
+import HeroSection from './_components/Hero'
 
 export const metadata: Metadata = {
   title: 'Find Jobs | Airjobs',

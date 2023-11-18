@@ -14,14 +14,12 @@ export const metadata: Metadata = {
 
 const OnboardingCompany = async () => {
   const session = await getServerSession(authOptions)
-  const { data: loggedUser } = await getUser(
-    session?.user?.email as string
-  )
+  const { data: loggedUser } = await getUser(session?.user?.email as string)
 
   return (
     <Motion>
       <Manager />
-      <article className='flex flex-col gap-5 items-center w-full mt-[100px] pt-4 pb-20 '>
+      <article className='mt-[100px] flex w-full flex-col items-center gap-5 pb-20 pt-4 '>
         <HeroSection />
         <FormSection user={loggedUser} />
       </article>

@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 const SignUp = () => (
   <Base>
-    <div className='w-full flex  flex-col justify-between h-full'>
-      <div className='flex flex-col justify-center gap-5 h-full'>
+    <div className='flex h-full  w-full flex-col justify-between'>
+      <div className='flex h-full flex-col justify-center gap-5'>
         <div>
           <TextElement type='t2' as='h1' className='text-center !font-light'>
             Welcome to <b className='font-semibold'>airjobs</b>
@@ -25,7 +25,7 @@ const SignUp = () => (
         <div className='overflow-y-auto'>
           <RegisterForm />
         </div>
-        <p className='pt-6 w-full text-center font-light '>
+        <p className='w-full pt-6 text-center font-light '>
           Already have an account?{' '}
           <Link href={Routes.SINGIN} className='font-medium text-primary'>
             Sign in

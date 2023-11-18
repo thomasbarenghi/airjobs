@@ -10,17 +10,13 @@ interface JobsSectionProps {
 
 const ApplicantsSection = ({ job }: JobsSectionProps) => {
   const { data, mutate } = useSWR(Endpoints.INDIVIDUAL_JOB(job._id), {
-    fallbackData: job, revalidateIfStale: false
+    fallbackData: job,
+    revalidateIfStale: false
   })
 
   return (
-    <section className='flex flex-col gap-10 section-reduced'>
-      <ApplicantsFlex
-        applicants={data?.applicants}
-        job={data}
-        isLoading={false}
-        mutate={mutate}
-      />
+    <section className='section-reduced flex flex-col gap-10'>
+      <ApplicantsFlex applicants={data?.applicants} job={data} isLoading={false} mutate={mutate} />
     </section>
   )
 }

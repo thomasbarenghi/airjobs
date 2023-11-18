@@ -2,7 +2,7 @@
 'use client'
 import { SWRConfig } from 'swr'
 import { fetcher } from '@/services/fetcher.service'
-import { localStorageProvider } from './localStorageProvider'
+import { localStorageProvider } from './localStorage.provider'
 
 const SWRProvider = ({ children }: React.PropsWithChildren<{}>) => (
   <SWRConfig

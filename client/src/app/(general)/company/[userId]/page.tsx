@@ -1,5 +1,5 @@
-import JobsSection from './_components/JobsSection'
-import HeroSection from './_components/HeroSection'
+import JobsSection from './_components/Jobs'
+import HeroSection from './_components/Hero'
 import type { Metadata } from 'next'
 import { getUser } from '@/services/user/getUser.service'
 
@@ -12,9 +12,9 @@ const Company = async ({ params }: { params: { userId: string } }) => {
   const { data: user, error } = await getUser(params.userId)
 
   return (
-    <article className='flex flex-col gap-10 items-center w-full mt-[100px] pt-4 pb-10 '>
+    <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-10 pt-4 '>
       <HeroSection user={user} isError={error} />
-      <section className=' flex flex-col gap-10 section-reduced'>
+      <section className=' section-reduced flex flex-col gap-10'>
         <hr />
       </section>
       <JobsSection user={user} isError={error} />

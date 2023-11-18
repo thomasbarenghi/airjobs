@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 import './globals.scss'
-import AuthSessionProvider from '@/context/providers/AuthSessionProvider'
+import AuthSessionProvider from '@/context/providers/authSession.provider'
 import NextUiProvider from '@/context/providers/nextUi.provider'
 import { Toaster } from 'sonner'
 import dynamic from 'next/dynamic'

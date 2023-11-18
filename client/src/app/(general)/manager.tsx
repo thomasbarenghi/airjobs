@@ -7,9 +7,7 @@ import { redirect } from 'next/navigation'
 
 const Manager = async () => {
   const session = await getServerSession(authOptions)
-  const { data: loggedUser } = await getRequest(
-    Endpoints.USER_BY_EMAIL(session?.user?.email)
-  )
+  const { data: loggedUser } = await getRequest(Endpoints.USER_BY_EMAIL(session?.user?.email ?? ''))
 
   const handleVisility = () => {
     if (loggedUser?.company === null && loggedUser?.role === 'company') {

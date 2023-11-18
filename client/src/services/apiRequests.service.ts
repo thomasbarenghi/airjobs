@@ -7,25 +7,14 @@ interface Response {
   success: boolean
 }
 
-export const putRequest = async (
-  url: string,
-  data: any,
-  withFiles: boolean,
-  headers?: object
-): Promise<Response> => {
+export const putRequest = async (url: string, data: any, withFiles: boolean, headers?: object): Promise<Response> => {
   try {
-    const response: AxiosResponse = await axios.put(
-      `${serverUrl}${url}`,
-      data,
-      {
-        headers: {
-          ...headers,
-          'Content-Type': !withFiles
-            ? 'application/json'
-            : 'multipart/form-data'
-        }
+    const response: AxiosResponse = await axios.put(`${serverUrl}${url}`, data, {
+      headers: {
+        ...headers,
+        'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
       }
-    )
+    })
 
     return {
       data: response.data,
@@ -49,18 +38,12 @@ export const postRequest = async (
   headers?: object
 ): Promise<Response> => {
   try {
-    const response: AxiosResponse = await axios.post(
-      `${serverUrl}${url}`,
-      data,
-      {
-        headers: {
-          ...headers,
-          'Content-Type': !withFiles
-            ? 'application/json'
-            : 'multipart/form-data'
-        }
+    const response: AxiosResponse = await axios.post(`${serverUrl}${url}`, data, {
+      headers: {
+        ...headers,
+        'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
       }
-    )
+    })
 
     return {
       data: response.data,
@@ -77,10 +60,7 @@ export const postRequest = async (
   }
 }
 
-export const deleteRequest = async (
-  url: string,
-  headers: object = {}
-): Promise<Response> => {
+export const deleteRequest = async (url: string, headers: object = {}): Promise<Response> => {
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       method: 'DELETE',
@@ -129,7 +109,6 @@ export const getRequest = async (
       }
     })
     const responsejson = await response.json()
-    console.log('response', responsejson, next)
     return {
       data: responsejson,
       error: !response.ok,

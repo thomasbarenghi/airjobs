@@ -10,14 +10,7 @@ export interface Props {
 
 const MobileMenu = ({ isOpen, toggle, theme, isScrolled }: Props) => (
   <>
-    {!isOpen && (
-      <ToggleBtn
-        isOpen={isOpen}
-        toggle={toggle}
-        theme={theme}
-        isScrolled={isScrolled}
-      />
-    )}
+    {!isOpen && <ToggleBtn isOpen={isOpen} toggle={toggle} theme={theme} isScrolled={isScrolled} />}
     <Menu isOpen={isOpen} toggle={toggle} />
   </>
 )

@@ -10,7 +10,7 @@ const Motion = ({ children }: Props) => (
     initial={{ x: -300, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
     transition={{ duration: 1.7 }}
-    className='bg-white w-screen h-auto'
+    className='h-auto w-screen bg-white'
   >
     {children}
   </motion.div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 'use client'
 import { Button } from '@/components'
 import Routes from '@/utils/constants/routes.const'
@@ -17,23 +18,10 @@ interface ButtonsProps {
   mutate: KeyedMutator<any>
 }
 
-const ButtonsGroup = ({
-  hasApplied,
-  applicantStatus,
-  data,
-  loggedUser,
-  jobId,
-  isOwner,
-  mutate
-}: ButtonsProps) => {
+const ButtonsGroup = ({ hasApplied, applicantStatus, data, loggedUser, jobId, isOwner, mutate }: ButtonsProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { isOpen: isOpenStatus, onOpenChange: onOpenChangeStatus } =
-    useDisclosure()
-  const {
-    isOpen: isOpenUnapply,
-    onOpen: onOpenUnapply,
-    onOpenChange: onOpenChangeUnapply
-  } = useDisclosure()
+  const { isOpen: isOpenStatus, onOpenChange: onOpenChangeStatus } = useDisclosure()
+  const { isOpen: isOpenUnapply, onOpen: onOpenUnapply, onOpenChange: onOpenChangeUnapply } = useDisclosure()
 
   return (
     <>
@@ -47,21 +35,11 @@ const ButtonsGroup = ({
               title={hasApplied ? 'Unapply' : 'Apply Now'}
               color={hasApplied ? 'danger' : 'primary'}
             />
-        )}
-        {hasApplied && (
-          <Button
-            onPress={onOpenChangeStatus}
-            title='View status'
-            color='primary'
-          />
-        )}
+          )}
+        {hasApplied && <Button onPress={onOpenChangeStatus} title='View status' color='primary' />}
         {loggedUser?.role === 'company' && isOwner && (
           <div className='flex gap-2'>
-            <Button
-              title='Edit Job'
-              color='primary'
-              href={Routes.EDIT_JOB(jobId)}
-            />
+            <Button title='Edit Job' color='primary' href={Routes.EDIT_JOB(jobId)} />
             <Button
               onPress={() => {}}
               title='View Applicants'

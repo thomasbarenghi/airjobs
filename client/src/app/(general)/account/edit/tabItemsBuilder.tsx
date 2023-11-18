@@ -10,9 +10,7 @@ interface TabBarItemProps {
   visible?: boolean
 }
 
-export const tabItemsBuilder = (
-  loggedUser: UserInterface, mutate: KeyedMutator<string>
-): TabBarItemProps[] => [
+export const tabItemsBuilder = (loggedUser: UserInterface, mutate: KeyedMutator<string>): TabBarItemProps[] => [
   {
     title: 'Personal Info',
     content: <UserTab loggedUser={loggedUser} mutate={mutate} />,

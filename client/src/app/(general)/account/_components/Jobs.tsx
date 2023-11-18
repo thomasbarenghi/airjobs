@@ -7,13 +7,11 @@ interface Props {
 }
 
 const JobsSection = ({ loggedUser, isError }: Props) => (
-  <section className='flex flex-col gap-10 section-reduced'>
-    <div className='flex flex-col gap-5 w-full'>
+  <section className='section-reduced flex flex-col gap-10'>
+    <div className='flex w-full flex-col gap-5'>
       <div>
         <TextElement as='h2' type='t3' className='!font-semibold'>
-          {loggedUser?.role === 'aspirant'
-            ? 'My Applied Jobs'
-            : 'My Posted Jobs'}
+          {loggedUser?.role === 'aspirant' ? 'My Applied Jobs' : 'My Posted Jobs'}
         </TextElement>
         <TextElement as='p' type='base' className='!font-light'>
           {loggedUser?.role === 'aspirant'
@@ -22,11 +20,7 @@ const JobsSection = ({ loggedUser, isError }: Props) => (
         </TextElement>
       </div>
       <JobsFlex
-        jobs={
-          loggedUser?.role === 'aspirant'
-            ? loggedUser?.jobs?.applied ?? []
-            : loggedUser?.jobs?.created ?? []
-        }
+        jobs={loggedUser?.role === 'aspirant' ? loggedUser?.jobs?.applied ?? [] : loggedUser?.jobs?.created ?? []}
         isError={isError}
         isLoading={false}
       />

@@ -5,7 +5,7 @@ const Endpoints = {
   ALL_JOBS: '/api/jobs',
   ALL_USERS: '/api/users',
   INDIVIDUAL_JOB: (id: string) => `/api/jobs/${id}`,
-  USER_BY_EMAIL: (email: any) => `/api/users/${email}`,
+  USER_BY_EMAIL: (email: string) => `/api/users/${email}`,
   USER_BY_ID: (id: string) => `/api/users/${id}`,
   APPLY_JOB: (id: string) => `/api/jobs/${id}/apply`,
   CREATE_JOB: '/api/jobs',

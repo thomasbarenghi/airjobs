@@ -5,14 +5,9 @@ import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
 import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
-import type { UserForm } from '@/interfaces/accountForm.interface'
-import { validateAdult } from '@/utils/functions/validateAdult'
-import {
-  emailPattern,
-  firstNamePattern,
-  lastNamePattern,
-  usernamePattern
-} from '@/utils/constants/pattern'
+import type { UserForm } from '@/interfaces/forms.interface'
+import { validateAdult } from '@/utils/functions/validateAdult.utils'
+import { emailPattern, firstNamePattern, lastNamePattern, usernamePattern } from '@/utils/constants/pattern.const'
 
 interface UserTabProps {
   loggedUser: UserInterface
@@ -42,11 +37,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
         form.append(key, formData[key])
       }
 
-      const { error, data: updatedData } = await putRequest(
-        Endpoints.EDIT_USER(loggedUser._id),
-        form,
-        true
-      )
+      const { error, data: updatedData } = await putRequest(Endpoints.EDIT_USER(loggedUser._id), form, true)
 
       if (error) {
         toast.error("Couldn't update your info")
@@ -65,11 +56,8 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
 
   return (
     <div className='flex flex-col gap-5'>
-      <form
-        className='w-full flex flex-col items-center gap-2'
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className='w-full flex flex-col items-center gap-2'>
+      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+        <div className='flex w-full flex-col items-center gap-2'>
           <Input
             type='text'
             name='firstName'
@@ -109,10 +97,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
           <Input
             type='date'
             name='birthday'
-            defaultValue={
-              loggedUser?.birthday &&
-              new Date(loggedUser?.birthday)?.toISOString()?.substr(0, 10)
-            }
+            defaultValue={loggedUser?.birthday && new Date(loggedUser?.birthday)?.toISOString()?.substr(0, 10)}
             label='Birthday'
             placeholder='Your birthday'
             hookForm={{
@@ -192,13 +177,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
             errorMessage={errors?.profileImage?.message?.toString()}
           />
         </div>
-        <Button
-          title='Save'
-          type='submit'
-          isLoading={isSubmitting}
-          fullWidth
-          className='mt-4'
-        />
+        <Button title='Save' type='submit' isLoading={isSubmitting} fullWidth className='mt-4' />
       </form>
     </div>
   )

@@ -1,21 +1,10 @@
 'use client'
 import { Button, SimpleSelect, TextElement } from '@/components'
-import type {
-  ApplicantsEnum,
-  JobInterface,
-  StatusEnum
-} from '@/interfaces/job.interface'
+import type { ApplicantsEnum, JobInterface, StatusEnum } from '@/interfaces/job.interface'
 import { putRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure
-} from '@nextui-org/react'
+import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect.utils'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { KeyedMutator } from 'swr'
@@ -26,12 +15,7 @@ interface ModalApplyProps {
   mutate: KeyedMutator<any>
 }
 
-export const statusData = convertArrayToValueLabelArray([
-  'Under review',
-  'Interested company',
-  'Obtained',
-  'Rejected'
-])
+export const statusData = convertArrayToValueLabelArray(['Under review', 'Interested company', 'Obtained', 'Rejected'])
 
 const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -52,11 +36,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
         userId: applicant?.user?._id
       }
 
-      const { error, data: updatedData } = await putRequest(
-        Endpoints.UPDATE_APPLICANT(job._id),
-        formData,
-        false
-      )
+      const { error, data: updatedData } = await putRequest(Endpoints.UPDATE_APPLICANT(job._id), formData, false)
 
       if (error) {
         toast.error('Something went wrong, please try again later')
@@ -82,8 +62,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
             <form onSubmit={handleSubmit(handleApply)}>
               <>
                 <ModalHeader className='flex flex-col gap-1'>
-                  Update applicant status for {applicant?.user?.firstName}{' '}
-                  {applicant?.user?.lastName}
+                  Update applicant status for {applicant?.user?.firstName} {applicant?.user?.lastName}
                 </ModalHeader>
                 <ModalBody>
                   <TextElement as='p' type='base' className='!font-light '>
@@ -102,7 +81,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
                     render={({ field }: any) => (
                       <SimpleSelect
                         name='status'
-                        selectedValue={applicant?.status}
+                        defaultSelectedKeys={applicant?.status}
                         field={field}
                         label='Select status'
                         setSelected={(selected) => {
@@ -123,12 +102,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
                     color='primary'
                     isLoading={isSubmitting}
                     type='submit'
-                    onPress={
-                      getValues()?.resume?.length <= 0 ||
-                      Object.keys(errors).length > 0
-                        ? undefined
-                        : onClose
-                    }
+                    onPress={getValues()?.resume?.length <= 0 || Object.keys(errors).length > 0 ? undefined : onClose}
                   >
                     Update
                   </Button>
