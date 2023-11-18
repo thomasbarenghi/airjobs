@@ -81,7 +81,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
                     render={({ field }: any) => (
                       <SimpleSelect
                         name='status'
-                        defaultSelectedKeys={applicant?.status}
+                        defaultSelectedKeys={[applicant?.status]}
                         field={field}
                         label='Select status'
                         setSelected={(selected) => {
