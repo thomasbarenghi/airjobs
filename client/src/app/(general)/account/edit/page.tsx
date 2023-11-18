@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 const EditAccount = async () => {
   const session = await getServerSession(authOptions)
   const { data: loggedUser } = await getUser(session?.user?.email as string)
-
+  console.log('session', session)
+  console.log('loggedUser', loggedUser)
   return (
     <article className='mt-[100px] flex w-full flex-col items-center gap-10 pb-10 pt-4 '>
       <section className='section-reduced flex flex-col gap-2'>

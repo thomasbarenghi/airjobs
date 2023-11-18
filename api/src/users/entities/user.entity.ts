@@ -1,5 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, {
+  HydratedDocument,
+  ObjectId,
+  PopulatedDoc,
+  Document,
+} from 'mongoose';
 import {
   IsNotEmpty,
   IsEmail,
@@ -7,25 +12,27 @@ import {
   IsString,
   IsDateString,
 } from 'class-validator';
+import { Job } from 'src/jobs/entities/job.entity';
 
 export type SessionDocument = HydratedDocument<User>;
 
 class JobsEnum {
   constructor() {
-    (this.created = []), (this.applied = []);
+    this.created = [];
+    this.applied = [];
   }
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Jobs' }],
     default: [],
   })
-  created?: ObjectId[];
+  created: PopulatedDoc<Job & Document>[];
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Jobs' }],
     default: [],
   })
-  applied: ObjectId[];
+  applied: PopulatedDoc<Job & Document>[];
 }
 
 @Schema({ _id: false })
