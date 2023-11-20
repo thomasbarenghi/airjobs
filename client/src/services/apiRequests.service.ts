@@ -94,7 +94,6 @@ export const getRequest = async (
     cache?: 'force-cache' | 'no-store' | 'no-cache'
   }
 ): Promise<Response> => {
-  console.log('getRequest', next)
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       next: {

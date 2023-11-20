@@ -10,7 +10,6 @@ interface TabBarItemProps {
 }
 
 const TabsSection = ({ user }: TabBarItemProps) => {
-  console.log('user', user)
   const { data: loggedUser, mutate } = useSWR(Endpoints.USER_BY_EMAIL(user?.email ?? ''), {
     fallbackData: user,
     revalidateIfStale: false
