@@ -78,7 +78,6 @@ export class UsersService {
   }
 
   async editCompanyDetails(id: string, updateCompanyDto: UpdateCompanyDto) {
-    console.log(updateCompanyDto);
     const user = await findUser(id, this.userModel);
     if (user.role !== 'company')
       throw new ConflictException('User is not a company');
