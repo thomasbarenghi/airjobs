@@ -1,25 +1,37 @@
 import * as bcrypt from 'bcrypt';
-const saltRounds = 10;
 
+const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
+
+/**
+ * Hashes a plain text password using bcrypt.
+ * @param {string} plainPassword - The password to be encrypted.
+ * @returns {Promise<string>} The hashed password.
+ */
 export const encryptPassword = async (
   plainPassword: string,
 ): Promise<string> => {
   try {
-    const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
-    return hashedPassword;
+    return await bcrypt.hash(plainPassword, saltRounds);
   } catch (error) {
-    throw new Error('Error al encriptar la contraseña');
+    console.error('Encryption error:', error);
+    throw new Error('Failed to encrypt password');
   }
 };
 
+/**
+ * Compares a plain text password with a hashed password.
+ * @param {string} plainPassword - The plain password to check.
+ * @param {string} hashedPassword - The hashed password to compare with.
+ * @returns {Promise<boolean>} True if passwords match, false otherwise.
+ */
 export const comparePasswords = async (
   plainPassword: string,
   hashedPassword: string,
 ): Promise<boolean> => {
   try {
-    const match = await bcrypt.compare(plainPassword, hashedPassword);
-    return match;
+    return await bcrypt.compare(plainPassword, hashedPassword);
   } catch (error) {
-    throw new Error('Error al comparar las contraseñas');
+    console.error('Comparison error:', error);
+    throw new Error('Failed to compare passwords');
   }
 };

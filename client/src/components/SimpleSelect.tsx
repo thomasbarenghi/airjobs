@@ -1,5 +1,5 @@
 'use client'
-import { Select, SelectItem } from '@nextui-org/react'
+import { Select, SelectItem } from "@heroui/react"
 import { type ComponentProps } from 'react'
 import type { ControllerRenderProps, FieldValues } from 'react-hook-form'
 

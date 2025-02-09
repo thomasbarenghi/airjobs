@@ -1,8 +1,8 @@
 import { JobsFlex, TextElement } from '@/components'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 
 interface Props {
-  loggedUser: UserInterface
+  loggedUser: IUser
   isError: boolean
 }
 

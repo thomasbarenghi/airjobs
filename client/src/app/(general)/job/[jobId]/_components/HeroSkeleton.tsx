@@ -1,4 +1,4 @@
-import { Skeleton } from '@nextui-org/react'
+import { Skeleton } from "@heroui/react"
 
 const HeroSkeleton = () => (
   <section className=' section-reduced flex flex-col gap-10'>

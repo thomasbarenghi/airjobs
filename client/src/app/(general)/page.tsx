@@ -14,7 +14,7 @@ interface JobsSectionProps {
 const Home = ({ searchParams }: JobsSectionProps) => (
   <>
     <HeroSection />
-    <JobsSection searchParams={searchParams} />
+    <JobsSection />
   </>
 )
 

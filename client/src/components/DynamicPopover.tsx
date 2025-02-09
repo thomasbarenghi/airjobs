@@ -1,5 +1,5 @@
 'use client'
-import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
+import { Popover, PopoverContent, PopoverTrigger } from "@heroui/react"
 import Image from 'next/image'
 
 interface DynamicPopoverProps {

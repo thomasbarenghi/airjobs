@@ -5,7 +5,7 @@ import Menu from './Menu'
 import Endpoints from '@/utils/constants/endpoints.const'
 import useSWR from 'swr'
 import Routes from '@/utils/constants/routes.const'
-import { NavbarContent, NavbarItem } from '@nextui-org/react'
+import { NavbarContent, NavbarItem } from "@heroui/react"
 
 const ProfileAction = () => {
   const { data: session, status } = useSession()

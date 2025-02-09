@@ -13,10 +13,10 @@ import {
   emailPattern,
   websitePattern
 } from '@/utils/constants/pattern.const'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 
 interface Props {
-  user: UserInterface
+  user: IUser
 }
 
 const FormSection = ({ user }: Props) => {

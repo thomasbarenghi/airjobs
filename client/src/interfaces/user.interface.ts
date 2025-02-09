@@ -1,7 +1,7 @@
-import type { CompanyInterface } from './company.interface'
-import type { JobInterface } from './job.interface'
+import type { ICompany } from './company.interface'
+import type { IJob } from './job.interface'
 
-export interface UserInterface {
+export interface IUser {
   _id: string
   firstName: string
   lastName: string
@@ -11,13 +11,13 @@ export interface UserInterface {
   password: string
   username: string
   profileImage: string
-  company: CompanyInterface
+  company: ICompany
   jobs: JobsEnum
 }
 
 interface JobsEnum {
-  created: JobInterface[]
-  applied: JobInterface[]
+  created: IJob[]
+  applied: IJob[]
 }
 
 export type RoleEnum = 'company' | 'aspirant'

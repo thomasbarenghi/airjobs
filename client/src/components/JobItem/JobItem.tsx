@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import type { JobInterface } from '@/interfaces/job.interface'
+import type { IJob } from '@/interfaces/job.interface'
 import Link from 'next/link'
 import Routes from '@/utils/constants/routes.const'
 import { formatTimeAgo } from '@/utils/functions/formatTimeAgo.utils'
 import { JobChips, TextElement } from '@/components'
 
 interface JobItemProps {
-  job: JobInterface
+  job: IJob
 }
 
 const JobItem = ({ job }: JobItemProps) => (

@@ -3,12 +3,12 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import type { SecurityForm } from '@/interfaces/forms.interface'
 import { passwordPattern } from '@/utils/constants/pattern.const'
 
 interface UserTabProps {
-  loggedUser: UserInterface
+  loggedUser: IUser
 }
 
 const SecurityTab = ({ loggedUser }: UserTabProps) => {

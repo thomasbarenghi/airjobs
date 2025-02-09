@@ -1,11 +1,11 @@
 'use client'
-import type { JobInterface } from '@/interfaces/job.interface'
-import { Chip } from '@nextui-org/react'
+import type { IJob } from '@/interfaces/job.interface'
+import { Chip } from "@heroui/react"
 import JobChipsPlaceholder from './Placeholder'
 import JobChipsSkeleton from './Skeleton'
 
 interface Props {
-  job?: JobInterface
+  job?: IJob
   isLoading?: boolean
   isPlaceholder?: boolean
 }

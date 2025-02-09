@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import type { ApplicantsEnum, JobInterface } from '@/interfaces/job.interface'
+import type { ApplicantsEnum, IJob } from '@/interfaces/job.interface'
 import { formatTimeAgo } from '@/utils/functions/formatTimeAgo.utils'
 import { Button, TextElement } from '@/components'
 import ModalStatus from './ModalStatus'
@@ -7,7 +7,7 @@ import type { KeyedMutator } from 'swr'
 
 interface JobItemProps {
   applicant: ApplicantsEnum
-  job: JobInterface
+  job: IJob
   mutate: KeyedMutator<any>
 }
 

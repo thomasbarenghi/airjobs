@@ -1,9 +1,9 @@
 import { JobsFlex, TextElement } from '@/components'
-import type { JobInterface } from '@/interfaces/job.interface'
+import type { IJob } from '@/interfaces/job.interface'
 
 interface Props {
-  job: JobInterface
-  relatedJobs: JobInterface[]
+  job: IJob
+  relatedJobs: IJob[]
   error: boolean
 }
 
@@ -18,7 +18,7 @@ const RelatedJobsSection = ({ relatedJobs, error, job }: Props) => (
     )}
     <div className='w-full'>
       <JobsFlex
-        jobs={Array?.isArray(relatedJobs) ? relatedJobs?.filter((item: JobInterface) => item._id !== job._id) : []}
+        jobs={Array?.isArray(relatedJobs) ? relatedJobs?.filter((item: IJob) => item._id !== job._id) : []}
         isLoading={false}
         isError={error}
       />

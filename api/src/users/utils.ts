@@ -1,61 +1,7 @@
-import {
-  BadRequestException,
-  ConflictException,
-  NotAcceptableException,
-  NotFoundException,
-} from '@nestjs/common';
-import { Document, Model, PopulatedDoc } from 'mongoose';
+import { NotFoundException } from '@nestjs/common';
+import { Model } from 'mongoose';
 import { User } from './entities/user.entity';
-import { populateUser } from './lib/populate-user.lib';
-import { ObjectId } from 'mongodb';
-
-export const calculateAge = (birthday: Date) => {
-  const isAdult =
-    (new Date().getTime() - new Date(birthday).getTime()) /
-      (365 * 24 * 60 * 60 * 1000) >=
-    18;
-
-  if (!isAdult) throw new NotAcceptableException('You must be 18 or older');
-
-  return isAdult;
-};
-
-export async function checkUniqueData(
-  email: string | undefined,
-  username: string | undefined,
-  userModel: Model<User>,
-  id?: string | undefined,
-): Promise<void> {
-  if (!email && !username) {
-    return;
-  }
-
-  const filter: any = {};
-
-  if (email) {
-    filter.$or = filter.$or || [];
-    filter.$or.push({ email });
-  }
-
-  if (username) {
-    filter.$or = filter.$or || [];
-    filter.$or.push({ username });
-  }
-
-  if (id) {
-    filter._id = { $ne: id };
-  }
-
-  const existingUser = await userModel.findOne(filter);
-
-  if (existingUser) {
-    const message =
-      email && existingUser.email === email
-        ? 'Email already exists'
-        : 'Username already exists';
-    throw new ConflictException(message);
-  }
-}
+import { populateUser } from './users.service';
 
 export const findUser = async (id: string, userModel: Model<User>) => {
   const query = id?.includes('@') ? { email: id } : { _id: id };

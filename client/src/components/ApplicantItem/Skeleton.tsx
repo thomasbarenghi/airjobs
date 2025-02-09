@@ -1,4 +1,4 @@
-import { Skeleton } from '@nextui-org/react'
+import { Skeleton } from "@heroui/react"
 
 const ApplicantItemSkeleton = () => (
   <div className='flex w-full cursor-pointer  flex-col gap-4 rounded-[30px] border  border-violet-100 px-5 py-5 lg:items-center lg:justify-between lg:px-10'>

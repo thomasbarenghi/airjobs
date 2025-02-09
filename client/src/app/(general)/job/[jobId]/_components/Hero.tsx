@@ -1,18 +1,18 @@
 'use client'
 import { JobChips, TextElement } from '@/components'
-import type { ApplicantsEnum, JobInterface } from '@/interfaces/job.interface'
+import type { ApplicantsEnum, IJob } from '@/interfaces/job.interface'
 import Image from 'next/image'
 import Routes from '@/utils/constants/routes.const'
 import Link from 'next/link'
 import ButtonsGroup from './ButtonsGroup'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import useSWR from 'swr'
 import Endpoints from '@/utils/constants/endpoints.const'
 import HeroPlaceholder from './HeroPlaceholder'
 
 interface Props {
-  job: JobInterface
-  loggedUser: UserInterface
+  job: IJob
+  loggedUser: IUser
   isError: boolean
 }
 

@@ -1,9 +1,9 @@
 'use client'
 import { JobsFlex, TextElement } from '@/components'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 
 interface JobsSectionProps {
-  user: UserInterface
+  user: IUser
   isError: boolean
 }
 

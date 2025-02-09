@@ -2,21 +2,25 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Delete,
   Put,
+  Body,
   UseInterceptors,
   UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersService } from './users.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AddCompanyDto } from './dto/add-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { EditPasswordDto } from './dto/edit-password.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { Public } from 'src/auth/auth.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -25,19 +29,26 @@ export class UsersController {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
+  // PUBLIC ENDPOINTS ----------------------------------------------------------
+
+  @Public()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
+  // PRIVATE ENDPOINTS ---------------------------------------------------------
+
   @Get()
-  findAll() {
+  @Public()
+  async findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  @Public()
+  async findOne(@Param('id') id: string) {
+    return this.usersService.findUser(id);
   }
 
   @Put(':id')
@@ -45,18 +56,28 @@ export class UsersController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() profileImage: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    profileImage?: Express.Multer.File,
   ) {
-    if (profileImage)
+    if (profileImage) {
       updateUserDto.profileImage = await this.cloudinaryService.uploadImage(
         profileImage,
       );
+    }
 
-    return await this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Put(':id/edit-password')
-  editPassword(
+  async editPassword(
     @Param('id') id: string,
     @Body() editPasswordDto: EditPasswordDto,
   ) {
@@ -64,7 +85,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
 
@@ -73,12 +94,22 @@ export class UsersController {
   async addCompanyDetails(
     @Param('id') id: string,
     @Body() addCompanyDto: AddCompanyDto,
-    @UploadedFile() logo: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    logo?: Express.Multer.File,
   ) {
-    if (logo)
+    if (logo) {
       addCompanyDto.logo = await this.cloudinaryService.uploadImage(logo);
+    }
 
-    return this.usersService.addCompanyDetails(id, addCompanyDto);
+    return this.usersService.manageCompanyDetails(id, addCompanyDto);
   }
 
   @Put(':id/edit-company-details')
@@ -86,11 +117,21 @@ export class UsersController {
   async editCompanyDetails(
     @Param('id') id: string,
     @Body() updateCompanyDto: UpdateCompanyDto,
-    @UploadedFile() logo: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    logo?: Express.Multer.File,
   ) {
-    if (logo)
+    if (logo) {
       updateCompanyDto.logo = await this.cloudinaryService.uploadImage(logo);
+    }
 
-    return this.usersService.editCompanyDetails(id, updateCompanyDto);
+    return this.usersService.manageCompanyDetails(id, updateCompanyDto);
   }
 }

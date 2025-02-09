@@ -4,9 +4,10 @@ import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UuidService } from './uuid/uuid.service';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -17,6 +18,13 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AuthModule,
     CloudinaryModule,
   ],
-  providers: [UuidService, CloudinaryService],
+
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    CloudinaryService,
+  ],
 })
 export class AppModule {}

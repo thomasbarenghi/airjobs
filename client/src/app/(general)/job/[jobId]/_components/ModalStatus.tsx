@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/indent */
 'use client'
 import { Button, TextElement } from '@/components'
-import type { JobInterface, StatusEnum } from '@/interfaces/job.interface'
-import type { UserInterface } from '@/interfaces/user.interface'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
+import type { IJob, StatusEnum } from '@/interfaces/job.interface'
+import type { IUser } from '@/interfaces/user.interface'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react"
 
 interface ModalApplyProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  job: JobInterface
-  loggedUser: UserInterface | any
+  job: IJob
+  loggedUser: IUser | any
   applicantStatus: StatusEnum
 }
 

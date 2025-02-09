@@ -1,12 +1,12 @@
 import { Button, TextElement } from '@/components'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import Routes from '@/utils/constants/routes.const'
 import Image from 'next/image'
 import HeroPlaceholder from './HeroPlaceholder'
 import { revalidatePath } from 'next/cache'
 
 interface Props {
-  loggedUser: UserInterface
+  loggedUser: IUser
   isError: boolean
 }
 

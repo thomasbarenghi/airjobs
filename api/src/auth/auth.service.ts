@@ -1,78 +1,74 @@
-import {
-  Injectable,
-  NotAcceptableException,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { comparePasswords } from '../utils/bcrypt.utils';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Session } from './entities/auth.entity';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+
+export interface PayloadJwt {
+  email: string;
+  sub: string;
+}
 
 @Injectable()
 export class AuthService {
+  private readonly jwtSecret: string;
+  private readonly accessTokenExpiry: string;
+  private readonly refreshTokenExpiry: string;
+  private readonly accessTokenExpiryInSeconds: string;
+
   constructor(
-    @InjectModel(Session.name) private authModel: Model<Session>,
-    @InjectModel(User.name) private userModel: Model<User>,
-  ) {}
-
-  public findUserByEmail(email: string) {
-    const user = this.userModel.findOne({ email: email });
-
-    if (!user) {
-      throw new NotAcceptableException('Could not find the user');
-    }
-
-    return user;
+    private readonly jwtService: JwtService,
+    private readonly usersService: UsersService,
+  ) {
+    this.jwtSecret = process.env.JWT_SECRET || 'defaultSecret';
+    this.refreshTokenExpiry = '7d';
+    this.accessTokenExpiry = '1h'; //1h
+    this.accessTokenExpiryInSeconds = '3600'; //3600
   }
 
-  public findUserById(id: string) {
-    const user = this.userModel.findById(id);
+  // PUBLIC METHODS ------------------------------------------------------------
+  async validateUser(email: string, password: string): Promise<User | null> {
+    const user = await this.usersService.findUser(email);
 
-    if (!user) {
-      throw new NotAcceptableException('Could not find the user');
-    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    return user;
+    return isPasswordValid ? user : null;
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.findUserByEmail(username);
+  async rotateRefreshToken(oldRefreshToken: string) {
+    const decodedToken = this.decodeToken(oldRefreshToken);
+    const payload = { email: decodedToken.email, sub: decodedToken.id };
+    return this.generateTokens(payload);
+  }
 
-    const passwordValid = await comparePasswords(password, user.password);
+  async login(user: User) {
+    console.log(user);
 
-    if (!passwordValid) {
-      throw new NotAcceptableException('Invalid password');
-    }
+    return this.generateTokens({ email: user.email, sub: user._id.toString() });
+  }
 
+  // TOKEN ADMIN ------------------------------------------------------------
+  private async generateTokens(payload: PayloadJwt) {
     return {
-      id: user.id,
-      email: user.email,
+      access_token: await this.createToken(payload, this.accessTokenExpiry),
+      access_token_expires_at:
+        Date.now() + parseInt(this.accessTokenExpiryInSeconds, 10) * 1000,
+      refresh_token: await this.createToken(payload, this.refreshTokenExpiry),
     };
   }
 
-  async findSessionById(sessionId: string) {
-    const session = await this.authModel.find({
-      'session.sessionId': sessionId,
+  private async createToken(payload: PayloadJwt, expiresIn: string) {
+    return this.jwtService.sign(payload, {
+      privateKey: this.jwtSecret,
+      expiresIn,
     });
-
-    const parsedSessionId = JSON.parse(JSON.stringify(session[0])).session;
-
-    if (!parsedSessionId) {
-      throw new UnauthorizedException();
-    }
-
-    return {
-      verified: true,
-    };
   }
 
-  async deleteSessionById(sessionId: string) {
-    await this.authModel.deleteOne({
-      'session.sessionId': sessionId,
-    });
-    return {
-      message: 'Logout successful',
-    };
+  private decodeToken(token: string) {
+    try {
+      return this.jwtService.verify(token, { secret: this.jwtSecret });
+    } catch {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

@@ -1,5 +1,5 @@
 'use client'
-export const localStorageProvider = (): Map<string, never> => {
+const localStorageProvider = (): Map<string, never> => {
   // eslint-disable-next-line @typescript-eslint/consistent-generic-constructors
   const map: Map<string, never> = new Map(JSON.parse(localStorage?.getItem('app-cache') ?? '[]'))
 
@@ -10,3 +10,5 @@ export const localStorageProvider = (): Map<string, never> => {
 
   return map
 }
+
+export default localStorageProvider

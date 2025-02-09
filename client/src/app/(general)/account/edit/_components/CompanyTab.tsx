@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import type { CompanyForm } from '@/interfaces/forms.interface'
 import type { KeyedMutator } from 'swr'
 import {
@@ -14,7 +14,7 @@ import {
 } from '@/utils/constants/pattern.const'
 
 interface UserTabProps {
-  loggedUser: UserInterface
+  loggedUser: IUser
   mutate: KeyedMutator<string>
 }
 

@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Tab, Skeleton } from '@nextui-org/react'
+import { Tabs, Tab, Skeleton } from "@heroui/react"
 import type { Key } from 'react'
 
 interface TabBarItemProps {

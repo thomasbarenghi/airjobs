@@ -1,17 +1,17 @@
 'use client'
 import { Button, SimpleSelect, TextElement } from '@/components'
-import type { ApplicantsEnum, JobInterface, StatusEnum } from '@/interfaces/job.interface'
+import type { ApplicantsEnum, IJob, StatusEnum } from '@/interfaces/job.interface'
 import { putRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect.utils'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react"
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { KeyedMutator } from 'swr'
 
 interface ModalApplyProps {
   applicant: ApplicantsEnum
-  job: JobInterface
+  job: IJob
   mutate: KeyedMutator<any>
 }
 

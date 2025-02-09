@@ -1,4 +1,4 @@
-export interface CompanyInterface {
+export interface ICompany {
   name: string
   description: string
   website: string

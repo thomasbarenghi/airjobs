@@ -1,10 +1,10 @@
 import { TextElement } from '@/components'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import Image from 'next/image'
 import HeroPlaceholder from './HeroPlaceholder'
 
 interface Props {
-  user: UserInterface
+  user: IUser
   isError: boolean
 }
 

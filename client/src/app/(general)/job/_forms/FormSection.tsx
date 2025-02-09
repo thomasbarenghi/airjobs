@@ -5,7 +5,7 @@ import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import type {
   CountryEnum,
   CurrencyEnum,
-  JobInterface,
+  IJob,
   LocationEnum,
   SeniorityEnum,
   TypeEnum
@@ -15,13 +15,13 @@ import { postJob } from './postJob'
 import { deleteJob } from './deleteJob'
 import type { JobForm } from './jobForm.interface'
 import { descriptionPattern, maxApplicantsPattern, salaryPattern, titlePattern } from '@/utils/constants/pattern.const'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import editAction from './editAction'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
-  job?: JobInterface
-  loggedUser: UserInterface
+  job?: IJob
+  loggedUser: IUser
 }
 
 const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {

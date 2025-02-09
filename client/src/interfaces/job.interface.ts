@@ -1,6 +1,6 @@
-import type { UserInterface } from './user.interface'
+import type { IUser } from './user.interface'
 
-export interface JobInterface {
+export interface IJob {
   title: string
   description: string
   country: string
@@ -9,7 +9,7 @@ export interface JobInterface {
   location: LocationEnum
   salary: number
   currency: CurrencyEnum
-  owner: UserInterface
+  owner: IUser
   createdAt: string
   updatedAt: string
   _id: string
@@ -20,7 +20,7 @@ export interface JobInterface {
 }
 
 export interface ApplicantsEnum {
-  user: UserInterface
+  user: IUser
   status: StatusEnum
   createdAt: string
   resume: string

@@ -2,7 +2,11 @@
 'use client'
 import { SWRConfig } from 'swr'
 import { fetcher } from '@/services/fetcher.service'
-import { localStorageProvider } from './localStorage.provider'
+import dynamic from 'next/dynamic'
+
+const localStorageProvider = dynamic(async () => await import('./localStorage.provider'), {
+  ssr: false
+})
 
 const SWRProvider = ({ children }: React.PropsWithChildren<{}>) => (
   <SWRConfig

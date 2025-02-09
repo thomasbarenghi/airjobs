@@ -1,11 +1,11 @@
 'use client'
 import { ApplicantsFlex } from '@/components'
-import type { JobInterface } from '@/interfaces/job.interface'
+import type { IJob } from '@/interfaces/job.interface'
 import Endpoints from '@/utils/constants/endpoints.const'
 import useSWR from 'swr'
 
 interface JobsSectionProps {
-  job: JobInterface
+  job: IJob
 }
 
 const ApplicantsSection = ({ job }: JobsSectionProps) => {

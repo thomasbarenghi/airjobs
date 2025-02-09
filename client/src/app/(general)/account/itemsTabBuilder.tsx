@@ -1,4 +1,4 @@
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IUser } from '@/interfaces/user.interface'
 
 interface TabBarItemProps {
   title: string
@@ -6,7 +6,7 @@ interface TabBarItemProps {
   visible?: boolean
 }
 
-export const itemsTabBuilder = (loggedUser: UserInterface): TabBarItemProps[] => [
+export const itemsTabBuilder = (loggedUser: IUser): TabBarItemProps[] => [
   {
     title: 'Applied Jobs',
     content: <></>,

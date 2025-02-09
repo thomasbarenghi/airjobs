@@ -1,5 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, HydratedDocument, Model, ObjectId, PopulatedDoc, Types } from 'mongoose';
+import mongoose, {
+  Document,
+  HydratedDocument,
+  ObjectId,
+  PopulatedDoc,
+} from 'mongoose';
 import {
   IsNotEmpty,
   Matches,
@@ -89,7 +94,7 @@ export class Job {
   currency: string;
 
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  owner?: PopulatedDoc<User & Document>;;
+  owner?: PopulatedDoc<User & Document>;
 
   @Prop({ required: true, default: true })
   @IsNotEmpty({ message: 'active is required' })

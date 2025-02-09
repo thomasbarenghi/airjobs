@@ -1,18 +1,18 @@
 'use client'
 import { Button, TextElement } from '@/components'
-import type { JobInterface } from '@/interfaces/job.interface'
-import type { UserInterface } from '@/interfaces/user.interface'
+import type { IJob } from '@/interfaces/job.interface'
+import type { IUser } from '@/interfaces/user.interface'
 import { postRequest } from '@/services/apiRequests.service'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react"
 import { toast } from 'sonner'
 import type { KeyedMutator } from 'swr'
 
 interface ModalUnapplyProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
-  job: JobInterface
-  loggedUser: UserInterface
+  job: IJob
+  loggedUser: IUser
   mutate: KeyedMutator<any>
 }
 
