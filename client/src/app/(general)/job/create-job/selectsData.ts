@@ -1,4 +1,4 @@
-import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect.utils'
+import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect'
 
 export const seniorityData = convertArrayToValueLabelArray(['Junior', 'Mid', 'Senior'])
 

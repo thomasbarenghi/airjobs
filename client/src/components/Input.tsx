@@ -1,5 +1,5 @@
 'use client'
-import { Input as InputUI } from '@nextui-org/react'
+import { Input as InputUI } from '@heroui/react'
 import { type ComponentProps } from 'react'
 import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
 
@@ -46,6 +46,7 @@ const Input = (props: ExtendedProps) => {
       }}
       placeholder={props.placeholder}
       errorMessage={props.errorMessage}
+      isInvalid={Boolean(props.errorMessage)}
     />
   )
 }

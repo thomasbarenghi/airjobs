@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/indent */
 'use client'
 import { Button } from '@/components'
 import Routes from '@/utils/constants/routes.const'
-import { useDisclosure } from '@nextui-org/react'
+import { useDisclosure } from '@heroui/react'
 import ModalContainer from './ModalContainer'
-import type { JobInterface, StatusEnum } from '@/interfaces/job.interface'
-import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
+import { IUser } from '@/types/user'
+import { IJob, StatusEnum } from '@/types/job'
 
 interface ButtonsProps {
   hasApplied: boolean
   applicantStatus: StatusEnum
-  data: JobInterface
-  loggedUser: UserInterface
+  data: IJob
+  loggedUser: IUser
   jobId: string
   isOwner: boolean
   mutate: KeyedMutator<any>

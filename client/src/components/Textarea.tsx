@@ -1,5 +1,5 @@
 'use client'
-import { Textarea as TextareaUI } from '@nextui-org/react'
+import { Textarea as TextareaUI } from '@heroui/react'
 import { type ComponentProps } from 'react'
 import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
 
@@ -43,6 +43,7 @@ const Textarea = (props: ExtendedProps) => {
       }}
       placeholder={props.placeholder}
       errorMessage={props.errorMessage}
+      isInvalid={Boolean(props.errorMessage)}
     />
   )
 }

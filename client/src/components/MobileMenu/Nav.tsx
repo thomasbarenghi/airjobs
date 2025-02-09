@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 'use client'
 import { itemsNav } from '../Header/lib/itemsNav'
 import { TextElement } from '@/components'

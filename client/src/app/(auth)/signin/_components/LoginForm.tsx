@@ -1,18 +1,18 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 'use client'
 import { Button, Input } from '@/components'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import type { LoginFormValues } from '../form.interface'
 import Routes from '@/utils/constants/routes.const'
 import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
 import { emailPattern, passwordPattern } from '@/utils/constants/pattern.const'
 
+export interface LoginFormValues {
+  email: string
+  password: string
+}
+
 const LoginForm = () => {
-  const [visibility] = useState(false)
-  const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
 
   const {
@@ -24,26 +24,22 @@ const LoginForm = () => {
   })
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    try {
-      const res = await signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        redirect: false
-      })
+    const res = await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false
+    })
 
-      if (res?.error) {
-        console.error('Error signin:', res.error)
-        return toast.error('Check your credentials, something went wrong')
-      }
-
-      router.push(Routes.HOME)
-    } catch (error) {
-      console.error('Error signin catch:', error)
+    if (!res || res?.error) {
+      console.error(res?.error)
+      return toast.error('Check your credentials, something went wrong')
     }
+
+    router.push(Routes.HOME)
   }
 
   return (
-    <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)} ref={formRef}>
+    <form className='flex w-full flex-col items-center gap-4' onSubmit={handleSubmit(onSubmit)}>
       <Input
         type='email'
         name='email'
@@ -63,7 +59,7 @@ const LoginForm = () => {
       />
 
       <Input
-        type={visibility ? 'text' : 'password'}
+        type='password'
         name='password'
         label='Password'
         placeholder='Password'

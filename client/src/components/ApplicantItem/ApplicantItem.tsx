@@ -1,20 +1,20 @@
 import Image from 'next/image'
-import type { ApplicantsEnum, JobInterface } from '@/interfaces/job.interface'
-import { formatTimeAgo } from '@/utils/functions/formatTimeAgo.utils'
+import { formatTimeAgo } from '@/utils/functions/formatTimeAgo'
 import { Button, TextElement } from '@/components'
 import ModalStatus from './ModalStatus'
 import type { KeyedMutator } from 'swr'
+import { ApplicantsEnum, IJob } from '@/types/job'
 
 interface JobItemProps {
   applicant: ApplicantsEnum
-  job: JobInterface
+  job: IJob
   mutate: KeyedMutator<any>
 }
 
 const ApplicantItem = ({ applicant, job, mutate }: JobItemProps) => (
-  <div className='flex w-full cursor-pointer  flex-col gap-4 rounded-[30px] border  border-violet-100 px-5 py-5 lg:items-center lg:justify-between lg:px-10'>
+  <div className='flex w-full cursor-pointer flex-col gap-4 rounded-[30px] border border-violet-100 px-5 py-5 lg:items-center lg:justify-between lg:px-10'>
     <div className='flex w-full flex-col gap-4 md:flex-row'>
-      <div className='flex gap-4 lg:w-[40%] xl:w-[45%] 2xl:w-[50%] '>
+      <div className='flex gap-4 lg:w-[40%] xl:w-[45%] 2xl:w-[50%]'>
         <Image
           src={applicant?.user?.profileImage}
           alt={applicant?.user?.email}
@@ -22,8 +22,8 @@ const ApplicantItem = ({ applicant, job, mutate }: JobItemProps) => (
           height={50}
           className='aspect-square rounded-lg object-cover'
         />
-        <div className='flex flex-col justify-center '>
-          <TextElement as='p' type='base' className='!font-semibold leading-[20px] '>
+        <div className='flex flex-col justify-center'>
+          <TextElement as='p' type='base' className='!font-semibold leading-[20px]'>
             {applicant?.user?.firstName} {applicant?.user?.lastName}
           </TextElement>
           <TextElement as='p' type='small' className='!font-light !text-neutral-600'>

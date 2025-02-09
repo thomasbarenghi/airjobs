@@ -2,10 +2,10 @@
 import { itemsNavBuilder, type ItemNavInterface } from './lib/itemsNav'
 import NextLink from 'next/link'
 import { signOut } from 'next-auth/react'
-import type { UserInterface } from '@/interfaces/user.interface'
+import { IUser } from '@/types/user'
 
 interface Props {
-  loggedUser: UserInterface
+  loggedUser: IUser
 }
 
 const Menu = ({ loggedUser }: Props) => {

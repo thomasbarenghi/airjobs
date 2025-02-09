@@ -3,10 +3,10 @@ import { TabBar } from '@/components'
 import { tabItemsBuilder } from '../tabItemsBuilder'
 import useSWR from 'swr'
 import Endpoints from '@/utils/constants/endpoints.const'
-import type { UserInterface } from '@/interfaces/user.interface'
+import { IUser } from '@/types/user'
 
 interface TabBarItemProps {
-  user: UserInterface
+  user: IUser
 }
 
 const TabsSection = ({ user }: TabBarItemProps) => {

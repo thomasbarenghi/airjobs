@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 'use client'
 import Image from 'next/image'
 import { createPortal } from 'react-dom'

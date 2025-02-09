@@ -1,8 +1,9 @@
-import type { UserInterface } from '@/interfaces/user.interface'
 import UserTab from './_components/UserTab'
 import CompanyTab from './_components/CompanyTab'
 import SecurityTab from './_components/SecurityTab'
 import type { KeyedMutator } from 'swr'
+import { JSX } from 'react'
+import { IUser } from '@/types/user'
 
 interface TabBarItemProps {
   title: string
@@ -10,7 +11,7 @@ interface TabBarItemProps {
   visible?: boolean
 }
 
-export const tabItemsBuilder = (loggedUser: UserInterface, mutate: KeyedMutator<string>): TabBarItemProps[] => [
+export const tabItemsBuilder = (loggedUser: IUser, mutate: KeyedMutator<string>): TabBarItemProps[] => [
   {
     title: 'Personal Info',
     content: <UserTab loggedUser={loggedUser} mutate={mutate} />,

@@ -1,4 +1,5 @@
-import type { UserInterface } from '@/interfaces/user.interface'
+
+import { IUser } from '@/types/user'
 import Routes from '@/utils/constants/routes.const'
 
 export interface ItemNavInterface {
@@ -9,7 +10,7 @@ export interface ItemNavInterface {
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'default' | undefined
 }
 
-export const itemsNavBuilder = (currentUser: UserInterface): ItemNavInterface[] => [
+export const itemsNavBuilder = (currentUser: IUser): ItemNavInterface[] => [
   {
     key: Routes.HOME,
     label: 'Home',

@@ -1,23 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from 'src/users/entities/user.entity';
-import { Session, AuthSchema } from './entities/auth.entity';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './local/local.strategy';
-import { LocalSerializer } from './local/local.serializer';
-import { UuidService } from 'src/uuid/uuid.service';
+import { UsersModule } from 'src/users/users.module';
+import { AuthController } from './auth.controller';
+import { UsersService } from 'src/users/users.service';
+import { User, UserSchema } from 'src/users/entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { MongooseModule } from '@nestjs/mongoose';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      { name: Session.name, schema: AuthSchema },
-    ]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     PassportModule,
+    UsersModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+    }),
   ],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UsersService],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, LocalSerializer, UuidService],
 })
 export class AuthModule {}

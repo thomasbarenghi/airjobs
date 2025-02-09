@@ -1,5 +1,5 @@
 import { serverUrl } from '@/utils/constants/env.const'
-import axios, { type AxiosResponse } from 'axios'
+import axios, { AxiosResponse, AxiosError } from 'axios'
 
 interface Response {
   data: any
@@ -7,59 +7,101 @@ interface Response {
   success: boolean
 }
 
-export const putRequest = async (url: string, data: any, withFiles: boolean, headers?: object): Promise<Response> => {
-  try {
-    const response: AxiosResponse = await axios.put(`${serverUrl}${url}`, data, {
-      headers: {
-        ...headers,
-        'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
-      }
-    })
-
+/**
+ * Handles the error by providing a unified structure for all requests.
+ * @param error - The error object to be handled.
+ * @returns A response object containing error details.
+ */
+const handleError = (error: AxiosError | any): Response => {
+  console.error('Request error:', error)
+  if (axios.isAxiosError(error)) {
+    // Handling axios errors to extract useful information
     return {
-      data: response.data,
-      error: false,
-      success: true
-    }
-  } catch (error) {
-    console.error('Error putRequest:', error)
-    return {
-      data: error,
+      data: error.response?.data || error.message,
       error: true,
       success: false
     }
   }
+
+  // Fallback for non-Axios errors
+  return {
+    data: error,
+    error: true,
+    success: false
+  }
 }
 
+/**
+ * Handles the success response from the Axios request.
+ * @param response - The Axios response object.
+ * @returns A response object containing the data from the Axios response.
+ */
+const handleResponse = (response: AxiosResponse): Response => ({
+  data: response.data,
+  error: false,
+  success: true
+})
+
+/**
+ * Makes a PUT request with the specified URL, data, and headers.
+ * @param url - The URL endpoint.
+ * @param data - The data to send in the request.
+ * @param withFiles - Whether the request includes files (multipart).
+ * @param headers - Optional headers for the request.
+ * @returns A promise resolving to the response object.
+ */
+export const putRequest = async (
+  url: string,
+  data: any,
+  withFiles: boolean,
+  headers: object = {}
+): Promise<Response> => {
+  try {
+    const response = await axios.put(`${serverUrl}${url}`, data, {
+      headers: {
+        ...headers,
+        'Content-Type': withFiles ? 'multipart/form-data' : 'application/json'
+      }
+    })
+    return handleResponse(response)
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+/**
+ * Makes a POST request with the specified URL, data, and headers.
+ * @param url - The URL endpoint.
+ * @param data - The data to send in the request.
+ * @param withFiles - Whether the request includes files (multipart).
+ * @param headers - Optional headers for the request.
+ * @returns A promise resolving to the response object.
+ */
 export const postRequest = async (
   url: string,
   data: object = {},
   withFiles: boolean,
-  headers?: object
+  headers: object = {}
 ): Promise<Response> => {
   try {
-    const response: AxiosResponse = await axios.post(`${serverUrl}${url}`, data, {
+    const response = await axios.post(`${serverUrl}${url}`, data, {
       headers: {
         ...headers,
-        'Content-Type': !withFiles ? 'application/json' : 'multipart/form-data'
+        'Content-Type': withFiles ? 'multipart/form-data' : 'application/json'
       }
     })
-
-    return {
-      data: response.data,
-      error: false,
-      success: true
-    }
+    return handleResponse(response)
   } catch (error) {
-    console.error('Error postRequest:', error)
-    return {
-      data: error,
-      error: true,
-      success: false
-    }
+    return handleError(error)
   }
 }
 
+/**
+ * Makes a DELETE request with the specified URL and headers.
+ * @param url - The URL endpoint.
+ * @param headers - Optional headers for the request.
+ * @returns A promise resolving to the response object.
+ */
 export const deleteRequest = async (url: string, headers: object = {}): Promise<Response> => {
   try {
     const response = await fetch(`${serverUrl}${url}`, {
@@ -69,22 +111,24 @@ export const deleteRequest = async (url: string, headers: object = {}): Promise<
         ...headers
       }
     })
-
+    const data = await response.json()
     return {
-      data: await response.json(),
+      data,
       error: !response.ok,
       success: response.ok
     }
   } catch (error) {
-    console.error('Error deleteRequest:', error)
-    return {
-      data: error,
-      error: true,
-      success: false
-    }
+    return handleError(error)
   }
 }
 
+/**
+ * Makes a GET request with the specified URL and headers.
+ * @param url - The URL endpoint.
+ * @param headers - Optional headers for the request.
+ * @param next - Optional configuration for revalidation, cache, or tags.
+ * @returns A promise resolving to the response object.
+ */
 export const getRequest = async (
   url: string,
   headers: object = {},
@@ -114,11 +158,6 @@ export const getRequest = async (
       success: response.ok
     }
   } catch (error) {
-    console.error('Error getRequest:', error)
-    return {
-      data: error,
-      error: true,
-      success: false
-    }
+    return handleError(error)
   }
 }

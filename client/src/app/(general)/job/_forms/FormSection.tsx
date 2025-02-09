@@ -2,26 +2,19 @@
 import { Input, Textarea, SimpleSelect, TextElement, Button } from '@/components'
 import { useRouter } from 'next/navigation'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
-import type {
-  CountryEnum,
-  CurrencyEnum,
-  JobInterface,
-  LocationEnum,
-  SeniorityEnum,
-  TypeEnum
-} from '@/interfaces/job.interface'
 import { countryData, currencyData, locationData, seniorityData, typeData } from '../create-job/selectsData'
 import { postJob } from './postJob'
 import { deleteJob } from './deleteJob'
 import type { JobForm } from './jobForm.interface'
 import { descriptionPattern, maxApplicantsPattern, salaryPattern, titlePattern } from '@/utils/constants/pattern.const'
-import type { UserInterface } from '@/interfaces/user.interface'
 import editAction from './editAction'
+import { IUser } from '@/types/user'
+import { CountryEnum, CurrencyEnum, IJob, LocationEnum, SeniorityEnum, TypeEnum } from '@/types/job'
 
 interface FormSectionProps {
   mode: 'create' | 'edit'
-  job?: JobInterface
-  loggedUser: UserInterface
+  job?: IJob
+  loggedUser: IUser
 }
 
 const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
@@ -63,7 +56,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
       <TextElement as='h1' type='t2' className='!font-light'>
         {mode === 'create' ? 'Create' : 'Edit your'} <b className='!font-semibold'>job</b>
       </TextElement>
-      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <form className='flex w-full flex-col items-center gap-4' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='title'
@@ -110,7 +103,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='country'
-              defaultSelectedKeys={[...(job?.country ? [job.country] : [])] ?? undefined}
+              defaultSelectedKeys={[...(job?.country ? [job.country] : [])]}
               field={field}
               label='Select a country'
               setSelected={(selected) => {
@@ -132,7 +125,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='type'
-              defaultSelectedKeys={[...(job?.type ? [job.type] : [])] ?? undefined}
+              defaultSelectedKeys={[...(job?.type ? [job.type] : [])]}
               field={field}
               label='Select the type of job'
               setSelected={(selected) => {
@@ -154,7 +147,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='location'
-              defaultSelectedKeys={[...(job?.location ? [job.location] : [])] ?? undefined}
+              defaultSelectedKeys={[...(job?.location ? [job.location] : [])]}
               field={field}
               label='Select the location mode'
               setSelected={(selected) => {
@@ -176,7 +169,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
           render={({ field }: any) => (
             <SimpleSelect
               name='seniority'
-              defaultSelectedKeys={[...(job?.seniority ? [job.seniority] : [])] ?? undefined}
+              defaultSelectedKeys={[...(job?.seniority ? [job.seniority] : [])]}
               field={field}
               label='Select the seniority level'
               setSelected={(selected) => {
@@ -199,7 +192,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
             <SimpleSelect
               name='currency'
               field={field}
-              defaultSelectedKeys={[...(job?.currency ? [job.currency] : [])] ?? undefined}
+              defaultSelectedKeys={[...(job?.currency ? [job.currency] : [])]}
               label='Select the currency'
               setSelected={(selected) => {
                 setValue('currency', selected as CurrencyEnum)
@@ -281,13 +274,7 @@ const FormSection = ({ mode, job, loggedUser }: FormSectionProps) => {
             />
           )}
 
-          <Button
-            title={mode === 'create' ? 'Create Job' : 'Edit Job'}
-            type='submit'
-            isLoading={isSubmitting}
-            fullWidth
-            className='mt-4'
-          />
+          <Button title='Save' type='submit' isLoading={isSubmitting} fullWidth className='mt-4' />
         </div>
       </form>
     </section>

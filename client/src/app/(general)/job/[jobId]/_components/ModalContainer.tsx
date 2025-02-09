@@ -1,9 +1,9 @@
-import type { JobInterface, StatusEnum } from '@/interfaces/job.interface'
 import ModalApply from './ModalApply'
 import ModalUnapply from './ModalUnapply'
 import ModalStatus from './ModalStatus'
-import type { UserInterface } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
+import { IJob, StatusEnum } from '@/types/job'
+import { IUser } from '@/types/user'
 
 interface ModalContainerProps {
   isOpen: boolean
@@ -13,8 +13,8 @@ interface ModalContainerProps {
   isOpenStatus: boolean
   onOpenChangeStatus: () => void
   applicantStatus: StatusEnum
-  data: JobInterface
-  loggedUser: UserInterface
+  data: IJob
+  loggedUser: IUser
   hasApplied: boolean
   mutate: KeyedMutator<any>
 }

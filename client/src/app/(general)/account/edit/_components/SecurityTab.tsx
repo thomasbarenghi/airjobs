@@ -3,15 +3,17 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
-import type { UserInterface } from '@/interfaces/user.interface'
-import type { SecurityForm } from '@/interfaces/forms.interface'
 import { passwordPattern } from '@/utils/constants/pattern.const'
+import { IUser } from '@/types/user'
+import { SecurityForm } from '@/types/forms'
+import { useRouter } from 'next/navigation'
 
 interface UserTabProps {
-  loggedUser: UserInterface
+  loggedUser: IUser
 }
 
 const SecurityTab = ({ loggedUser }: UserTabProps) => {
+  const router = useRouter()
   const {
     register,
     formState: { errors, isSubmitting },
@@ -31,6 +33,7 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
       }
 
       toast.success('Your password has been updated')
+      router.push('/account')
     } catch (error) {
       console.error('Error SecurityTab catch:', error)
     }
@@ -38,7 +41,7 @@ const SecurityTab = ({ loggedUser }: UserTabProps) => {
 
   return (
     <div className='flex flex-col gap-5'>
-      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <form className='flex w-full flex-col items-center gap-4' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='password'
           name='oldPassword'

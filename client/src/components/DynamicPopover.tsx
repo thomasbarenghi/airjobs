@@ -1,5 +1,5 @@
 'use client'
-import { Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
+import { Popover, PopoverContent, PopoverTrigger } from '@heroui/react'
 import Image from 'next/image'
 
 interface DynamicPopoverProps {
@@ -21,7 +21,7 @@ const DynamicPopover = ({ image, children, backdrop }: DynamicPopoverProps) => (
         alt='Profile image'
         width={50}
         height={50}
-        className='aspect-square h-[50px] min-w-[50px] cursor-pointer  rounded-full border-[2px] border-blue-700 object-cover p-1'
+        className='aspect-square h-[50px] min-w-[50px] cursor-pointer rounded-full border-[2px] border-blue-700 object-cover p-1'
         src={image}
         onError={(e) => {
           e.currentTarget.src = '/image/placeholder.png'
