@@ -7,7 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { DelayInterceptor } from './delay.interceptor';
 
 @Module({
   imports: [
@@ -24,6 +25,10 @@ import { APP_GUARD } from '@nestjs/core';
     //   provide: APP_GUARD,
     //   useClass: JwtAuthGuard,
     // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DelayInterceptor,
+    },
     CloudinaryService,
   ],
 })

@@ -75,8 +75,6 @@ const refreshTokenReq = async (refreshToken: string) =>
 const authenticateUser = async (email: string, password: string) => {
   const { data, error } = await loginUser(email, password)
 
-  console.log(data)
-
   if (error || !data) {
     throw new Error('Login error')
   }

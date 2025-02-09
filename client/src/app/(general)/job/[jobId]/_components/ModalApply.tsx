@@ -31,8 +31,6 @@ const ModalApply = ({ isOpen, onOpenChange, job, loggedUser, hasApplied, mutate 
 
   const handleApply: SubmitHandler<any> = async (data) => {
     try {
-      console.log('hey, data')
-
       const formData = {
         resume: data.resume[0],
         userId: loggedUser._id
