@@ -2,9 +2,9 @@
 import { TextElement } from '@/components'
 import { useEffect } from 'react'
 
-const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
+const GlobalError = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
   useEffect(() => {
-    console.error('Error root error.tsx:', error)
+    console.error('Error root GlobalError.tsx:', error)
   }, [error])
 
   return (
@@ -50,4 +50,4 @@ const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: ()
   )
 }
 
-export default Error
+export default GlobalError
