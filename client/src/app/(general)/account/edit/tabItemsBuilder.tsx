@@ -1,8 +1,9 @@
-import type { IUser } from '@/interfaces/user.interface'
 import UserTab from './_components/UserTab'
 import CompanyTab from './_components/CompanyTab'
 import SecurityTab from './_components/SecurityTab'
 import type { KeyedMutator } from 'swr'
+import { JSX } from 'react'
+import { IUser } from '@/types/user'
 
 interface TabBarItemProps {
   title: string

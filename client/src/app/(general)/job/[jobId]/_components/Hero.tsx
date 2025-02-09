@@ -1,14 +1,14 @@
 'use client'
 import { JobChips, TextElement } from '@/components'
-import type { ApplicantsEnum, IJob } from '@/interfaces/job.interface'
 import Image from 'next/image'
 import Routes from '@/utils/constants/routes.const'
 import Link from 'next/link'
 import ButtonsGroup from './ButtonsGroup'
-import type { IUser } from '@/interfaces/user.interface'
 import useSWR from 'swr'
 import Endpoints from '@/utils/constants/endpoints.const'
 import HeroPlaceholder from './HeroPlaceholder'
+import { IUser } from '@/types/user'
+import { ApplicantsEnum, IJob } from '@/types/job'
 
 interface Props {
   job: IJob
@@ -17,10 +17,10 @@ interface Props {
 }
 
 const HeroSection = ({ job, loggedUser, isError }: Props) => {
-  if (isError) return <HeroPlaceholder />
   const { data, mutate } = useSWR(Endpoints.INDIVIDUAL_JOB(job._id), {
     fallbackData: job
   })
+  if (isError) return <HeroPlaceholder />
 
   const isOwner = data?.owner?._id === loggedUser?._id
   const hasApplied = data?.applicants?.some((data: ApplicantsEnum) => data?.user?._id === loggedUser?._id)
@@ -29,8 +29,8 @@ const HeroSection = ({ job, loggedUser, isError }: Props) => {
     'Under review'
 
   return (
-    <section className=' section-reduced flex flex-col gap-10'>
-      <div className='flex w-full flex-col justify-between gap-5 lg:flex-row '>
+    <section className='section-reduced flex flex-col gap-10'>
+      <div className='flex w-full flex-col justify-between gap-5 lg:flex-row'>
         <div className='flex flex-grow items-center gap-5'>
           <div className='w-full'>
             <Link href={Routes.COMPANY(data?.owner?._id ?? null)}>
@@ -43,7 +43,7 @@ const HeroSection = ({ job, loggedUser, isError }: Props) => {
                   className='aspect-square rounded-lg object-cover'
                 />
                 <div className='flex flex-col justify-center'>
-                  <TextElement as='p' type='t3' className='!font-semibold leading-[24px] '>
+                  <TextElement as='p' type='t3' className='!font-semibold leading-[24px]'>
                     {data?.title}
                   </TextElement>
                   <TextElement as='p' type='base' className='!font-light'>

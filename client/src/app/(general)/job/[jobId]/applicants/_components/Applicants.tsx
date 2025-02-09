@@ -1,6 +1,6 @@
 'use client'
 import { ApplicantsFlex } from '@/components'
-import type { IJob } from '@/interfaces/job.interface'
+import { IJob } from '@/types/job'
 import Endpoints from '@/utils/constants/endpoints.const'
 import useSWR from 'swr'
 

@@ -1,4 +1,5 @@
-import type { IUser } from '@/interfaces/user.interface'
+
+import { IUser } from '@/types/user'
 import Routes from '@/utils/constants/routes.const'
 
 export interface ItemNavInterface {

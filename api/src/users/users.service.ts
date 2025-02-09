@@ -76,7 +76,8 @@ export class UsersService {
 
     this.validateUserData(updateUserDto, id);
 
-    if (updateUserDto.birthday) this.calculateAge(updateUserDto.birthday);
+    if (updateUserDto.birthday)
+      this.calculateAge(new Date(updateUserDto.birthday));
     if (
       updateUserDto.profileImage &&
       !validateUrl(updateUserDto.profileImage)
@@ -134,7 +135,10 @@ export class UsersService {
       delete companyDto.logo;
     }
 
-    user.company = { ...user.company, ...companyDto };
+    const imageValid = validateUrl(companyDto.logo);
+    if (!imageValid) companyDto.logo = user.company.logo;
+    user.set({ company: companyDto });
+
     user.markModified('company');
     await user.save();
 
@@ -213,7 +217,8 @@ export class UsersService {
       (job) => job._id.toString() !== jobId,
     );
 
-    user.markModified('jobs');
+    user.markModified('jobs.applied');
+    user.markModified('jobs.created');
     await user.save();
   }
 
@@ -275,6 +280,8 @@ export class UsersService {
    */
   private calculateAge(birthday: Date): void {
     if (!(birthday instanceof Date) || isNaN(birthday.getTime())) {
+      console.log('no aceptable ', birthday);
+
       throw new NotAcceptableException('Invalid date format');
     }
 

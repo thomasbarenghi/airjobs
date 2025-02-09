@@ -1,7 +1,7 @@
-import type { IJob } from '@/interfaces/job.interface'
 import { JobItem } from '@/components'
 import Placeholder from './Placeholder'
 import Skeleton from './Skeleton'
+import { IJob } from '@/types/job'
 
 interface JobsFlexProps {
   jobs: IJob[]
@@ -10,7 +10,7 @@ interface JobsFlexProps {
 }
 
 const JobsFlex = ({ jobs, isLoading, isError }: JobsFlexProps) => (
-  <div className='flex w-full flex-col  gap-5'>
+  <div className='flex w-full flex-col gap-5'>
     {isLoading && <Skeleton />}
     {(!isLoading && (jobs?.length < 1 || jobs === undefined)) || isError ? (
       <Placeholder isError={isError} />

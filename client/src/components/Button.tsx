@@ -1,5 +1,5 @@
 'use client'
-import { Button as ButtonUI } from "@heroui/react"
+import { Button as ButtonUI } from '@heroui/react'
 import Link from 'next/link'
 import { type ComponentProps } from 'react'
 

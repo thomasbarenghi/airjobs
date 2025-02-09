@@ -3,7 +3,7 @@ import { Button, Input, Textarea } from '@/components'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import useSWR from 'swr'
-import type { CompanyForm } from '@/interfaces/forms.interface'
+
 import { postRequest } from '@/services/apiRequests.service'
 import Routes from '@/utils/constants/routes.const'
 import { toast } from 'sonner'
@@ -13,7 +13,8 @@ import {
   emailPattern,
   websitePattern
 } from '@/utils/constants/pattern.const'
-import type { IUser } from '@/interfaces/user.interface'
+import { CompanyForm } from '@/types/forms'
+import { IUser } from '@/types/user'
 
 interface Props {
   user: IUser
@@ -59,7 +60,7 @@ const FormSection = ({ user }: Props) => {
 
   return (
     <section className='section-reduced flex flex-col gap-5'>
-      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <form className='flex w-full flex-col items-center gap-4' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='name'

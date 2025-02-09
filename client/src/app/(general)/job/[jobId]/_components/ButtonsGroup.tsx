@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/indent */
 'use client'
 import { Button } from '@/components'
 import Routes from '@/utils/constants/routes.const'
-import { useDisclosure } from "@heroui/react"
+import { useDisclosure } from '@heroui/react'
 import ModalContainer from './ModalContainer'
-import type { IJob, StatusEnum } from '@/interfaces/job.interface'
-import type { IUser } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
+import { IUser } from '@/types/user'
+import { IJob, StatusEnum } from '@/types/job'
 
 interface ButtonsProps {
   hasApplied: boolean

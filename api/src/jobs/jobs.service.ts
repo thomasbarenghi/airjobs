@@ -152,8 +152,10 @@ export class JobsService {
     this.verifyIsAspirant(user);
 
     const applicationIndex = job.applicants.findIndex(
-      (applicant) => applicant.user.toString() === userId,
+      (applicant) => applicant.user._id.toString() === userId,
     );
+
+    console.log(job.applicants);
 
     if (applicationIndex === -1) {
       throw new ConflictException('User has not applied to this job');
@@ -162,11 +164,7 @@ export class JobsService {
     job.applicants.splice(applicationIndex, 1);
     await job.save();
 
-    user.jobs.applied = user.jobs.applied.filter(
-      (jobId) => jobId.toString() !== id,
-    );
-    user.markModified('jobs');
-    await user.save();
+    await this.usersService.removeJobFromUser(userId, id);
 
     return job;
   }

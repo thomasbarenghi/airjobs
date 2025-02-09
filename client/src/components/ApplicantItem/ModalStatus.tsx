@@ -1,10 +1,10 @@
 'use client'
 import { Button, SimpleSelect, TextElement } from '@/components'
-import type { ApplicantsEnum, IJob, StatusEnum } from '@/interfaces/job.interface'
 import { putRequest } from '@/services/apiRequests.service'
+import { ApplicantsEnum, IJob, StatusEnum } from '@/types/job'
 import Endpoints from '@/utils/constants/endpoints.const'
-import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect.utils'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react"
+import { convertArrayToValueLabelArray } from '@/utils/functions/formatToSelect'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react'
 import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { KeyedMutator } from 'swr'
@@ -65,7 +65,7 @@ const ModalStatus = ({ applicant, job, mutate }: ModalApplyProps) => {
                   Update applicant status for {applicant?.user?.firstName} {applicant?.user?.lastName}
                 </ModalHeader>
                 <ModalBody>
-                  <TextElement as='p' type='base' className='!font-light '>
+                  <TextElement as='p' type='base' className='!font-light'>
                     You can update the status of the applicant here.
                   </TextElement>
                   <Controller

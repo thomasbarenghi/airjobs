@@ -3,8 +3,6 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
-import type { IUser } from '@/interfaces/user.interface'
-import type { CompanyForm } from '@/interfaces/forms.interface'
 import type { KeyedMutator } from 'swr'
 import {
   companyDescriptionPattern,
@@ -12,6 +10,9 @@ import {
   emailPattern,
   websitePattern
 } from '@/utils/constants/pattern.const'
+import { CompanyForm } from '@/types/forms'
+import { IUser } from '@/types/user'
+import { useRouter } from 'next/navigation'
 
 interface UserTabProps {
   loggedUser: IUser
@@ -19,6 +20,7 @@ interface UserTabProps {
 }
 
 const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
+  const router = useRouter()
   const {
     register,
     formState: { errors, isSubmitting },
@@ -40,24 +42,22 @@ const CompanyTab = ({ loggedUser, mutate }: UserTabProps) => {
       }
 
       const { error, data: updatedData } = await putRequest(Endpoints.EDIT_COMPANY(loggedUser._id), formData, true)
+
       if (error) {
-        toast.error("Couldn't update your info")
-        console.error('Error CompanyTab:', error)
-        return
+        console.error(error)
+        return toast.error("Couldn't update your info")
       }
 
       toast.success('Your info has been updated')
-      mutate(updatedData, {
-        revalidate: false
-      })
+      router.push('/account')
     } catch (error) {
-      console.error('Error CompanyTab catch:', error)
+      console.error(error)
     }
   }
 
   return (
     <div className='flex flex-col gap-5'>
-      <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <form className='flex w-full flex-col items-center gap-4' onSubmit={handleSubmit(onSubmit)}>
         <Input
           type='text'
           name='name'

@@ -1,5 +1,5 @@
 import { JobsFlex, TextElement } from '@/components'
-import type { IJob } from '@/interfaces/job.interface'
+import { IJob } from '@/types/job'
 
 interface Props {
   job: IJob

@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import HeaderNav from './Nav'
 import { ProfileAction, MobileMenu } from '@/components'
-import { Navbar, NavbarBrand } from "@heroui/react"
+import { Navbar, NavbarBrand } from '@heroui/react'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import Routes from '@/utils/constants/routes.const'

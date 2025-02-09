@@ -1,13 +1,15 @@
+'use client'
 import { Input, Button } from '@/components'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import Endpoints from '@/utils/constants/endpoints.const'
 import { putRequest } from '@/services/apiRequests.service'
 import { toast } from 'sonner'
-import type { IUser } from '@/interfaces/user.interface'
 import type { KeyedMutator } from 'swr'
-import type { UserForm } from '@/interfaces/forms.interface'
-import { validateAdult } from '@/utils/functions/validateAdult.utils'
+import { validateAdult } from '@/utils/functions/validateAdult'
 import { emailPattern, firstNamePattern, lastNamePattern, usernamePattern } from '@/utils/constants/pattern.const'
+import { UserForm } from '@/types/forms'
+import { IUser } from '@/types/user'
+import { useRouter } from 'next/navigation'
 
 interface UserTabProps {
   loggedUser: IUser
@@ -15,6 +17,7 @@ interface UserTabProps {
 }
 
 const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
+  const router = useRouter()
   const {
     register,
     formState: { errors, isSubmitting },
@@ -46,9 +49,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
       }
 
       toast.success('Your info has been updated')
-      mutate(updatedData, {
-        revalidate: false
-      })
+      router.push('/account')
     } catch (error) {
       console.error('Error UserTab catch:', error)
     }
@@ -57,7 +58,7 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
   return (
     <div className='flex flex-col gap-5'>
       <form className='flex w-full flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
-        <div className='flex w-full flex-col items-center gap-2'>
+        <div className='flex w-full flex-col items-center gap-4'>
           <Input
             type='text'
             name='firstName'
@@ -152,8 +153,8 @@ const UserTab = ({ loggedUser, mutate }: UserTabProps) => {
           <Input
             type='file'
             name='profileImage'
-            label='Profile iamge'
-            placeholder='Profile iamge'
+            label='Profile image'
+            placeholder='Profile image'
             hookForm={{
               register,
               validations: {

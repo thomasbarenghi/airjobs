@@ -1,6 +1,6 @@
 const HeroPlaceholder = () => (
-  <section className=' section-reduced flex flex-col gap-10'>
-    <div className='flex w-full justify-between '>
+  <section className='section-reduced flex flex-col gap-10'>
+    <div className='flex w-full justify-between'>
       <div className='flex flex-grow items-center gap-5'>
         <div className='aspect-square h-[80px] w-[80px] rounded-lg bg-gray-100' />
         <div className='flex flex-col justify-center gap-1'>

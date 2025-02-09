@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Credentials from 'next-auth/providers/credentials'
 import NextAuth from 'next-auth'
 import { type AdapterUser } from 'next-auth/adapters'
-import { postData } from './utils/apiAccess'
 import { type ILoginResponseDto, type IRefreshResponseDto } from './types/auth'
+import { postData } from './services/apiAccess'
 
 // TODO: Marcar errores por session o credenciales invalidas. Borrar info si la session es invalida.
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -16,13 +15,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' }
       },
       authorize: async (credentials) => {
-        const email = credentials?.email ?? ''
-        const password = credentials?.password ?? ''
+        const email = (credentials?.email as string) ?? ''
+        const password = (credentials?.password as string) ?? ''
         const user = await authenticateUser(email, password)
         return user
       }
     })
   ],
+  pages: {
+    signIn: '/signin'
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -52,7 +54,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.error = token.error
       session.user = token.user as AdapterUser
       return session
-    }
+    },
+    authorized: async ({ auth }) =>
+      // Logged in users are authenticated, otherwise redirect to login page
+      !!auth
   }
 })
 
@@ -69,6 +74,8 @@ const refreshTokenReq = async (refreshToken: string) =>
 
 const authenticateUser = async (email: string, password: string) => {
   const { data, error } = await loginUser(email, password)
+
+  console.log(data)
 
   if (error || !data) {
     throw new Error('Login error')

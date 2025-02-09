@@ -1,8 +1,8 @@
 'use client'
-import type { IJob } from '@/interfaces/job.interface'
-import { Chip } from "@heroui/react"
+import { Chip } from '@heroui/react'
 import JobChipsPlaceholder from './Placeholder'
 import JobChipsSkeleton from './Skeleton'
+import { IJob } from '@/types/job'
 
 interface Props {
   job?: IJob

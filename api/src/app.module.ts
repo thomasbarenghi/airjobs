@@ -20,10 +20,10 @@ import { APP_GUARD } from '@nestjs/core';
   ],
 
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
     CloudinaryService,
   ],
 })

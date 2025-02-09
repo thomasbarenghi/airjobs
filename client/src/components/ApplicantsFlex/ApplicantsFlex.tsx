@@ -1,8 +1,8 @@
-import type { ApplicantsEnum, IJob } from '@/interfaces/job.interface'
 import { ApplicantItem } from '@/components'
 import Placeholder from './Placeholder'
 import Skeleton from './Skeleton'
 import type { KeyedMutator } from 'swr'
+import { ApplicantsEnum, IJob } from '@/types/job'
 
 interface JobsFlexProps {
   applicants: ApplicantsEnum[]
@@ -12,7 +12,7 @@ interface JobsFlexProps {
 }
 
 const ApplicantsFlex = ({ applicants, job, isLoading, mutate }: JobsFlexProps) => (
-  <div className='flex w-full flex-col  gap-5'>
+  <div className='flex w-full flex-col gap-5'>
     {isLoading && <Skeleton />}
     {!isLoading && (applicants?.length < 1 || applicants === undefined) ? (
       <Placeholder />

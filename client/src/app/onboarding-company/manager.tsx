@@ -1,11 +1,10 @@
-import { getUser } from '@/services/user/getUser.service'
-import { authOptions } from '@/utils/authOptions'
+import { auth } from '@/auth'
+import { getUser } from '@/services/user.service'
 import Routes from '@/utils/constants/routes.const'
-import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
 const Manager = async () => {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
   const { data: loggedUser } = await getUser(session?.user?.email as string)
 
   const handleVisility = () => {
