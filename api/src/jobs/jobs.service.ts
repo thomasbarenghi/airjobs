@@ -155,8 +155,6 @@ export class JobsService {
       (applicant) => applicant.user._id.toString() === userId,
     );
 
-    console.log(job.applicants);
-
     if (applicationIndex === -1) {
       throw new ConflictException('User has not applied to this job');
     }

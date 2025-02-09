@@ -280,8 +280,6 @@ export class UsersService {
    */
   private calculateAge(birthday: Date): void {
     if (!(birthday instanceof Date) || isNaN(birthday.getTime())) {
-      console.log('no aceptable ', birthday);
-
       throw new NotAcceptableException('Invalid date format');
     }
 
