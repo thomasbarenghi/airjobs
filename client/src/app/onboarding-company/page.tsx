@@ -7,8 +7,7 @@ import { auth } from '@/auth'
 import { TextElement } from '@/components'
 
 export const metadata: Metadata = {
-  title: 'Company Onboarding | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Company Onboarding | Airjobs'
 }
 
 const OnboardingCompany = async () => {

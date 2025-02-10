@@ -4,8 +4,7 @@ import type { Metadata } from 'next'
 import { getUser } from '@/services/user.service'
 
 export const metadata: Metadata = {
-  title: 'Company | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Company | Airjobs'
 }
 
 const Company = async ({ params }: { params: Promise<{ userId: string }> }) => {

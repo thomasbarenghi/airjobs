@@ -4,8 +4,7 @@ import type { Metadata } from 'next'
 import { getJob } from '@/services/job.service'
 
 export const metadata: Metadata = {
-  title: 'Applicants | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Applicants | Airjobs'
 }
 
 const Applicants = async ({ params }: { params: Promise<{ jobId: string }> }) => {
