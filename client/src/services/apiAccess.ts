@@ -1,3 +1,5 @@
+import { serverUrl } from '@/utils/constants/env.const'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type ApiResponse<T> = {
   data: T | null
@@ -6,7 +8,7 @@ type ApiResponse<T> = {
 
 export const fetchData = async <T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> => {
   try {
-    const response = await fetch(`http://localhost:3001/api/${endpoint}`, {
+    const response = await fetch(`${serverUrl}${endpoint}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +34,9 @@ export const postData = async <T>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> => {
   try {
-    const response = await fetch(`http://localhost:3001/api/${endpoint}`, {
+    console.log(`${serverUrl}${endpoint}`)
+
+    const response = await fetch(`${serverUrl}${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

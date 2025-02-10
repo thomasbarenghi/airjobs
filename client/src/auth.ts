@@ -62,13 +62,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 })
 
 const loginUser = async (email: string, password: string) =>
-  await postData<ILoginResponseDto>('auth/login', {
+  await postData<ILoginResponseDto>('/api/auth/login', {
     email,
     password
   })
 
 const refreshTokenReq = async (refreshToken: string) =>
-  await postData<IRefreshResponseDto>('auth/refresh', {
+  await postData<IRefreshResponseDto>('/api/auth/refresh', {
     refreshToken
   })
 
