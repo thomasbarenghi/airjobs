@@ -25,10 +25,10 @@ import { DelayInterceptor } from './delay.interceptor';
     //   provide: APP_GUARD,
     //   useClass: JwtAuthGuard,
     // },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: DelayInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: DelayInterceptor,
+    // },
     CloudinaryService,
   ],
 })

@@ -5,8 +5,7 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { buildQueryString } from '@/utils/functions/buildQueryString'
 
 export const metadata: Metadata = {
-  title: 'Find Jobs | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Find Jobs | Airjobs'
 }
 
 interface JobsSectionProps {

@@ -5,8 +5,7 @@ import LoginForm from './_components/LoginForm'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sign In | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Sign In | Airjobs'
 }
 
 const SignIn = () => (

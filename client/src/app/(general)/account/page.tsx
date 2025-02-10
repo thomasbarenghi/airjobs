@@ -8,8 +8,7 @@ import Routes from '@/utils/constants/routes.const'
 import { IUser } from '@/types/user'
 
 export const metadata: Metadata = {
-  title: 'Account | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Account | Airjobs'
 }
 
 const Account = async () => {

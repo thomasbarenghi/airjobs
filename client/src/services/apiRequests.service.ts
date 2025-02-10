@@ -138,6 +138,9 @@ export const getRequest = async (
     cache?: 'force-cache' | 'no-store' | 'no-cache'
   }
 ): Promise<Response> => {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 8000)
+
   try {
     const response = await fetch(`${serverUrl}${url}`, {
       next: {
@@ -149,15 +152,26 @@ export const getRequest = async (
       headers: {
         'Content-Type': 'application/json',
         ...headers
-      }
+      },
+      signal: controller.signal
     })
-    const responsejson = await response.json()
-    return {
-      data: responsejson,
-      error: !response.ok,
-      success: response.ok
+
+    clearTimeout(timeout)
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}`)
     }
-  } catch (error) {
+
+    const responseJson = await response.json()
+    return {
+      data: responseJson,
+      error: false,
+      success: true
+    }
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
+      console.error('Request aborted:', url)
+      throw new Error()
+    }
     return handleError(error)
   }
 }

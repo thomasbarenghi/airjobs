@@ -4,8 +4,7 @@ import { getUser } from '@/services/user.service'
 import { auth } from '@/auth'
 
 export const metadata: Metadata = {
-  title: 'Create Job | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Create Job | Airjobs'
 }
 
 const CreateJob = async () => {

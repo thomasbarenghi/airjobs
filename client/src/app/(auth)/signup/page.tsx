@@ -5,8 +5,7 @@ import RegisterForm from './_components/RegisterForm'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sign Up | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Sign Up | Airjobs'
 }
 
 const SignUp = () => (

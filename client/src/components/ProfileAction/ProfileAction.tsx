@@ -9,7 +9,6 @@ import { NavbarContent, NavbarItem } from '@heroui/react'
 
 const ProfileAction = () => {
   const { data: session, status } = useSession()
-
   const { data: loggedUser } = useSWR(Endpoints.USER_BY_EMAIL(session?.user?.email ?? ''))
 
   return (

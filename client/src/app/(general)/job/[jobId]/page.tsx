@@ -8,8 +8,7 @@ import Endpoints from '@/utils/constants/endpoints.const'
 import { auth } from '@/auth'
 
 export const metadata: Metadata = {
-  title: 'Job | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Job | Airjobs'
 }
 
 const IndividualJob = async ({ params }: { params: Promise<{ jobId: string }> }) => {

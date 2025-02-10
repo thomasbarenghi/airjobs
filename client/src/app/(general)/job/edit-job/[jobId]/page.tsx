@@ -5,8 +5,7 @@ import { getJob } from '@/services/job.service'
 import { auth } from '@/auth'
 
 export const metadata: Metadata = {
-  title: 'Edit Job | Airjobs',
-  themeColor: '#0F03C1'
+  title: 'Edit Job | Airjobs'
 }
 
 const EditJob = async ({ params }: { params: Promise<{ jobId: string }> }) => {
